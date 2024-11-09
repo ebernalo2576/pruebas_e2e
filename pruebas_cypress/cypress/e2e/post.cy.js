@@ -17,7 +17,7 @@ const newContent = faker.lorem.paragraph();
 
 describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
 
-    it('EP001 - Debería permitir crear un post con un título y descripción aleatoria', () => {
+    it('EP002 - Debería permitir crear un post con un título y descripción aleatoria', () => {
         // Given: El usuario está en la página de inicio de sesión
         login.givenUserIsOnLoginPage();
 
@@ -40,7 +40,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(postTitle);
     });
 
-    it('EP002 - Debería mostrar los posts creados en la lista de posts', () => {
+    it('EP003 - Debería mostrar los posts creados en la lista de posts', () => {
         // Given: El usuario está en la página de inicio de sesión
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
@@ -53,7 +53,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         viewPost.thenPostShouldBeVisibleInList(postTitle);
     });
 
-    it('EP003 - Debería visualizar un post y validar título y contenido', () => {
+    it('EP004 - Debería visualizar un post y validar título y contenido', () => {
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
@@ -67,11 +67,11 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // Then: El contenido del post deberían coincidir con los valores esperados
         validatePost.thenPostContentShouldMatch(postContent);
 
-        // When: El usuario regresa al listado de posts
+        //quitar/ Then: El usuario regresa al listado de posts
         validatePost.thenUserGoesBackToPostsList();
     });
 
-    it('EP004 - Debería permitir al usuario editar un post existente', () => {
+    it('EP005 - Debería permitir al usuario editar un post existente', () => {
         // Given: El usuario está en la página de inicio de sesión
         login.givenUserIsOnLoginPage();
 
@@ -97,7 +97,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldBeUpdated(newTitle);
     });
 
-    it('EP005 - Debería permitir despublicar un post existente', () => {
+    it('EP006 - Debería permitir despublicar un post existente', () => {
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
@@ -115,7 +115,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         unpublishPost.thenPostShouldNotBeVisibleInPostsList(newTitle);
     });
 
-    it('EP006 - Debería permitir al usuario eliminar un post existente', () => {
+    it('EP007 - Debería permitir al usuario eliminar un post existente', () => {
         // Given: El usuario está en la página de inicio de sesión
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();

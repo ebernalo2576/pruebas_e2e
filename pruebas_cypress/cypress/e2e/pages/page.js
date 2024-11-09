@@ -4,7 +4,8 @@ class Page {
         this.pageListSelector = '.gh-content-entry-title';
         this.pageTitleField = 'textarea[placeholder="Page title"]';
         this.pageContentField = '[data-secondary-instance="false"] > .koenig-lexical > [data-kg="editor"] > .kg-prose > p';
-                   
+        this.settingsMenuButton = '.settings-menu-toggle';
+        this.backToPagesButton = 'a.ember-view.gh-editor-back-button';           
     }
 }
 
@@ -72,7 +73,6 @@ class ValidatePage extends Page {
     constructor() {
         super();                     
         this.pageContentSelector = '[data-secondary-instance="false"] > .koenig-lexical > [data-kg="editor"] > .kg-prose > p'; 
-        this.backToPagesButton = 'a.ember-view.gh-editor-back-button'; 
     }
 
     // Given: El usuario navega a la lista de páginas
@@ -130,6 +130,33 @@ class EditPage extends Page {
     }
 }
 
+class UnpublishPage extends Page {
+    constructor() {
+        super();             
+        this.unpublishButton = '.gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span'; 
+        this.confirmUnpublishButton = '.gh-revert-to-draft > span';  
+        this.confirmDraftPage = 'span > div'; 
+    }
+
+    // Given: El usuario navega a la lista de páginas y selecciona una página para despublicar
+    givenUserIsOnPagesAndSelectsPageToUnpublish(title) {
+        cy.get(this.pagesMenuButton).should('be.visible').click();
+        cy.contains(this.pageListSelector, title).click(); 
+    }
+
+    // When: El usuario cambia el estado de la página a borrador
+    whenUserUnpublishesPage() {
+        cy.get(this.unpublishButton).should('be.visible').click();
+        cy.get(this.confirmUnpublishButton).should('be.visible').click();
+    }
+
+    // Then: El usuario verifica que la página esté en estado de borrador
+    thenPageShouldBeInDraftState(title) {
+        cy.get(this.confirmDraftPage).should('contain', 'Draft');
+        cy.get(this.backToPagesButton).click();
+        cy.contains(this.pageListSelector, title).should('be.visible');
+    }
+}
 class DeletePage extends Page {
     constructor() {
         super();
@@ -159,4 +186,4 @@ class DeletePage extends Page {
     }
 }
 
-export { CreatePage, ViewPages, ValidatePage, EditPage, DeletePage };
+export { CreatePage, ViewPages, ValidatePage, EditPage, UnpublishPage, DeletePage };

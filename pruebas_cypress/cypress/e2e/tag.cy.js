@@ -17,7 +17,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         }
     });
 
-    it('EP007 - Debería permitir crear y visualizar un nuevo tag', () => {
+    it('EP008 - Debería permitir crear y visualizar un nuevo tag', () => {
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
@@ -38,7 +38,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         createTag.thenTagShouldBeVisibleInTagsList(tagName);
     });
 
-    it('EP008 - Debería permitir editar un tag existente', () => {
+    it('EP009 - Debería permitir editar un tag existente', () => {
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
@@ -56,7 +56,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         editTag.thenTagShouldBeUpdatedInTagsList(newTagName);
     });
 
-    it('EP009 - Debería permitir eliminar un tag y verificar que ya no esté en la lista', () => {
+    it('EP010 - Debería permitir eliminar un tag y verificar que ya no esté en la lista', () => {
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
