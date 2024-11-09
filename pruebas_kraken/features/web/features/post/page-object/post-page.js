@@ -10,76 +10,124 @@ class PostPage {
   closeModalButton(driver) { return driver.$(".modal-content .close"); }
   postsListButton(driver) { return driver.$('[data-test-nav="posts"]'); }
   postTitleInList(driver) { return driver.$("h3.gh-content-entry-title"); }
-  unpublishPostButton(driver) { return driver.$(".gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span"); }
-  confirmUnpublishPostButton(driver) { return driver.$(".gh-revert-to-draft > span"); }
-  confirmDraftPost(driver) { return driver.$("span > div"); }
   postDetailTitle(driver) { return driver.$("textarea[placeholder='Post title']"); }
   postDetailContent(driver) { return driver.$('[data-koenig-dnd-droppable="true"]'); }
+  updateButton(driver) { return driver.$("button.gh-btn.gh-btn-editor.gh-editor-save-trigger.green"); }
   backToPostsButton(driver) { return driver.$("a.gh-editor-back-button"); }
 
+  postContainers(driver) { return driver.$$("div.gh-posts-list-item-group"); }
+  postTitleInContainer(container) { return container.$("h3.gh-content-entry-title"); }
 
-  postContainers(driver) { return driver.$$("div.gh-posts-list-item-group"); }  // Selecciona todos los contenedores de posts
-  postTitleInContainer(container) { return container.$("h3.gh-content-entry-title"); }  // Selecciona el título dentro del contenedor de cada post
-
+  // Método para abrir la lista de posts
   async openPostsList(driver) {
     console.log("Navigating to posts list page...");
     await driver.url("http://localhost:3001/ghost/#/posts");
-    await driver.pause(2000);  // Pause to observe the state
+    await driver.pause(2000);
   }
 
+  // Método para ingresar los detalles de un post
   async enterPostDetails(driver, title, content) {
     console.log("Entering post details...");
-    
-    // Click to create a new post
     await this.newPostButton(driver).click();
-
-    // Enter the title
     await this.titleInput(driver).waitForDisplayed({ timeout: 5000 });
-    await this.titleInput(driver).click();  // Explicitly click to focus on the title field
+    await this.titleInput(driver).click();
     await this.titleInput(driver).setValue(title);
     console.log(`Title entered: ${title}`);
-
-    // Enter the content
     const contentInput = this.contentInput(driver);
     await contentInput.waitForDisplayed({ timeout: 5000 });
-    await contentInput.click();  // Explicitly click to focus on the content area
-    await contentInput.addValue(content);  // Set the content
+    await contentInput.click();
+    await contentInput.addValue(content);
     console.log(`Content entered: ${content}`);
   }
 
+  // Método para publicar el post
   async publishPost(driver) {
     console.log("Publishing post...");
-
-    // Open the publish menu
     await this.publishMenu(driver).waitForDisplayed({ timeout: 5000 });
     await this.publishMenu(driver).click();
-    console.log("Clicked publish menu.");
-
-    // Click the final review button
     await this.finalReviewButton(driver).waitForDisplayed({ timeout: 5000 });
     await this.finalReviewButton(driver).click();
-    console.log("Clicked final review button.");
-
-    // Click the publish confirmation button
     await this.publishConfirmationButton(driver).waitForDisplayed({ timeout: 5000 });
     await this.publishConfirmationButton(driver).click();
-    console.log("Confirmed publish.");
-
-    // Wait for the modal to appear, then close it
     await this.closeModalButton(driver).waitForDisplayed({ timeout: 5000 });
     await this.closeModalButton(driver).click();
-    console.log("Closed publish modal.");
-
+    console.log("Post published and modal closed.");
   }
+
+  // Método para verificar que un post con el título especificado esté en la lista de posts
   async verifyPostInList(driver, title) {
     console.log("Verifying post in list...");
     await this.postsListButton(driver).waitForDisplayed({ timeout: 5000 });
     await this.postsListButton(driver).click();
-
     const postTitle = await this.postTitleInList(driver).getText();
     console.log(`Expected title: ${title}, Found title: ${postTitle}`);
     assert.strictEqual(postTitle, title, "The post was not created correctly");
+  }
 
+  // Método para seleccionar un post por título
+  async selectPostByTitle(driver, title) {
+    const postContainers = await this.postContainers(driver);
+    for (const container of postContainers) {
+      const titleElement = await this.postTitleInContainer(container);
+      const postTitle = await titleElement.getText();
+      if (postTitle === title) {
+        await titleElement.click();
+        await driver.pause(1000);
+        return;
+      }
+    }
+    throw new Error(`El post con título "${title}" no se encontró en la lista.`);
+  }
+
+  // Método para obtener el título del post
+  async getPostTitle(driver) {
+    const titleElement = await this.postDetailTitle(driver);
+    await titleElement.waitForDisplayed({ timeout: 5000 });
+    return await titleElement.getValue();
+  }
+
+  // Método para obtener el contenido del post
+  async getPostContent(driver) {
+    const contentElement = await this.contentInput(driver);
+    await contentElement.waitForDisplayed({ timeout: 5000 });
+    return await contentElement.getText();
+  }
+
+  // Método para editar el título y contenido del post
+  async editPostDetails(driver, newTitle, newContent) {
+    console.log("Editing post details...");
+
+    // Limpiar y establecer nuevo título
+    const titleElement = await this.postDetailTitle(driver);
+    await titleElement.waitForDisplayed({ timeout: 5000 });
+    await titleElement.click();
+    await titleElement.clearValue(); // Limpia el campo antes de establecer el nuevo valor
+    await titleElement.setValue(newTitle);
+    console.log(`New title entered: ${newTitle}`);
+
+    // Limpiar y establecer nuevo contenido
+    const contentElement = await this.postDetailContent(driver);
+    await contentElement.waitForDisplayed({ timeout: 5000 });
+    await contentElement.click();
+    await contentElement.clearValue(); // Limpia el campo antes de establecer el nuevo valor
+    await contentElement.setValue(newContent);
+    console.log(`New content entered: ${newContent}`);
+  }
+  // Método para actualizar el post después de editarlo
+  async updatePost(driver) {
+    console.log("Updating post...");
+    const updateButton = await this.updateButton(driver);
+    await updateButton.waitForDisplayed({ timeout: 5000 });
+    await updateButton.click();
+    await this.backToPostsButton(driver).waitForDisplayed({ timeout: 5000 });
+    await this.backToPostsButton(driver).click();
+    console.log("Post updated and returned to posts list.");
+  }
+
+  // Método para regresar a la lista de posts
+  async goBackToPostsList(driver) {
+    await this.backToPostsButton(driver).click();
+    await driver.pause(1000);
   }
 
   async verifyPostsInList(driver, titles) {
@@ -102,42 +150,6 @@ class PostPage {
     }
   }
 
-  async selectPostByTitle(driver, title) {
-    const postContainers = await this.postContainers(driver);
-    for (const container of postContainers) {
-      const titleElement = await this.postTitleInContainer(container);
-      const postTitle = await titleElement.getText();
-      if (postTitle === title) {
-        await titleElement.click();
-        await driver.pause(1000); // Pausa breve para permitir la navegación
-        return;
-      }
-    }
-    throw new Error(`El post con título "${title}" no se encontró en la lista.`);
-  }
-
-
-  async getPostTitle(driver) {
-    const titleElement = await this.postDetailTitle(driver);
-    await titleElement.waitForDisplayed({ timeout: 5000 });
-    await titleElement.click();
-
-    return await titleElement.getValue();
-  }
-
-  async getPostContent(driver) {
-    const contentElement = await this.postDetailContent(driver);
-    await contentElement.waitForDisplayed({ timeout: 5000 });
-    await contentElement.click();
-    return await contentElement.getText();
-  }
-
-  async goBackToPostsList(driver) {
-    await this.backToPostsButton(driver).click();
-    await driver.pause(1000); // Pausa breve para cargar la lista de posts
-  }
 }
-
-  
 
 module.exports = new PostPage();

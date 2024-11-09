@@ -110,3 +110,13 @@ Then("I should see the post title {string} and content {string}", async function
 When("I go back to the posts list page", async function () {
   await PostPage.goBackToPostsList(this.driver);
 });
+
+// Paso para editar el título y contenido del post
+When("I edit the post title to {string} and content to {string}", async function (newTitle, newContent) {
+  await PostPage.editPostDetails(this.driver, newTitle, newContent); // Edita el título y contenido del post
+});
+
+// Paso para guardar los cambios en el post actualizado
+When("I update the post", async function () {
+  await PostPage.updatePost(this.driver); // Guarda los cambios
+});

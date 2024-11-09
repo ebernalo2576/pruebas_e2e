@@ -1,4 +1,4 @@
-Feature: Debería mostrar los posts creados en la lista de posts
+Feature: Debería visualizar un posts y validad el titulo y el contenido en la lista de posts
 
 @user1 @web
 Scenario: Crear y publicar varios posts, verificar su visibilidad en la lista y validar contenido
