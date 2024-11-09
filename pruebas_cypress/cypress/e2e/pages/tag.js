@@ -41,7 +41,7 @@ class CreateTag extends Tag {
 
     // Then: El usuario valida que el tag esté en la lista de tags
     thenTagShouldBeVisibleInTagsList(name) {
-        cy.get(this.tagsMenuButton).click(); // Navegar de regreso a la lista de tags
+        cy.get(this.tagsMenuButton).click(); 
         cy.contains(this.tagListSelector, name).should('be.visible');
     }
 }
@@ -72,7 +72,7 @@ class EditTag extends Tag {
 
     // Then: El usuario verifica que el tag se haya actualizado en la lista de tags
     thenTagShouldBeUpdatedInTagsList(newName) {
-        cy.get(this.tagsMenuButton).click(); // Navegar de regreso a la lista de tags
+        cy.get(this.tagsMenuButton).click(); 
         cy.contains(this.tagListSelector, newName).should('be.visible');
     }
 }
@@ -88,24 +88,22 @@ class DeleteTag extends Tag {
     givenUserIsOnTagsPageAndSelectsTagToDelete(name) {
         cy.get(this.tagsMenuButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/tags');
-        cy.contains(name).click();  // Seleccionar el tag por su nombre
+        cy.contains(name).click(); 
     }
 
     // When: El usuario hace clic en el botón para eliminar el tag
     whenUserDeletesTag() {
-        cy.get('.gh-main').scrollTo('bottom'); // Asegura que el botón esté visible
+        cy.get('.gh-main').scrollTo('bottom'); 
         cy.get(this.deleteTagButton).should('be.visible').click();
-
-        //cy.get(this.confirmDeleteTagButton).should('be.visible');
-        cy.wait(500);  // Espera para asegurar que el modal esté completamente abierto
+        cy.wait(500); 
         cy.get(this.confirmDeleteTagButton).click();
         //cy.wait(1000);
     }
 
     // Then: El usuario verifica que el tag ya no está en la lista de tags
     thenTagShouldNotBeVisibleInTagsList(name) {
-        //cy.get(this.tagsMenuButton).click(); // Volver a la lista de tags
-        //cy.contains(this.tagListSelector, name).should('not.exist');
+        cy.get(this.tagsMenuButton).click(); 
+        cy.contains(this.tagListSelector, name).should('not.exist');
     }
 }
 
