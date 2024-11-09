@@ -2,6 +2,7 @@ const { Given, When, Then } = require("@cucumber/cucumber");
 const fs = require("fs");
 const csv = require("csv-parser");
 const LoginPage = require("../features/login/page-object/login-page");
+const PostPage = require("../features/post/page-object/post-page");
 const properties = require("../../../properties.json");  // Adjust the path as needed
 const assert = require("assert");
 
@@ -54,4 +55,18 @@ Then("I should have a nav-bar with functions", async function () {
 // verify that errors is shown on login screen when user and pasword is incorrect
 Then("I should have a error message present", async function(){
   await LoginPage.isErrorShowForInvalidLogin(this.driver);
+});
+
+// Post creation steps (in postSteps.js)
+Given("I navigate to the posts page", async function () {
+  await PostPage.open(this.driver);
+});
+
+When("I create a new post with random title {string} and description {string}", async function (title, description) {
+  await PostPage.createNewPost(this.driver, title, description);
+  this.latestPostTitle = title;  // Store title for later verification
+});
+
+Then("I should see the new post in the post list with the name {string}", async function (name_post) {
+  await PostPage.verifyPostInList(this.driver, name_post);
 });
