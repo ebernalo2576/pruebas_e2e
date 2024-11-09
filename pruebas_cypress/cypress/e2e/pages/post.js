@@ -16,6 +16,7 @@ class CreatePost extends Post {
         this.publishMenuButton = '.gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span';
         this.publishButton = '.gh-publish-cta > .gh-btn > span';
         this.confirmPublishButton = 'button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view';
+        this.closeButton = 'button.close';
     }
 
     // Given: El usuario da ícono + para crear un post
@@ -35,7 +36,7 @@ class CreatePost extends Post {
         cy.get(this.publishMenuButton).should('be.visible').click();
         cy.get(this.publishButton).should('be.visible').click();
         cy.get(this.confirmPublishButton).should('be.visible').click();
-        cy.get('button.close').should('be.visible').click();
+        cy.get(this.closeButton).should('be.visible').click();
     }
 
     // Then: El usuario valida que el post esté creado
