@@ -13,7 +13,7 @@ const newMemberEmail = faker.internet.email();
 
 describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
-    it('EP015 - Debería permitir crear y visualizar un nuevo miembro', () => {
+    it('EP017 - Debería permitir crear y visualizar un nuevo miembro', () => {
         // Given: El usuario inicia sesión
         loginPage.givenUserIsOnLoginPage();
         loginPage.whenUserLogsIn();
@@ -35,7 +35,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenMemberShouldBeVisibleInMembersList(memberName);
     });
 
-    it('EP016 - Debería permitir ver la lista de miembros', () => {
+    it('EP018 - Debería permitir ver la lista de miembros', () => {
         // Given: El usuario inicia sesión y navega a la sección de miembros
         loginPage.givenUserIsOnLoginPage();
         loginPage.whenUserLogsIn();
@@ -47,7 +47,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         viewMembers.thenMembersListShouldBeVisible();
     });
 
-    it('EP017 - Debería permitir al usuario editar un miembro existente', () => {
+    it('EP019 - Debería permitir al usuario editar un miembro existente', () => {
         // Given: El usuario inicia sesión y navega a la lista de miembros, luego selecciona un miembro para editar
         loginPage.givenUserIsOnLoginPage();
         loginPage.whenUserLogsIn();
@@ -65,7 +65,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         editMember.thenMemberShouldBeUpdatedInMembersList(newMemberName);
     });
 
-    it('EP018 - Debería permitir eliminar un miembro existente', () => {
+    it('EP020 - Debería permitir eliminar un miembro existente', () => {
         // Given: El usuario inicia sesión y navega a la lista de miembros, luego selecciona un miembro para eliminar
         loginPage.givenUserIsOnLoginPage();
         loginPage.whenUserLogsIn();
