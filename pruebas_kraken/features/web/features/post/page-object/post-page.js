@@ -14,6 +14,8 @@ class PostPage {
   confirmUnpublishPostButton(driver) { return driver.$(".gh-revert-to-draft > span"); }
   confirmDraftPost(driver) { return driver.$("span > div"); }
   backToPostsButton(driver) { return driver.$("a.ember-view.gh-btn-editor.gh-editor-back-button"); }
+  postContainers(driver) { return driver.$$("div.gh-posts-list-item-group"); }  // Selecciona todos los contenedores de posts
+  postTitleInContainer(container) { return container.$("h3.gh-content-entry-title"); }  // Selecciona el título dentro del contenedor de cada post
 
   async openPostsList(driver) {
     console.log("Navigating to posts list page...");
@@ -64,9 +66,7 @@ class PostPage {
     await this.closeModalButton(driver).click();
     console.log("Closed publish modal.");
 
-    // Take a screenshot after publishing
   }
-
   async verifyPostInList(driver, title) {
     console.log("Verifying post in list...");
     await this.postsListButton(driver).waitForDisplayed({ timeout: 5000 });
@@ -76,8 +76,28 @@ class PostPage {
     console.log(`Expected title: ${title}, Found title: ${postTitle}`);
     assert.strictEqual(postTitle, title, "The post was not created correctly");
 
-    // Take a screenshot for verification
+  }
+
+  async verifyPostsInList(driver, titles) {
+    await driver.pause(1000);  // Breve pausa para asegurarse de que los posts se hayan cargado
+
+    const postContainers = await this.postContainers(driver);
+    console.log(`Se encontraron ${postContainers.length} contenedores de posts.`);
+
+    // Extrae el texto del título de cada post en la lista
+    const postTitlesText = await Promise.all(postContainers.map(async (container) => {
+      const titleElement = await this.postTitleInContainer(container);
+      const titleText = await titleElement.getText();
+      console.log(`Título encontrado: "${titleText}"`);
+      return titleText;
+    }));
+
+    // Verifica que todos los títulos esperados estén presentes en la lista de títulos obtenidos
+    for (const title of titles) {
+      assert(postTitlesText.includes(title), `El post con el título "${title}" no se encontró en la lista.`);
+    }
   }
 }
+  
 
 module.exports = new PostPage();

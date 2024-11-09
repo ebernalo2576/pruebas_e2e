@@ -84,8 +84,14 @@ When("I select the post with title {string} to unpublish", async function (title
 When("I unpublish the post", async function () {
   await PostPage.unpublishPost(this.driver);
 });
-
+When("I create a new post with title {string} and content {string}", async function (title, content) {
+  await PostPage.enterPostDetails(this.driver, title, content);
+});
 // Then: The post should be marked as "Draft" in the posts list
 Then("the post with title {string} should be marked as Draft", async function (title) {
   await PostPage.verifyPostIsDraft(this.driver, title);
+});
+Then("I should see all posts in the posts list with titles:", async function (dataTable) {
+  const titles = dataTable.raw().flat();
+  await PostPage.verifyPostsInList(this.driver, titles);
 });

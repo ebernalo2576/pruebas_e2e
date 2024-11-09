@@ -1,4 +1,4 @@
-Feature: Manage Posts in Ghost
+Feature: Deberia permitir post con titulo y descripcion
 
 @user1 @web
 Scenario: Create and publish a post
