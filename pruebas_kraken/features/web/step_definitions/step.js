@@ -188,3 +188,15 @@ When('I enter to create a new tag', async function() {
   await TagPage.openOpenNewTagClick(this.driver);
 });
 
+
+
+// Editar los detalles del tag (nombre y descripción)
+When('I edit tag details to {string} {string}', async function(newTagName, newTagDescription) {
+  await TagPage.editTagDetails(this.driver, newTagName, newTagDescription);
+});
+
+// Seleccionar un tag existente para editar
+Given('I select the tag to edit {string}', async function(name) {
+  await TagPage.selectTagByName(this.driver, name);
+});
+

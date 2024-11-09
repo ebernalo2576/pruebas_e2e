@@ -9,8 +9,14 @@ class TagPage {
     deleteTagButton(driver) { return driver.$('button.gh-btn.gh-btn-red.gh-btn-icon'); }
     confirmDeleteTagButton(driver) { return driver.$('.modal-footer .gh-btn-red'); }
     newTagButton(driver) { return driver.$('a.gh-btn.gh-btn-primary'); }
-
+    tagTitleInContainer(container) { return container.$('.gh-tag-list-name'); }
     // Navigate to the tags page
+     // Obtén todos los contenedores de tags
+     tagContainers(driver) { return driver.$$("li.gh-list-row.gh-tags-list-item"); }
+    
+     // Función para obtener el elemento de nombre del tag en un contenedor
+     tagNameInContainer(container) { return container.$(".gh-tag-list-name"); }
+ 
     async navigateToTagsPage(driver) {
         console.log("Navigating to tags page...");
         await driver.url("http://localhost:3001/ghost/#/tags");
@@ -36,15 +42,6 @@ class TagPage {
         await driver.pause(1000);
     }
 
-    // Verify that a tag is visible in the tags list
-    async verifyTagIsVisible(driver, name) {
-        console.log(`Verifying tag "${name}" is visible...`);
-        await this.tagsMenuButton(driver).click();
-        const tag = await this.tagListSelector(driver);
-        const isVisible = await tag.isDisplayed();
-        assert(isVisible, `The tag "${name}" is not visible in the tags list`);
-    }
-
     // Verify that a tag is not visible in the tags list
     async verifyTagIsNotVisible(driver, name) {
         console.log(`Verifying tag "${name}" is not visible...`);
@@ -57,25 +54,37 @@ class TagPage {
     // Select an existing tag by name
     async selectTagByName(driver, name) {
         console.log(`Selecting tag "${name}"...`);
-        const tags = await driver.$$(this.tagListSelector(driver));
-        for (const tag of tags) {
-            const tagName = await tag.getText();
-            if (tagName === name) {
-                await tag.click();
+        const tagContainers = await this.tagContainers(driver);
+
+        for (const container of tagContainers) {
+            const tagNameElement = await this.tagNameInContainer(container);
+            const tagName = (await tagNameElement.getText()).trim();
+            if (tagName === name.trim()) {
+                await tagNameElement.click();
                 await driver.pause(1000);
+                console.log(`Tag "${name}" found and selected.`);
                 return;
             }
         }
-        throw new Error(`The tag "${name}" was not found in the list.`);
+        throw new Error(`El tag con nombre "${name}" no se encontró en la lista.`);
     }
-
-    // Edit the details of an existing tag
-    async editTag(driver, name, newName, newDescription) {
-        console.log(`Editing tag "${name}"...`);
-        await this.selectTagByName(driver, name);
-        await this.fillTagDetails(driver, newName, newDescription);
-        await this.saveTag(driver);
-    }
+    async editTagDetails(driver, newName, newDescription) {
+        console.log("Editing tag details...");
+    
+        // Limpiar y establecer nuevo nombre del tag
+        const tagNameElement = await this.tagNameField(driver);
+        await tagNameElement.click();
+        await tagNameElement.clearValue();
+        await tagNameElement.setValue(newName);
+        console.log(`New tag name entered: ${newName}`);
+    
+        // Limpiar y establecer nueva descripción del tag
+        const tagDescriptionElement = await this.tagDescriptionField(driver);
+        await tagDescriptionElement.click();
+        await tagDescriptionElement.clearValue();
+        await tagDescriptionElement.setValue(newDescription);
+        console.log(`New tag description entered: ${newDescription}`);
+      }
 
     // Delete a tag
     async deleteTag(driver, name) {
