@@ -18,13 +18,9 @@ const newContent = faker.lorem.paragraph();
 describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
 
     it('EP002 - Debería permitir crear un post con un título y descripción aleatoria', () => {
-        // Given: El usuario está en la página de inicio de sesión
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
-
-        // When: El usuario ingresa sus credenciales y envía el formulario
         login.whenUserLogsIn();
-
-        // Then: El usuario debería ver el dashboard
         login.thenUserShouldSeeDashboard();
 
         // Given: El usuario está en la página de creación de posts
@@ -39,9 +35,9 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // Then: El post debería estar visible en la lista de posts
         createPost.thenPostShouldBeVisibleInPostsList(postTitle);
     });
-
+   
     it('EP003 - Debería mostrar los posts creados en la lista de posts', () => {
-        // Given: El usuario está en la página de inicio de sesión
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
@@ -49,11 +45,15 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // Given: El usuario navega a la lista de posts
         viewPost.givenUserIsOnPostsList();
 
+        // When: El usuario revisa la lista de posts
+        viewPost.whenUserViewsPostsList();
+
         // Then: Verifica que el post creado esté visible en la lista
         viewPost.thenPostShouldBeVisibleInList(postTitle);
     });
 
     it('EP004 - Debería visualizar un post y validar título y contenido', () => {
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
@@ -66,19 +66,12 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
 
         // Then: El contenido del post deberían coincidir con los valores esperados
         validatePost.thenPostContentShouldMatch(postContent);
-
-        //quitar/ Then: El usuario regresa al listado de posts
-        validatePost.thenUserGoesBackToPostsList();
     });
 
     it('EP005 - Debería permitir al usuario editar un post existente', () => {
-        // Given: El usuario está en la página de inicio de sesión
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
-
-        // When: El usuario ingresa sus credenciales y envía el formulario
         login.whenUserLogsIn();
-
-        // Then: El usuario debería ver el dashboard
         login.thenUserShouldSeeDashboard();
 
         // Given: El usuario está en la lista de posts
@@ -98,6 +91,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
     });
 
     it('EP006 - Debería permitir despublicar un post existente', () => {
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
@@ -116,7 +110,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
     });
 
     it('EP007 - Debería permitir al usuario eliminar un post existente', () => {
-        // Given: El usuario está en la página de inicio de sesión
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();

@@ -17,7 +17,6 @@ class CreatePage extends Page {
         this.publishButton = '.gh-publish-cta > .gh-btn > span'; 
         this.confirmPublishButton = 'button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view';
         this.closeButton = 'button.close';                  
-
     }
 
     // Given: El usuario navega a la sección de páginas
@@ -57,15 +56,25 @@ class ViewPages extends Page {
         super();
     }
 
-    // Given: El usuario navega a la sección de páginas
-    givenUserIsOnPagesSection() {
-        cy.get(this.pagesMenuButton).should('be.visible').click();
-        cy.url().should('include', '/ghost/#/pages');
-    }
-
     // Then: El usuario verifica que una página con el título especificado esté visible en la lista
     thenPageShouldBeVisible(title) {
         cy.contains(this.pageListSelector, title).should('be.visible');
+    }
+
+    // Given: El usuario navega a la sección de páginas
+    givenUserIsOnPagesSection() {
+        cy.get(this.pagesMenuButton).should('be.visible').click();   
+        cy.url().should('include', '/ghost/#/pages');              
+    }
+
+    // When: El usuario visualiza la lista de páginas
+    whenUserViewsPagesList() {
+        cy.get(this.pageListSelector).should('exist'); 
+    }
+
+    // Then: Verifica que una página con el título especificado esté visible en la lista
+    thenPageShouldBeVisible(title) {
+        cy.contains(this.pageListSelector, title).should('be.visible'); 
     }
 }
 
@@ -88,10 +97,7 @@ class ValidatePage extends Page {
 
     // Then: El usuario valida que el título y el contenido de la página coincidan con los valores esperados
     thenPageDetailsShouldMatch(expectedTitle, expectedContent) {
-        cy.get(this.pageContentSelector).should('contain.text', expectedContent);  // Verifica el contenido en los detalles
-    }
-
-    thenUserGoesBackToPageList() {
+        cy.get(this.pageContentSelector).should('contain.text', expectedContent);
         cy.get(this.backToPagesButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/pages'); 
     }

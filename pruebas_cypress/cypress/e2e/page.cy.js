@@ -16,7 +16,7 @@ const newPageContent = faker.lorem.paragraph();
 describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
 
     it('EP011 - Debería permitir crear y visualizar una nueva página', () => {
-        //Inicio de sesión
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
         loginPage.givenUserIsOnLoginPage();
         loginPage.whenUserLogsIn();
         loginPage.thenUserShouldSeeDashboard();
@@ -38,79 +38,84 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     });
 
     it('EP012 - Debería permitir ver una página existente en la lista de páginas', () => {
-        // Given: El usuario inicia sesión y navega a la sección de páginas
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
         loginPage.givenUserIsOnLoginPage();
         loginPage.whenUserLogsIn();
         loginPage.thenUserShouldSeeDashboard();
-
+    
+        // Given: El usuario navega a la sección de páginas
         viewPages.givenUserIsOnPagesSection();
-
+    
+        // When: El usuario visualiza la lista de páginas
+        viewPages.whenUserViewsPagesList();
+    
         // Then: El usuario verifica que la página con el título especificado esté visible en la lista
         viewPages.thenPageShouldBeVisible(pageTitle);
     });
 
     it('EP013 - Debería validar los detalles de una página existente', () => {
-        // Given: El usuario inicia sesión y navega a la lista de páginas
-        loginPage.givenUserIsOnLoginPage();
-        loginPage.whenUserLogsIn();
-        loginPage.thenUserShouldSeeDashboard();
-
-        validatePage.givenUserIsOnPagesSection();
-
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
+        loginPage.givenUserIsOnLoginPage();              
+        loginPage.whenUserLogsIn();                    
+        loginPage.thenUserShouldSeeDashboard();       
+    
+        // Given: El usuario navega a la sección de páginas
+        validatePage.givenUserIsOnPagesSection();   
+    
         // When: El usuario selecciona la página para ver sus detalles
         validatePage.whenUserSelectsPageToValidate(pageTitle);
-
+    
         // Then: El usuario valida que el título y el contenido de la página coincidan con los valores esperados
         validatePage.thenPageDetailsShouldMatch(pageTitle, pageContent);
-
-        // Then: El usuario regresa a la lista de páginas
-        validatePage.thenUserGoesBackToPageList();
     });
 
     it('EP014 - Debería permitir al usuario editar una página existente', () => {
-        // Given: El usuario inicia sesión y navega a la lista de páginas, luego selecciona una página para editar
-        loginPage.givenUserIsOnLoginPage();
-        loginPage.whenUserLogsIn();
-        loginPage.thenUserShouldSeeDashboard();
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
+        loginPage.givenUserIsOnLoginPage();       
+        loginPage.whenUserLogsIn();                
+        loginPage.thenUserShouldSeeDashboard();    
 
-        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle);
-
+        // Given: El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+    
         // When: El usuario edita el título y el contenido de la página
         editPage.whenUserEditsPageDetails(newPageTitle, newPageContent);
 
         // When: El usuario guarda los cambios en la página
-        editPage.whenUserUpdatesPage();
-
+        editPage.whenUserUpdatesPage();          
+    
         // Then: El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
-        editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle);
+        editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle); 
     });
 
     it('EP015 - Debería permitir despublicar una página existente', () => {
-        // Given: El usuario inicia sesión y navega a la lista de páginas, luego selecciona una página para despublicar
-        loginPage.givenUserIsOnLoginPage();
-        loginPage.whenUserLogsIn();
-        loginPage.thenUserShouldSeeDashboard();
-
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
+        loginPage.givenUserIsOnLoginPage();              
+        loginPage.whenUserLogsIn();                 
+        loginPage.thenUserShouldSeeDashboard();      
+    
+        // Given: El usuario navega a la lista de páginas y selecciona la página para despublicar
         unpublishPage.givenUserIsOnPagesAndSelectsPageToUnpublish(newPageTitle);
-
+    
         // When: El usuario cambia el estado de la página a borrador
-        unpublishPage.whenUserUnpublishesPage();
-
-        // Then: El usuario verifica que la página esté en estado de borrador
+        unpublishPage.whenUserUnpublishesPage();     
+    
+        // Then: El usuario verifica que la página esté en estado de borrador en la lista de páginas
         unpublishPage.thenPageShouldBeInDraftState(newPageTitle);
     });
 
     it('EP016 - Debería permitir eliminar una página existente', () => {
-        // Given: El usuario inicia sesión y navega a la lista de páginas, luego selecciona una página para eliminar
-        loginPage.givenUserIsOnLoginPage();
-        loginPage.whenUserLogsIn();
-        loginPage.thenUserShouldSeeDashboard();
-
-        deletePage.givenUserIsOnPagesAndSelectsPageToDelete(newPageTitle);
-
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
+        loginPage.givenUserIsOnLoginPage();            
+        loginPage.whenUserLogsIn();                 
+        loginPage.thenUserShouldSeeDashboard();     
+    
+        // Given: El usuario navega a la lista de páginas y selecciona la página que desea eliminar
+        deletePage.givenUserIsOnPagesAndSelectsPageToDelete(newPageTitle); 
+    
         // When: El usuario confirma la eliminación de la página
-        deletePage.whenUserDeletesPage();
-
+        deletePage.whenUserDeletesPage();      
+    
         // Then: El usuario verifica que la página eliminada ya no esté en la lista de páginas
         deletePage.thenPageShouldNotBeVisibleInPagesList(newPageTitle);
     });
