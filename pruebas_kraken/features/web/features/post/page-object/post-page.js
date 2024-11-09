@@ -44,7 +44,18 @@ class PostPage {
     await contentInput.addValue(content);
     console.log(`Content entered: ${content}`);
   }
-
+  async deletePost(driver) {
+    // Selecciona el botón de eliminación en el post abierto
+    const deleteButton = await driver.$('.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon'); // Cambia el selector por el adecuado
+    await deleteButton.click();
+  
+    // Confirmar eliminación si es necesario
+    const confirmButton = await driver.$('.settings-menu-delete-button > button'); // Cambia el selector por el adecuado
+    await confirmButton.click();
+  
+    console.log("Post eliminado exitosamente.");
+  }
+  
   // Método para publicar el post
   async publishPost(driver) {
     console.log("Publishing post...");

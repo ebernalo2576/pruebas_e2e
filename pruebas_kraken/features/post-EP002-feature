@@ -1,10 +1,8 @@
 Feature: Deberia permitir post con titulo y descripcion
 
 @user1 @web
-Scenario: Create and publish a post
+Scenario: Deberia permitir post con titulo y descripcion
   Given I open the Ghost login page
-  And I wait for 2 seconds
-  And I have data from "./generate-data/aprioriLogin.csv"
   And I wait for 2 seconds
   When I enter login email CSV "USERNAME1"
   And I wait for 3 seconds
@@ -12,6 +10,7 @@ Scenario: Create and publish a post
   And I wait for 3 seconds
   And I submit login
   And I wait for 5 seconds
+  
   Given I am on the posts list page
   When I enter post title "My New Post" and content "This is the content of my post"
   And I publish the post
