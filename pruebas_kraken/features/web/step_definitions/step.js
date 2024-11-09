@@ -72,7 +72,9 @@ When("I publish the post", async function () {
 
 // Then: The post should be visible in the posts list
 Then("I should see the post with title {string} in the posts list", async function (title) {
-  await PostPage.verifyPostInList(this.driver, title);
+  const titles = [title];
+
+  await PostPage.checkPostsPresence(this.driver, titles);
 });
 
 // When: The user selects a post to unpublish

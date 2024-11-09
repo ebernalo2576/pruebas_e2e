@@ -19,4 +19,5 @@ Scenario: Crear, publicar, despublicar y verificar el estado del post
     | My New Post x |
   When I open the post with title "My New Post x"
   And I unpublish the post
+  And I wait for 5 seconds
   Then I should see the post with title "My New Post x" marked as draft
