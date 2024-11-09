@@ -13,7 +13,11 @@ class PostPage {
   unpublishPostButton(driver) { return driver.$(".gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span"); }
   confirmUnpublishPostButton(driver) { return driver.$(".gh-revert-to-draft > span"); }
   confirmDraftPost(driver) { return driver.$("span > div"); }
-  backToPostsButton(driver) { return driver.$("a.ember-view.gh-btn-editor.gh-editor-back-button"); }
+  postDetailTitle(driver) { return driver.$("textarea[placeholder='Post title']"); }
+  postDetailContent(driver) { return driver.$('[data-koenig-dnd-droppable="true"]'); }
+  backToPostsButton(driver) { return driver.$("a.gh-editor-back-button"); }
+
+
   postContainers(driver) { return driver.$$("div.gh-posts-list-item-group"); }  // Selecciona todos los contenedores de posts
   postTitleInContainer(container) { return container.$("h3.gh-content-entry-title"); }  // Selecciona el título dentro del contenedor de cada post
 
@@ -97,7 +101,43 @@ class PostPage {
       assert(postTitlesText.includes(title), `El post con el título "${title}" no se encontró en la lista.`);
     }
   }
+
+  async selectPostByTitle(driver, title) {
+    const postContainers = await this.postContainers(driver);
+    for (const container of postContainers) {
+      const titleElement = await this.postTitleInContainer(container);
+      const postTitle = await titleElement.getText();
+      if (postTitle === title) {
+        await titleElement.click();
+        await driver.pause(1000); // Pausa breve para permitir la navegación
+        return;
+      }
+    }
+    throw new Error(`El post con título "${title}" no se encontró en la lista.`);
+  }
+
+
+  async getPostTitle(driver) {
+    const titleElement = await this.postDetailTitle(driver);
+    await titleElement.waitForDisplayed({ timeout: 5000 });
+    await titleElement.click();
+
+    return await titleElement.getValue();
+  }
+
+  async getPostContent(driver) {
+    const contentElement = await this.postDetailContent(driver);
+    await contentElement.waitForDisplayed({ timeout: 5000 });
+    await contentElement.click();
+    return await contentElement.getText();
+  }
+
+  async goBackToPostsList(driver) {
+    await this.backToPostsButton(driver).click();
+    await driver.pause(1000); // Pausa breve para cargar la lista de posts
+  }
 }
+
   
 
 module.exports = new PostPage();

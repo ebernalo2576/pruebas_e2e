@@ -95,3 +95,18 @@ Then("I should see all posts in the posts list with titles:", async function (da
   const titles = dataTable.raw().flat();
   await PostPage.verifyPostsInList(this.driver, titles);
 });
+
+When("I open the post with title {string}", async function (title) {
+  await PostPage.selectPostByTitle(this.driver, title);
+});
+
+Then("I should see the post title {string} and content {string}", async function (expectedTitle, expectedContent) {
+  const actualTitle = await PostPage.getPostTitle(this.driver);
+  const actualContent = await PostPage.getPostContent(this.driver);
+  assert.strictEqual(actualTitle, expectedTitle, `El título del post no coincide. Esperado: "${expectedTitle}", Actual: "${actualTitle}"`);
+  assert.strictEqual(actualContent, expectedContent, `El contenido del post no coincide. Esperado: "${expectedContent}", Actual: "${actualContent}"`);
+});
+
+When("I go back to the posts list page", async function () {
+  await PostPage.goBackToPostsList(this.driver);
+});
