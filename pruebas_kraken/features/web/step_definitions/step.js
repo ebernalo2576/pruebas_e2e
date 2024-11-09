@@ -1,12 +1,19 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const fs = require("fs");
 const csv = require("csv-parser");
+const LoginPage = require("../features/login/page-object/login-page");
 const properties = require("../../../properties.json");  // Adjust the path as needed
-const data = [];
-let currentData = {};
 const assert = require("assert");
 
-// Load data from CSV
+const data = [];
+let currentData = {};
+// Feature 1 - Escenario de pruebas 1 - login con usuario y password valido
+// Step to open the Ghost login page using the URL from properties.json
+Given("I open the Ghost login page", async function () {
+  await LoginPage.open(this.driver);  // Pass driver as a parameter
+});
+
+// Load data from CSV and store it in currentData
 Given("I have data from {string}", async function (csvFilePath) {
   return new Promise((resolve, reject) => {
     fs.createReadStream(csvFilePath)
@@ -15,7 +22,7 @@ Given("I have data from {string}", async function (csvFilePath) {
         data.push(row);
       })
       .on("end", () => {
-        currentData = data[0];  // Set to the first row of data for now
+        currentData = data[0];  // Use the first row for now
         resolve();
       })
       .on("error", (error) => {
@@ -24,44 +31,27 @@ Given("I have data from {string}", async function (csvFilePath) {
   });
 });
 
-Given("I open the Ghost login page", async function () {
-  await this.driver.url(properties.URL);  // Use URL from properties.json
-});
-
-// Enter email and password from properties.json
+// Enter the login email from the CSV data
 When("I enter login email CSV {string}", async function (emailField) {
-  const email = properties[emailField];  // Get the email directly from properties.json
-  const emailInput = await this.driver.$("#identification");
-  await emailInput.waitForDisplayed();
-  await emailInput.setValue(email);
+  await LoginPage.emailInput(this.driver).setValue(properties[emailField]);  // Pass driver as a parameter
 });
 
+// Enter the login password from the CSV data
 When("I enter login password CSV {string}", async function (passwordField) {
-  const password = properties[passwordField];  // Get the password directly from properties.json
-  const passwordInput = await this.driver.$("#password");
-  await passwordInput.waitForDisplayed();
-  await passwordInput.setValue(password);
+  await LoginPage.passwordInput(this.driver).setValue(properties[passwordField]);  // Pass driver as a parameter
 });
 
-// Click submit button
+// Submit the login form
 When("I submit login", async function () {
-  const submitButton = await this.driver.$("#ember5");
-  await submitButton.click();
+  await LoginPage.submitButton(this.driver).click();  // Pass driver as a parameter
 });
 
+// Verify that the nav-bar with functions is displayed after login
 Then("I should have a nav-bar with functions", async function () {
-  // Check if the main navigation bar is displayed
-  const navbar = await this.driver.$(".gh-nav-top");
-  const isNavbarDisplayed = await navbar.isDisplayed();
-  assert.strictEqual(isNavbarDisplayed, true, "Navbar is not displayed");
+  await LoginPage.isNavBarDisplayed(this.driver);  // Pass driver as a parameter
+});
 
-  // Check if the 'gh-nav-main' list is present inside the navigation bar
-  const mainNav = await navbar.$(".gh-nav-list.gh-nav-main");
-  const isMainNavDisplayed = await mainNav.isDisplayed();
-  assert.strictEqual(isMainNavDisplayed, true, "'gh-nav-main' list is not displayed");
-
-  // Check if the 'gh-nav-manage' list is present inside the navigation bar
-  const manageNav = await navbar.$(".gh-nav-list.gh-nav-manage");
-  const isManageNavDisplayed = await manageNav.isDisplayed();
-  assert.strictEqual(isManageNavDisplayed, true, "'gh-nav-manage' list is not displayed");
+// verify that errors is shown on login screen when user and pasword is incorrect
+Then("I should have a error message present", async function(){
+  await LoginPage.isErrorShowForInvalidLogin(this.driver);
 });
