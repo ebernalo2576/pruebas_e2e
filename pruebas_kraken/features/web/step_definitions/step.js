@@ -51,22 +51,41 @@ When("I submit login", async function () {
 Then("I should have a nav-bar with functions", async function () {
   await LoginPage.isNavBarDisplayed(this.driver);  // Pass driver as a parameter
 });
-
+// Given: The user is on the posts list page
+Given("I am on the posts list page", async function () {
+  await PostPage.openPostsList(this.driver);
+});
 // verify that errors is shown on login screen when user and pasword is incorrect
 Then("I should have a error message present", async function(){
   await LoginPage.isErrorShowForInvalidLogin(this.driver);
+});// Given: The user is on the posts list page
+
+// When: The user enters post details
+When("I enter post title {string} and content {string}", async function (title, content) {
+  await PostPage.enterPostDetails(this.driver, title, content);
 });
 
-// Post creation steps (in postSteps.js)
-Given("I navigate to the posts page", async function () {
-  await PostPage.open(this.driver);
+// When: The user publishes the post
+When("I publish the post", async function () {
+  await PostPage.publishPost(this.driver);
 });
 
-When("I create a new post with random title {string} and description {string}", async function (title, description) {
-  await PostPage.createNewPost(this.driver, title, description);
-  this.latestPostTitle = title;  // Store title for later verification
+// Then: The post should be visible in the posts list
+Then("I should see the post with title {string} in the posts list", async function (title) {
+  await PostPage.verifyPostInList(this.driver, title);
 });
 
-Then("I should see the new post in the post list with the name {string}", async function (name_post) {
-  await PostPage.verifyPostInList(this.driver, name_post);
+// When: The user selects a post to unpublish
+When("I select the post with title {string} to unpublish", async function (title) {
+  await PostPage.selectPostToUnpublish(this.driver, title);
+});
+
+// When: The user unpublishes the post
+When("I unpublish the post", async function () {
+  await PostPage.unpublishPost(this.driver);
+});
+
+// Then: The post should be marked as "Draft" in the posts list
+Then("the post with title {string} should be marked as Draft", async function (title) {
+  await PostPage.verifyPostIsDraft(this.driver, title);
 });
