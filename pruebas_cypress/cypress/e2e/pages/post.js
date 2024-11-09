@@ -49,6 +49,7 @@ class CreatePost extends Post {
 class ViewPosts extends Post {
     constructor() {
         super();
+        this.postAllSelector = 'div.posts-list.gh-list.feature-memberAttribution';
     }
 
     // Given: El usuario está en la lista de posts
@@ -57,7 +58,12 @@ class ViewPosts extends Post {
         cy.url().should('include', '/ghost/#/posts');
     }
 
-    // Then: Verifica que el post con el título y contenido especificados esté visible en la lista
+    // When: El usuario revisa la lista de posts
+    whenUserViewsPostsList() {
+        cy.get(this.postAllSelector).should('exist'); 
+    }
+
+    // Then: Verifica que el post con el título especificado esté visible en la lista
     thenPostShouldBeVisibleInList(title) {
         cy.contains(this.postTitleSelector, title).should('be.visible');
     }
@@ -68,23 +74,24 @@ class ValidatePost extends Post {
         super();
     }
 
+    // Given: El usuario navega a la lista de posts
     givenUserIsOnPostsList() {
-        cy.get(this.postsListButton).click();
-        cy.url().should('include', '/ghost/#/posts');
+        cy.get(this.postsListButton).click();         
+        cy.url().should('include', '/ghost/#/posts');  
     }
 
+    // When: El usuario selecciona un post específico para verlo en detalle
     whenUserSelectsPostToView(title) {
         cy.contains(this.postTitleSelector, title).click();
     }
 
+    // Then: El contenido del post debe coincidir con el contenido esperado
     thenPostContentShouldMatch(expectedContent) {
-        cy.get(this.postContentField).should('contain.text', expectedContent);
+        cy.get(this.postContentField).should('contain.text', expectedContent); 
+        cy.get(this.backToPostsButton).click(); 
+        cy.url().should('include', '/ghost/#/posts'); 
     }
 
-    thenUserGoesBackToPostsList() {
-        cy.get(this.backToPostsButton).click();
-        cy.url().should('include', '/ghost/#/posts');
-    }
 }
 
 class EditPost extends Post {

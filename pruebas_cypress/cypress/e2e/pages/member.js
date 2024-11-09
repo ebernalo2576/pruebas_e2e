@@ -44,21 +44,26 @@ class CreateMember extends Member {
         cy.contains(this.memberListSelector, name).should('be.visible');
     }
 }
-
-class ViewMembers extends Member {
+class ViewMembers {
     constructor() {
-        super();
+        this.membersMenuButton = '[data-test-nav="members"]';  
+        this.memberListSelector = '.gh-members-list-name';    
     }
 
     // Given: El usuario navega a la sección de miembros
     givenUserIsOnMembersPage() {
-        cy.get(this.membersMenuButton).should('be.visible').click();
-        cy.url().should('include', '/ghost/#/members');
+        cy.get(this.membersMenuButton).should('be.visible').click(); 
+        cy.url().should('include', '/ghost/#/members');      
     }
 
-    // Then: El usuario verifica que haya miembros en la lista (o que la lista esté visible)
+    // When: El usuario visualiza la lista de miembros
+    whenUserViewsMembersList() {
+        cy.get(this.memberListSelector).should('exist');   
+    }
+
+    // Then: Verifica que la lista de miembros esté visible
     thenMembersListShouldBeVisible() {
-        cy.get(this.memberListSelector).should('exist'); 
+        cy.get(this.memberListSelector).should('be.visible');   
     }
 }
 

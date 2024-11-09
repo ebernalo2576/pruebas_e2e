@@ -14,7 +14,7 @@ const newMemberEmail = faker.internet.email();
 describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
     it('EP017 - Debería permitir crear y visualizar un nuevo miembro', () => {
-        // Given: El usuario inicia sesión
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
         loginPage.givenUserIsOnLoginPage();
         loginPage.whenUserLogsIn();
         loginPage.thenUserShouldSeeDashboard();
@@ -36,46 +36,52 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
     });
 
     it('EP018 - Debería permitir ver la lista de miembros', () => {
-        // Given: El usuario inicia sesión y navega a la sección de miembros
-        loginPage.givenUserIsOnLoginPage();
-        loginPage.whenUserLogsIn();
-        loginPage.thenUserShouldSeeDashboard();
-
-        viewMembers.givenUserIsOnMembersPage();
-
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
+        loginPage.givenUserIsOnLoginPage();        
+        loginPage.whenUserLogsIn();                    
+        loginPage.thenUserShouldSeeDashboard();   
+    
+        // Given: El usuario navega a la sección de miembros
+        viewMembers.givenUserIsOnMembersPage();  
+    
+        // When: El usuario visualiza la lista de miembros
+        viewMembers.whenUserViewsMembersList();   
+    
         // Then: El usuario verifica que haya miembros en la lista
-        viewMembers.thenMembersListShouldBeVisible();
+        viewMembers.thenMembersListShouldBeVisible();  
     });
 
     it('EP019 - Debería permitir al usuario editar un miembro existente', () => {
-        // Given: El usuario inicia sesión y navega a la lista de miembros, luego selecciona un miembro para editar
-        loginPage.givenUserIsOnLoginPage();
-        loginPage.whenUserLogsIn();
-        loginPage.thenUserShouldSeeDashboard();
-
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
+        loginPage.givenUserIsOnLoginPage();          
+        loginPage.whenUserLogsIn();                
+        loginPage.thenUserShouldSeeDashboard();      
+    
+        // Given: El usuario navega a la lista de miembros y selecciona un miembro específico para editar
         editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
-
+    
         // When: El usuario edita el nombre y el correo del miembro
         editMember.whenUserEditsMemberDetails(newMemberName, newMemberEmail);
-
+    
         // When: El usuario guarda los cambios en el miembro
-        editMember.whenUserSavesEditedMember();
-
+        editMember.whenUserSavesEditedMember();    
+    
         // Then: El usuario verifica que el miembro editado esté en la lista de miembros con el nuevo nombre
-        editMember.thenMemberShouldBeUpdatedInMembersList(newMemberName);
+        editMember.thenMemberShouldBeUpdatedInMembersList(newMemberName); 
     });
 
     it('EP020 - Debería permitir eliminar un miembro existente', () => {
-        // Given: El usuario inicia sesión y navega a la lista de miembros, luego selecciona un miembro para eliminar
-        loginPage.givenUserIsOnLoginPage();
-        loginPage.whenUserLogsIn();
-        loginPage.thenUserShouldSeeDashboard();
-
-        deleteMember.givenUserIsOnMembersPageAndSelectsMemberToDelete(newMemberName);
-
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
+        loginPage.givenUserIsOnLoginPage();            
+        loginPage.whenUserLogsIn();                    
+        loginPage.thenUserShouldSeeDashboard();       
+    
+        // Given: El usuario navega a la lista de miembros y selecciona un miembro específico para eliminar
+        deleteMember.givenUserIsOnMembersPageAndSelectsMemberToDelete(newMemberName); 
+    
         // When: El usuario confirma la eliminación del miembro
-        deleteMember.whenUserDeletesMember();
-
+        deleteMember.whenUserDeletesMember();        
+    
         // Then: El usuario verifica que el miembro eliminado ya no esté en la lista de miembros
         deleteMember.thenMemberShouldNotBeVisibleInMembersList(newMemberName);
     });
