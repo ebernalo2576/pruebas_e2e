@@ -17,6 +17,11 @@ class PostPage {
 
   postContainers(driver) { return driver.$$("div.gh-posts-list-item-group"); }
   postTitleInContainer(container) { return container.$("h3.gh-content-entry-title"); }
+  unpublishPostButton(driver) { return driver.$(".gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span"); }
+  confirmUnpublishPostButton(driver) { return driver.$(".gh-revert-to-draft > span"); }
+  confirmDraftPost(driver) { return driver.$("span:contains('Draft')"); }
+  draftStatusIndicator(driver) { return driver.$(".gh-notification-content"); }  // Indicador de notificación de borrador
+
 
   // Método para abrir la lista de posts
   async openPostsList(driver) {
@@ -124,12 +129,33 @@ class PostPage {
     console.log("Post updated and returned to posts list.");
   }
 
-  // Método para regresar a la lista de posts
   async goBackToPostsList(driver) {
+    console.log("Navigating back to posts list...");
+    await this.backToPostsButton(driver).waitForDisplayed({ timeout: 5000 });
     await this.backToPostsButton(driver).click();
-    await driver.pause(1000);
+    await driver.pause(1000); // Breve pausa para cargar la lista de posts
   }
 
+
+  async verifyPostIsDraft(driver, title) {
+    console.log(`Verificando que el post con título "${title}" esté marcado como borrador...`);
+    
+    // Espera a que el indicador de estado esté visible
+    await this.draftStatusIndicator(driver).waitForDisplayed({ timeout: 5000 });
+    
+    // Verifica que el texto del indicador indique "Draft" o "Borrador"
+    const draftStatus = await this.draftStatusIndicator(driver).getText();
+    return draftStatus.includes("Draft") || draftStatus.includes("Borrador");
+  }
+  async unpublishPost(driver) {
+    console.log("Unpublishing post...");
+    await this.unpublishPostButton(driver).waitForDisplayed({ timeout: 5000 });
+    await this.unpublishPostButton(driver).click();
+    await this.confirmUnpublishPostButton(driver).waitForDisplayed({ timeout: 5000 });
+    await this.confirmUnpublishPostButton(driver).click();
+    await this.goBackToPostsList(driver).click();
+    console.log("Post unpublished and marked as Draft.");
+  }
   async verifyPostsInList(driver, titles) {
     await driver.pause(1000);  // Breve pausa para asegurarse de que los posts se hayan cargado
 

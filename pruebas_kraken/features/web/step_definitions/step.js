@@ -80,10 +80,7 @@ When("I select the post with title {string} to unpublish", async function (title
   await PostPage.selectPostToUnpublish(this.driver, title);
 });
 
-// When: The user unpublishes the post
-When("I unpublish the post", async function () {
-  await PostPage.unpublishPost(this.driver);
-});
+
 When("I create a new post with title {string} and content {string}", async function (title, content) {
   await PostPage.enterPostDetails(this.driver, title, content);
 });
@@ -119,4 +116,19 @@ When("I edit the post title to {string} and content to {string}", async function
 // Paso para guardar los cambios en el post actualizado
 When("I update the post", async function () {
   await PostPage.updatePost(this.driver); // Guarda los cambios
+});
+
+// Paso para despublicar el post
+When("I unpublish the post", async function () {
+  await PostPage.unpublishPost(this.driver); // Despublica el post
+});
+
+// Paso para verificar que el post esté marcado como borrador en la lista
+Then("I should see the post with title {string} marked as Draft in the posts list", async function (title) {
+  await PostPage.verifyPostIsDraft(this.driver, title); // Verifica que el post esté marcado como borrador
+});
+
+Then("I should see the post with title {string} marked as draft", async function (title) {
+  const isDraft = await PostPage.verifyPostIsDraft(this.driver, title);
+  assert.strictEqual(isDraft, true, `El post con título "${title}" no está marcado como borrador.`);
 });
