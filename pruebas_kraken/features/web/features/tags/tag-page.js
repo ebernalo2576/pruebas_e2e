@@ -87,10 +87,7 @@ class TagPage {
       }
 
     // Delete a tag
-    async deleteTag(driver, name) {
-        console.log(`Deleting tag "${name}"...`);
-        await this.selectTagByName(driver, name);
-        await driver.$('.gh-main').scrollTo('bottom');
+    async deleteTag(driver) {
         await this.deleteTagButton(driver).click();
         await this.confirmDeleteTagButton(driver).click();
         await driver.pause(1000);
@@ -118,6 +115,20 @@ class TagPage {
     async saveTag(driver) {
         await this.saveTagButton(driver).click();
         await driver.pause(1000);
+    }
+    async verifyTagNotInList(driver, tagName) {
+        console.log(`Verifying that tag with name "${tagName}" is not in the list...`);
+        const tagContainers = await driver.$$('li.gh-tags-list-item'); // Selecciona todos los contenedores de tags
+        
+        // Recorre cada contenedor para verificar si el nombre está presente
+        for (const container of tagContainers) {
+            const nameElement = await container.$('h3.gh-tag-list-name'); // Busca el elemento que contiene el nombre del tag
+            const currentTagName = await nameElement.getText();
+            if (currentTagName === tagName) {
+                throw new Error(`El tag con nombre "${tagName}" aún se encuentra en la lista.`);
+            }
+        }
+        console.log(`Confirmed: Tag with name "${tagName}" is not in the list.`);
     }
     async verifyTagIsVisible(driver, tagName) {
         console.log(`Verifying that tag "${tagName}" is visible...`);

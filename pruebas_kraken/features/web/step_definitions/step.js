@@ -154,6 +154,10 @@ When('I delete the post', async function () {
   await PostPage.deletePost(this.driver); // Llama a la función para eliminar el post
 });
 
+When('I delete the tag', async function () {
+  await TagPage.deleteTag(this.driver); // Llama a la función para eliminar el post
+});
+
 Then('I should see the tag {string} in the tags list', async function(tagName) {
   await TagPage.verifyTagIsVisible(this.driver, tagName);
 });
@@ -200,3 +204,7 @@ Given('I select the tag to edit {string}', async function(name) {
   await TagPage.selectTagByName(this.driver, name);
 });
 
+// Verifica que un tag con un nombre específico no esté en la lista
+Then('I should not see the tag {string} in the tags list', async function(tagName) {
+  await TagPage.verifyTagNotInList(this.driver, tagName);
+});
