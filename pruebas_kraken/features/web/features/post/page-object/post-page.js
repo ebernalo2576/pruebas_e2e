@@ -20,7 +20,7 @@ class PostPage {
   unpublishPostButton(driver) { return driver.$(".gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span"); }
   confirmUnpublishPostButton(driver) { return driver.$(".gh-revert-to-draft > span"); }
   confirmDraftPost(driver) { return driver.$("span:contains('Draft')"); }
-  draftStatusIndicator(driver) { return driver.$(".gh-notification-content"); }  // Indicador de notificación de borrador
+  draftStatusIndicator(driver) { return driver.$(".gh-content-entry-status .draft"); }  // Indicador de notificación de borrador
 
 
   // Método para abrir la lista de posts
@@ -44,7 +44,18 @@ class PostPage {
     await contentInput.addValue(content);
     console.log(`Content entered: ${content}`);
   }
-
+  async deletePost(driver) {
+    // Selecciona el botón de eliminación en el post abierto
+    const deleteButton = await driver.$('.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon'); // Cambia el selector por el adecuado
+    await deleteButton.click();
+  
+    // Confirmar eliminación si es necesario
+    const confirmButton = await driver.$('.settings-menu-delete-button > button'); // Cambia el selector por el adecuado
+    await confirmButton.click();
+  
+    console.log("Post eliminado exitosamente.");
+  }
+  
   // Método para publicar el post
   async publishPost(driver) {
     console.log("Publishing post...");
@@ -138,6 +149,7 @@ class PostPage {
 
 
   async verifyPostIsDraft(driver, title) {
+    this.openPostsList(driver);
     console.log(`Verificando que el post con título "${title}" esté marcado como borrador...`);
     
     // Espera a que el indicador de estado esté visible
@@ -153,7 +165,7 @@ class PostPage {
     await this.unpublishPostButton(driver).click();
     await this.confirmUnpublishPostButton(driver).waitForDisplayed({ timeout: 5000 });
     await this.confirmUnpublishPostButton(driver).click();
-    await this.goBackToPostsList(driver).click();
+    await this.goBackToPostsList(driver);
     console.log("Post unpublished and marked as Draft.");
   }
   async verifyPostsInList(driver, titles) {
@@ -175,6 +187,28 @@ class PostPage {
       assert(postTitlesText.includes(title), `El post con el título "${title}" no se encontró en la lista.`);
     }
   }
+
+  async checkPostsPresence(driver, titles) {
+    await driver.pause(1000);  // Breve pausa para asegurarse de que los posts se hayan cargado
+  
+    // Obtén todos los contenedores de posts
+    const postContainers = await this.postContainers(driver);
+    console.log(`Se encontraron ${postContainers.length} contenedores de posts.`);
+  
+    // Extrae el texto del título de cada post en la lista
+    const postTitlesText = await Promise.all(postContainers.map(async (container) => {
+      const titleElement = await this.postTitleInContainer(container);
+      const titleText = await titleElement.getText();
+      console.log(`Título encontrado: "${titleText}"`);
+      return titleText;
+    }));
+  
+    // Verifica que todos los títulos esperados estén presentes en la lista de títulos obtenidos
+    for (const title of titles) {
+      assert(postTitlesText.includes(title), `El post con el título "${title}" no se encontró en la lista.`);
+    }
+  }
+  
 
 }
 

@@ -3,6 +3,8 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const LoginPage = require("../features/login/page-object/login-page");
 const PostPage = require("../features/post/page-object/post-page");
+const TagPage = require('../features/tags/tag-page');
+
 const properties = require("../../../properties.json");  // Adjust the path as needed
 const assert = require("assert");
 
@@ -72,7 +74,9 @@ When("I publish the post", async function () {
 
 // Then: The post should be visible in the posts list
 Then("I should see the post with title {string} in the posts list", async function (title) {
-  await PostPage.verifyPostInList(this.driver, title);
+  const titles = [title];
+
+  await PostPage.checkPostsPresence(this.driver, titles);
 });
 
 // When: The user selects a post to unpublish
@@ -132,3 +136,55 @@ Then("I should see the post with title {string} marked as draft", async function
   const isDraft = await PostPage.verifyPostIsDraft(this.driver, title);
   assert.strictEqual(isDraft, true, `El post con título "${title}" no está marcado como borrador.`);
 });
+
+Then('I should not see the post with title {string} in the posts list', async function (title) {
+  await this.driver.pause(1000);  // Espera para asegurarse de que la lista se actualice
+
+  const postContainers = await PostPage.postContainers(this.driver); // Obtén los contenedores de posts en la lista
+  const postTitlesText = await Promise.all(postContainers.map(async (container) => {
+  const titleElement = await PostPage.postTitleInContainer(container);
+    return await titleElement.getText();
+  }));
+
+  // Verifica que el título del post no esté en la lista
+  assert(!postTitlesText.includes(title), `El post con el título "${title}" aún se encuentra en la lista.`);
+});
+
+When('I delete the post', async function () {
+  await PostPage.deletePost(this.driver); // Llama a la función para eliminar el post
+});
+
+Then('I should see the tag {string} in the tags list', async function(tagName) {
+  await TagPage.verifyTagIsVisible(this.driver, tagName);
+});
+
+
+// Tags
+Given('I navigate to the tags page', async function() {
+  await TagPage.navigateToTagsPage(this.driver);
+});
+
+Given('I navigate to the tags page and select the tag {string} to edit', async function(name) {
+  await TagPage.navigateToTagsPage(this.driver);
+  await TagPage.selectTagByName(this.driver,name);
+});
+
+Given('I navigate to the tags page and select the tag {string} to delete', async function(name) {
+  await TagPage.navigateToTagsPage(this.driver);
+  await TagPage.selectTagByName(this.driver, name);
+});
+
+
+When('I enter tag details {string} {string}', async function(tagName, tagDescription) {
+  await TagPage.enterTagDetails(this.driver, tagName, tagDescription);
+});
+
+When('I save the tag', async function() {
+  await TagPage.saveTag(this.driver);
+});
+
+
+When('I enter to create a new tag', async function() {
+  await TagPage.openOpenNewTagClick(this.driver);
+});
+
