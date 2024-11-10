@@ -1,9 +1,9 @@
 # Pruebas Automatizadas Equipo 7
 
-Eduard Bernal (e.bernalo@uniandes.edu.co)
-Hector Lopez (hv.lopez@uniandes.edu.co)
-Nestor Martinez (na.martinezv1@uniandes.edu.co)
-Andres Felipe Romero (af.romerob1@uniandes.edu.co)
+- Eduard Bernal (e.bernalo@uniandes.edu.co)
+- Hector Lopez (hv.lopez@uniandes.edu.co)
+- Nestor Martinez (na.martinezv1@uniandes.edu.co)
+- Andres Felipe Romero (af.romerob1@uniandes.edu.co)
 
 
 # Kraken
@@ -27,9 +27,16 @@ Andres Felipe Romero (af.romerob1@uniandes.edu.co)
 
    Esto ejecutará Ghost en el puerto `3001` de su máquina local.
 
-2. **Instalar Dependencias del Proyecto**
+2. Clona este repositorio en tu máquina local usando el siguiente comando:
 
-   Desde el nivel del directorio `pruebas_kraken`, ejecute:
+  ```bash
+  git clone https://github.com/ebernalo2576/pruebas_e2e
+  cd pruebas_e2e/pruebas_kraken
+  ```
+
+3. **Instalar Dependencias del Proyecto**
+
+   Desde el directorio `pruebas_kraken`, ejecute:
    ```bash
    npm install
    ```
@@ -39,6 +46,11 @@ Andres Felipe Romero (af.romerob1@uniandes.edu.co)
 Para ejecutar todas las pruebas E2E del proyecto, simplemente ejecute:
 ```bash
 npx kraken-node run
+```
+
+Tambien se puede ejecutar con el comando desde otro sistema operativo como Windows:
+```bash
+./node_modules/.bin/kraken-node run
 ```
 
 ### Nota:
