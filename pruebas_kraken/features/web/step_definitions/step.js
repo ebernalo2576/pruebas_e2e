@@ -301,18 +301,49 @@ Given('I am on the members list page', async function() {
 });
 
 
-When('I enter member title {string} and email {string}', async function(name, email) {
-  await MemberPage.enterMemberDetails(this.driver, name, email);
-});
 
 Then('I publish the member', async function() {
   await MemberPage.saveMember(this.driver);
 });
 
-Then('I should see the member with title {string} in the members list', async function(name) {
+Then('I should see the member with email {string} in the members list', async function(name) {
   await MemberPage.verifyMemberIsVisible(this.driver, name);
 });
 
 Then('I go back to the pages members page', async function() {
   await MemberPage.goBacktoMembersPage(this.driver);
+});
+
+
+// members
+
+
+// When I enter member title "My New member" and email "h3@gmail.com"
+When('I enter member title {string} and email {string}', async function (title, email) {
+  await MemberPage.enterMemberDetails(this.driver, title, email);
+});
+
+
+
+
+
+
+// When I open the member with title "My New member"
+When('I open the member with title {string}', async function (title) {
+  await MemberPage.openMemberByTitle(this.driver, title);
+});
+
+// And I edit the member name to "Updated member name"
+When('I edit the member name to {string}', async function (newName) {
+  await MemberPage.editMemberDetails(this.driver, newName);
+});
+
+// And I update the member
+When('I update the member', async function () {
+  await MemberPage.updateMember(this.driver);
+});
+
+// Then I should see the member "Updated member name" in the members list
+Then('I should see the member {string} in the members list', async function (newName) {
+  await MemberPage.verifyMemberInList(this.driver, newName);
 });
