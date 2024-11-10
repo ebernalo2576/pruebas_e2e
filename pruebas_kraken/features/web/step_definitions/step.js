@@ -313,6 +313,6 @@ Then('I should see the member with title {string} in the members list', async fu
   await MemberPage.verifyMemberIsVisible(this.driver, name);
 });
 
-Then('I go back to the pages list page', async function() {
+Then('I go back to the pages members page', async function() {
   await MemberPage.goBacktoMembersPage(this.driver);
 });

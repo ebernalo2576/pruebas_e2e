@@ -44,8 +44,6 @@ class MemberPage {
 
     // Verify that a member with a specific name is visible in the members list
     async verifyMemberIsVisible(driver, name) {
-        console.log(`Verifying that member with name "${name}" is visible in the list...`);
-        await this.navigateToMembersPage(driver);
         const memberName = await this.memberListSelector(driver).getText();
         assert.strictEqual(memberName, name, `The member with name "${name}" was not found in the list.`);
         console.log(`Confirmed: Member with name "${name}" is visible.`);
