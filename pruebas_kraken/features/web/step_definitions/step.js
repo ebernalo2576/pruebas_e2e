@@ -5,7 +5,7 @@ const LoginPage = require("../features/login/page-object/login-page");
 const PostPage = require("../features/post/page-object/post-page");
 const TagPage = require('../features/tags/tag-page');
 const Page = require('../features/page/page-object/pages-page');
-
+const MemberPage = require('../features/members/page-object/members-page');
 const properties = require("../../../properties.json");  // Adjust the path as needed
 const assert = require("assert");
 
@@ -293,4 +293,26 @@ Then('I should see the page with title {string} marked as draft', async function
 
 Then('I should not see the page with title {string} in the pages list', async function(pageTitle) {
   await Page.verifyPageNotInList(this.driver, pageTitle);
+});
+
+// Members
+Given('I am on the members list page', async function() {
+  await MemberPage.navigateToMembersPage(this.driver);
+});
+
+
+When('I enter member title {string} and email {string}', async function(name, email) {
+  await MemberPage.enterMemberDetails(this.driver, name, email);
+});
+
+Then('I publish the member', async function() {
+  await MemberPage.saveMember(this.driver);
+});
+
+Then('I should see the member with title {string} in the members list', async function(name) {
+  await MemberPage.verifyMemberIsVisible(this.driver, name);
+});
+
+Then('I go back to the pages list page', async function() {
+  await MemberPage.goBacktoMembersPage(this.driver);
 });
