@@ -3,7 +3,7 @@
 
 Este proyecto contiene pruebas de extremo a extremo (E2E) para la aplicación Ghost en su versión 5.96, utilizando Kraken para la ejecución de pruebas automatizadas. A continuación, se detallan los pasos necesarios para ejecutar el proyecto en un entorno local utilizando Docker.
 
-##Funcionalidades
+## Funcionalidades
 ## 1. Login
     EP001 - Debería permitir iniciar sesión con un usuario existente
 ## 2. Post
