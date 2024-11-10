@@ -6,7 +6,7 @@ let counter = 0;  // Initialize counter globally
 
 // Setup WebClient and driver before each scenario
 Before(async function() {
-  this.deviceClient = new WebClient('edge', {}, this.userId);
+  this.deviceClient = new WebClient('chrome', {}, this.userId);
   this.driver = await this.deviceClient.startKrakenForUserId(this.userId);
 });
 
