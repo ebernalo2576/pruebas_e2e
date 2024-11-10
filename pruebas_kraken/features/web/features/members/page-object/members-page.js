@@ -14,17 +14,17 @@ class MemberPage {
 
     // Navigate to the members page
     async navigateToMembersPage(driver) {
-        await driver.url("http://localhost:2368/ghost/#/members/new");
+        await driver.url("http://localhost:3001/ghost/#/members/new");
 
     }
 
     // Start creating a new member
     async startCreatingNewMember(driver) {
-        await driver.url("http://localhost:2368/ghost/#/members/new");
+        await driver.url("http://localhost:3001/ghost/#/members/new");
 
     }
     async goBacktoMembersPage(driver) {
-        await driver.url("http://localhost:2368/ghost/#/members");
+        await driver.url("http://localhost:3001/ghost/#/members");
     }
 
     // Enter member details (name and email)

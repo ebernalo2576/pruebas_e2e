@@ -26,13 +26,13 @@ class Page {
     // Navigate to the pages page
     async navigateToPagesPage(driver) {
         console.log("Navigating to pages page...");
-       await driver.url("http://localhost:2368/ghost/#/pages");
+       await driver.url("http://localhost:3001/ghost/#/pages");
     }
 
     // Start creating a new page
     async startCreatingNewPage(driver) {
 
-        await driver.url("http://localhost:2368/ghost/#/editor/page");
+        await driver.url("http://localhost:3001/ghost/#/editor/page");
     }
 
     // Enter page details (title and content)

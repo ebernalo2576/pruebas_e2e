@@ -26,7 +26,7 @@ class PostPage {
   // Método para abrir la lista de posts
   async openPostsList(driver) {
     console.log("Navigating to posts list page...");
-    await driver.url("http://localhost:2368/ghost/#/posts");
+    await driver.url("http://localhost:3001/ghost/#/posts");
     await driver.pause(2000);
   }
 
