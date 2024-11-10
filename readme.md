@@ -5,6 +5,7 @@
 - Nestor Martinez (na.martinezv1@uniandes.edu.co)
 - Andres Felipe Romero (af.romerob1@uniandes.edu.co)
 
+Link de la Wiki: [Aqui](https://github.com/ebernalo2576/pruebas_e2e/wiki)
 
 # Kraken
 ## Requisitos Previos
