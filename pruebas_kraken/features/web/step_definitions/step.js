@@ -4,6 +4,7 @@ const csv = require("csv-parser");
 const LoginPage = require("../features/login/page-object/login-page");
 const PostPage = require("../features/post/page-object/post-page");
 const TagPage = require('../features/tags/tag-page');
+const Page = require('../features/page/page-object/pages-page');
 
 const properties = require("../../../properties.json");  // Adjust the path as needed
 const assert = require("assert");
@@ -154,6 +155,10 @@ When('I delete the post', async function () {
   await PostPage.deletePost(this.driver); // Llama a la función para eliminar el post
 });
 
+When('I delete the tag', async function () {
+  await TagPage.deleteTag(this.driver); // Llama a la función para eliminar el post
+});
+
 Then('I should see the tag {string} in the tags list', async function(tagName) {
   await TagPage.verifyTagIsVisible(this.driver, tagName);
 });
@@ -188,3 +193,99 @@ When('I enter to create a new tag', async function() {
   await TagPage.openOpenNewTagClick(this.driver);
 });
 
+
+
+// Editar los detalles del tag (nombre y descripción)
+When('I edit tag details to {string} {string}', async function(newTagName, newTagDescription) {
+  await TagPage.editTagDetails(this.driver, newTagName, newTagDescription);
+});
+
+// Seleccionar un tag existente para editar
+Given('I select the tag to edit {string}', async function(name) {
+  await TagPage.selectTagByName(this.driver, name);
+});
+
+// Verifica que un tag con un nombre específico no esté en la lista
+Then('I should not see the tag {string} in the tags list', async function(tagName) {
+  await TagPage.verifyTagNotInList(this.driver, tagName);
+});
+
+
+Given('I navigate to the pages page', async function() {
+  await Page.navigateToPagesPage(this.driver);
+});
+
+When('I enter to create a new page', async function() {
+  await Page.startCreatingNewPage(this.driver);
+});
+
+When('I enter page details {string} {string}', async function(title, content) {
+  await Page.enterPageDetails(this.driver, title, content);
+});
+
+When('I save the page', async function() {
+  await Page.savePage(this.driver);
+});
+
+When('I publish the page', async function() {
+  await Page.publishPage(this.driver);
+});
+
+Then('I should see the page {string} in the pages list', async function(title) {
+  await Page.verifyPageIsVisible(this.driver, [title]);
+});
+
+// Editing and deleting steps for a page
+Given('I select the page to edit {string}', async function(title) {
+  await Page.selectPageByTitle(this.driver, title);
+});
+
+When('I edit page details to {string} {string}', async function(newTitle, newContent) {
+  await Page.editPageDetails(this.driver, newTitle, newContent);
+});
+
+When('I delete the page', async function() {
+  await Page.deletePage(this.driver);
+});
+
+
+// Create a new page with title and content
+When('I create a new page with title {string} and content {string}', async function(title, content) {
+  await Page.startCreatingNewPage(this.driver);
+  await Page.enterPageDetails(this.driver, title, content);
+  await Page.savePage(this.driver);
+});
+
+
+// Verify all pages in the pages list with specific titles
+Then('I should see all pages in the pages list with titles:', async function(table) {
+  const titles = table.raw().flat();
+  await Page.verifyPagesInList(this.driver, titles);
+});
+
+// Open a page by title
+When('I open the page with title {string}', async function(title) {
+  await Page.selectPageByTitle(this.driver, title);
+});
+
+// Verify the page title and content
+Then('I should see the page title {string} and content {string}', async function(title, content) {
+  await Page.verifyPageDetails(this.driver, title, content);
+});
+
+// Go back to the pages list page
+When('I go back to the pages list page', async function() {
+  await Page.goBackToPagesList(this.driver);
+});
+
+When('I edit the page title to {string} and content {string}', async function(newTitle, newContent) {
+  await Page.editPageDetails(this.driver, newTitle, newContent);
+});
+
+When('I unpublish the page', async function() {
+  await Page.unpublishPage(this.driver);
+});
+
+Then('I should see the page with title {string} marked as draft', async function(pageTitle) {
+  await Page.verifyPageIsDraft(this.driver, pageTitle);
+});
