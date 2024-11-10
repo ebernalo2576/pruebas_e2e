@@ -1,4 +1,5 @@
 const assert = require("assert");
+const properties = require("../../../../../properties.json");
 
 class PostPage {
   newPostButton(driver) { return driver.$(".gh-nav-new-post"); }
@@ -26,7 +27,7 @@ class PostPage {
   // Método para abrir la lista de posts
   async openPostsList(driver) {
     console.log("Navigating to posts list page...");
-    await driver.url("http://localhost:2368/ghost/#/posts");
+    await driver.url(properties["URL"] + "#/posts");
     await driver.pause(2000);
   }
 

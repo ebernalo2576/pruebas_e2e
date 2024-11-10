@@ -1,4 +1,5 @@
 const assert = require("assert");
+const properties = require("../../../../../properties.json");
 
 class LoginPage {
   // Define selectors as getter methods that accept driver as a parameter
@@ -12,7 +13,7 @@ class LoginPage {
 
   // Method to open the login page
   async open(driver) {
-    await driver.url("http://localhost:2368/ghost/");  // Or use properties.URL if preferred
+    await driver.url(properties["URL"]);  
   }
 
   // Method to perform login action

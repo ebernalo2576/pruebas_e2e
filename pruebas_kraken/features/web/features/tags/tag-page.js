@@ -1,4 +1,5 @@
 const assert = require("assert");
+const properties = require("../../../../properties.json");
 
 class TagPage {
     tagsMenuButton(driver) { return driver.$('[data-test-nav="tags"]'); }
@@ -19,7 +20,7 @@ class TagPage {
  
     async navigateToTagsPage(driver) {
         console.log("Navigating to tags page...");
-        await driver.url("http://localhost:2368/ghost/#/tags");
+        await driver.url(properties["URL"] + "#/tags");
     }
 
     async openOpenNewTagClick(driver){

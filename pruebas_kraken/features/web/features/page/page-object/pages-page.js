@@ -1,4 +1,5 @@
 const assert = require("assert");
+const properties = require("../../../../../properties.json");
 
 class Page {
     pagesMenuButton(driver) { return driver.$('[data-test-nav="pages"]'); }
@@ -26,13 +27,13 @@ class Page {
     // Navigate to the pages page
     async navigateToPagesPage(driver) {
         console.log("Navigating to pages page...");
-       await driver.url("http://localhost:2368/ghost/#/pages");
+       await driver.url(properties["URL"] + "#/pages");
     }
 
     // Start creating a new page
     async startCreatingNewPage(driver) {
 
-        await driver.url("http://localhost:2368/ghost/#/editor/page");
+        await driver.url(properties["URL"] + "#/editor/page");
     }
 
     // Enter page details (title and content)

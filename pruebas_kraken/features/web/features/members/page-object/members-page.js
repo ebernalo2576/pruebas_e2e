@@ -1,4 +1,5 @@
 const assert = require("assert");
+const properties = require("../../../../../properties.json");
 
 class MemberPage {
     membersMenuButton(driver) { return driver.$('[data-test-nav="members"]'); }
@@ -14,17 +15,17 @@ class MemberPage {
 
     // Navigate to the members page
     async navigateToMembersPage(driver) {
-        await driver.url("http://localhost:2368/ghost/#/members/new");
+        await driver.url(properties["URL"] + "#/members/new");
 
     }
 
     // Start creating a new member
     async startCreatingNewMember(driver) {
-        await driver.url("http://localhost:2368/ghost/#/members/new");
+        await driver.url(properties["URL"] + "#/members/new");
 
     }
     async goBacktoMembersPage(driver) {
-        await driver.url("http://localhost:2368/ghost/#/members");
+        await driver.url(properties["URL"] + "#/members");
     }
 
     // Enter member details (name and email)
