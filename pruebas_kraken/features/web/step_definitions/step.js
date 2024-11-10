@@ -4,6 +4,7 @@ const csv = require("csv-parser");
 const LoginPage = require("../features/login/page-object/login-page");
 const PostPage = require("../features/post/page-object/post-page");
 const TagPage = require('../features/tags/tag-page');
+const Page = require('../features/page/page-object/pages-page');
 
 const properties = require("../../../properties.json");  // Adjust the path as needed
 const assert = require("assert");
@@ -208,3 +209,42 @@ Given('I select the tag to edit {string}', async function(name) {
 Then('I should not see the tag {string} in the tags list', async function(tagName) {
   await TagPage.verifyTagNotInList(this.driver, tagName);
 });
+
+
+Given('I navigate to the pages page', async function() {
+  await Page.navigateToPagesPage(this.driver);
+});
+
+When('I enter to create a new page', async function() {
+  await Page.startCreatingNewPage(this.driver);
+});
+
+When('I enter page details {string} {string}', async function(title, content) {
+  await Page.enterPageDetails(this.driver, title, content);
+});
+
+When('I save the page', async function() {
+  await Page.savePage(this.driver);
+});
+
+When('I publish the page', async function() {
+  await Page.publishPage(this.driver);
+});
+
+Then('I should see the page {string} in the pages list', async function(title) {
+  await Page.verifyPageIsVisible(this.driver, [title]);
+});
+
+// Editing and deleting steps for a page
+Given('I select the page to edit {string}', async function(title) {
+  await Page.selectPageByTitle(this.driver, title);
+});
+
+When('I edit page details to {string} {string}', async function(newTitle, newContent) {
+  await Page.editPageDetails(this.driver, newTitle, newContent);
+});
+
+When('I delete the page', async function() {
+  await Page.deletePage(this.driver);
+});
+
