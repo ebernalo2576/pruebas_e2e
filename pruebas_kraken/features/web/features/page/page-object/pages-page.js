@@ -12,6 +12,7 @@ class Page {
     confirmDeleteButton(driver) { return driver.$('.modal-footer .gh-btn-red'); }
     backToPagesButton(driver) { return driver.$('a.ember-view.gh-editor-back-button'); }
     publishMenuButton(driver) { return driver.$('.gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span'); }
+    edithMenuButton(driver) { return driver.$('.gh-btn.gh-btn-editor.gh-editor-save-trigger.green.ember-view'); }
     publishButton(driver) { return driver.$('.gh-publish-cta > .gh-btn > span'); }
     confirmPublishButton(driver) { return driver.$('button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view'); }
     closeModalButton(driver) { return driver.$(".modal-content .close"); }
@@ -150,6 +151,13 @@ class Page {
         await this.pageTitleField(driver).setValue(newTitle);
         await this.pageContentField(driver).clearValue();
         await this.pageContentField(driver).setValue(newContent);
+    }
+    // Update the page after editing
+    async updatePage(driver) {
+        console.log("Updating page...");
+        await this.edithMenuButton(driver).click();
+        await driver.pause(1000);
+        console.log("Page updated.");
     }
 
     // Delete a page

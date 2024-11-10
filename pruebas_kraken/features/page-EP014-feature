@@ -12,12 +12,14 @@ Scenario: Debería permitir al usuario editar una página existente
   And I wait for 5 seconds
 
   Given I navigate to the pages page
-  When I create a new page with title "My New Page 1" and content "This is the content of my first page"
+  And I enter to create a new page
+  And I enter page details "My New Page 1" "This is the content of my first page"
   And I publish the page
   And I wait for 2 seconds
 
   Given I navigate to the pages page
   When I open the page with title "My New Page 1"
   And I edit the page title to "Updated Page Title" and content "Updated content of the page"
-  And I update the page
+  And I edit the page
+  And I navigate to the pages page
   Then I should see the page "Updated Page Title" in the pages list

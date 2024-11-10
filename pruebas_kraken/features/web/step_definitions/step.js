@@ -227,6 +227,10 @@ When('I save the page', async function() {
   await Page.savePage(this.driver);
 });
 
+When('I edit the page', async function() {
+  await Page.updatePage(this.driver);
+});
+
 When('I publish the page', async function() {
   await Page.publishPage(this.driver);
 });

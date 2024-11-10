@@ -12,7 +12,8 @@ Scenario: Debería permitir ver una página existente en la lista de páginas
   And I wait for 5 seconds
 
   Given I navigate to the pages page
-  When I create a new page with title "My New Page 1" and content "This is the content of my first page"
+  And I enter to create a new page
+  And I enter page details "My New Page 1" "This is the content of my first page"
   And I publish the page
   And I wait for 2 seconds
 
