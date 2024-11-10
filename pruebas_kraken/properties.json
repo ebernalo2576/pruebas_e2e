@@ -1,6 +1,6 @@
 {
-    "USERNAME1": "andes@gmail.com",
-    "PASSWORD1": "Bulma385686",
+    "USERNAME1": "andresfeliperom@hotmail.com",
+    "PASSWORD1": "ZykqN@fT6x67mnq",
     "USERNAME2": "automatizacion@appbajopruebas.com",
     "PASSWORD2": "tJnAQA#T632v#cD",
     "TITLEPOST": "Inteligencia artificial",
@@ -9,11 +9,11 @@
     "DETAILPOSTEDIT": "Editar el detalle del Post.....",
     "NAME": "Nombre Cambiado",
     "PASSWORDNEW": "tJnAQA#T632v#cD???",
-    "URL": "http://localhost:3001/ghost/",
-    "POST": "http://localhost:3001/ghost/#/posts/",
-    "EDITORPOST": "http://localhost:3001/ghost/#/editor/post/",
-    "PAGE": "http://localhost:3001/ghost/#/pages/",
-    "EDITORPAGE": "http://localhost:3001/ghost/#/editor/page/",
+    "URL": "http://localhost:2368/ghost/",
+    "POST": "http://localhost:2368/ghost/#/posts/",
+    "EDITORPOST": "http://localhost:2368/ghost/#/editor/post/",
+    "PAGE": "http://localhost:2368/ghost/#/pages/",
+    "EDITORPAGE": "http://localhost:2368/ghost/#/editor/page/",
     "FILEPATH": "../generate-data/aprioriLogin.csv"
   }
   

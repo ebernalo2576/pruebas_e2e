@@ -3,6 +3,7 @@ const assert = require("assert");
 class MemberPage {
     membersMenuButton(driver) { return driver.$('[data-test-nav="members"]'); }
     memberListSelector(driver) { return driver.$('.gh-members-list-name'); }
+    emptyMemberListSelector(driver) { return driver.$('.gh-members-empty'); }
     newMemberButton(driver) { return driver.$('a.gh-btn.gh-btn-primary'); }
     memberNameField(driver) { return driver.$('#member-name'); }
     memberEmailField(driver) { return driver.$('#member-email'); }
@@ -13,17 +14,17 @@ class MemberPage {
 
     // Navigate to the members page
     async navigateToMembersPage(driver) {
-        await driver.url("http://localhost:3001/ghost/#/members/new");
+        await driver.url("http://localhost:2368/ghost/#/members/new");
 
     }
 
     // Start creating a new member
     async startCreatingNewMember(driver) {
-        await driver.url("http://localhost:3001/ghost/#/members/new");
+        await driver.url("http://localhost:2368/ghost/#/members/new");
 
     }
     async goBacktoMembersPage(driver) {
-        await driver.url("http://localhost:3001/ghost/#/members");
+        await driver.url("http://localhost:2368/ghost/#/members");
     }
 
     // Enter member details (name and email)
@@ -91,7 +92,16 @@ class MemberPage {
     // Verify that a member with a specific name is not visible in the members list
     async verifyMemberNotInList(driver, name) {
         console.log(`Verifying that member with name "${name}" is not in the list...`);
-        await this.navigateToMembersPage(driver);
+
+        try {
+            const isEmptyList = await this.emptyMemberListSelector(driver).isDisplayed();
+            if (isEmptyList) {
+                console.log(`Confirmed: Member with name "${name}" is not in the list.`);
+                return;
+            } 
+        } catch (error) {
+            console.log("Error");
+        }
         const memberName = await this.memberListSelector(driver).getText();
         assert.notStrictEqual(memberName, name, `The member with name "${name}" is still visible in the list.`);
         console.log(`Confirmed: Member with name "${name}" is not in the list.`);

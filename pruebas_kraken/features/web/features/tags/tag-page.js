@@ -19,7 +19,7 @@ class TagPage {
  
     async navigateToTagsPage(driver) {
         console.log("Navigating to tags page...");
-        await driver.url("http://localhost:3001/ghost/#/tags");
+        await driver.url("http://localhost:2368/ghost/#/tags");
     }
 
     async openOpenNewTagClick(driver){

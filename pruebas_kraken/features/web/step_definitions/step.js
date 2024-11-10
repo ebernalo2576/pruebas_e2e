@@ -310,6 +310,10 @@ Then('I should see the member with email {string} in the members list', async fu
   await MemberPage.verifyMemberIsVisible(this.driver, name);
 });
 
+Then('I should see the member with title {string} in the members list', async function(name) {
+  await MemberPage.verifyMemberIsVisible(this.driver, name);
+});
+
 Then('I go back to the pages members page', async function() {
   await MemberPage.goBacktoMembersPage(this.driver);
 });
@@ -323,12 +327,7 @@ When('I enter member title {string} and email {string}', async function (title, 
   await MemberPage.enterMemberDetails(this.driver, title, email);
 });
 
-
-
-
-
-
-// When I open the member with title "My New member"
+// When I open the member with title ""
 When('I open the member with title {string}', async function (title) {
   await MemberPage.openMemberByTitle(this.driver, title);
 });
@@ -340,10 +339,25 @@ When('I edit the member name to {string}', async function (newName) {
 
 // And I update the member
 When('I update the member', async function () {
-  await MemberPage.updateMember(this.driver);
+  await MemberPage.saveMember(this.driver);
+  await MemberPage.goBacktoMembersPage(this.driver);
 });
+
+
+// members
+
 
 // Then I should see the member "Updated member name" in the members list
 Then('I should see the member {string} in the members list', async function (newName) {
-  await MemberPage.verifyMemberInList(this.driver, newName);
+  await MemberPage.verifyMemberIsVisible(this.driver, newName);
+});
+
+// And I delete the member
+When('I delete the member', async function () {
+  await MemberPage.deleteMember(this.driver);
+});
+
+// Then I should not see the member "Updated member name" in the members list
+Then('I should not see the member {string} in the members list', async function (newName) {
+  await MemberPage.verifyMemberNotInList(this.driver, newName);
 });

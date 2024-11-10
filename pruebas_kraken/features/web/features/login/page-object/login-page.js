@@ -12,7 +12,7 @@ class LoginPage {
 
   // Method to open the login page
   async open(driver) {
-    await driver.url("http://localhost:3001/ghost/");  // Or use properties.URL if preferred
+    await driver.url("http://localhost:2368/ghost/");  // Or use properties.URL if preferred
   }
 
   // Method to perform login action
