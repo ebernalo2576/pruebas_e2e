@@ -289,3 +289,8 @@ When('I unpublish the page', async function() {
 Then('I should see the page with title {string} marked as draft', async function(pageTitle) {
   await Page.verifyPageIsDraft(this.driver, pageTitle);
 });
+
+
+Then('I should not see the page with title {string} in the pages list', async function(pageTitle) {
+  await Page.verifyPageNotInList(this.driver, pageTitle);
+});
