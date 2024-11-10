@@ -18,6 +18,10 @@ class Page {
     pagesContainer(driver) { return driver.$$('.posts-list.gh-list'); }
     pagesTitleInContainer(container) { return container.$('h3.gh-content-entry-title'); }
     pageTitleInList(driver) { return driver.$("h3.gh-content-entry-title"); }
+    unpublishButton(driver) { return driver.$('.gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span'); }
+    confirmUnpublishButton(driver) { return driver.$('button.gh-revert-to-draft'); }
+    draftStatusIndicator(driver) { return driver.$(".gh-content-entry-status .draft"); }  // Indicador de notificación de borrador
+
     // Navigate to the pages page
     async navigateToPagesPage(driver) {
         console.log("Navigating to pages page...");
@@ -84,7 +88,29 @@ class Page {
     }
 
 
-
+    async unpublishPage(driver) {
+        console.log("Unpublishing page...");
+        await this.unpublishButton(driver).waitForDisplayed({ timeout: 5000 });
+        await this.unpublishButton(driver).click();
+        await this.confirmUnpublishButton(driver).waitForDisplayed({ timeout: 5000 });
+        await this.confirmUnpublishButton(driver).click();
+        await this.backToPagesButton(driver).waitForDisplayed({ timeout: 5000 });
+        await this.backToPagesButton(driver).click();
+        console.log("Page unpublished and marked as Draft.");
+    }
+    
+    // Verify that a page is marked as draft
+    async verifyPageIsDraft(driver, title) {
+        this.navigateToPagesPage(driver);
+        console.log(`Verificando que el post con título "${title}" esté marcado como borrador...`);
+        
+        // Espera a que el indicador de estado esté visible
+        await this.draftStatusIndicator(driver).waitForDisplayed({ timeout: 5000 });
+        
+        // Verifica que el texto del indicador indique "Draft" o "Borrador"
+        const draftStatus = await this.draftStatusIndicator(driver).getText();
+        return draftStatus.includes("Draft") || draftStatus.includes("Borrador");
+      }
     async selectPageByTitle(driver, title) {
         const postContainers = await this.pagesContainer(driver);
         for (const container of postContainers) {

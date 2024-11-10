@@ -281,3 +281,11 @@ When('I go back to the pages list page', async function() {
 When('I edit the page title to {string} and content {string}', async function(newTitle, newContent) {
   await Page.editPageDetails(this.driver, newTitle, newContent);
 });
+
+When('I unpublish the page', async function() {
+  await Page.unpublishPage(this.driver);
+});
+
+Then('I should see the page with title {string} marked as draft', async function(pageTitle) {
+  await Page.verifyPageIsDraft(this.driver, pageTitle);
+});
