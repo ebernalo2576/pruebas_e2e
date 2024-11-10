@@ -63,12 +63,10 @@ class MemberPage {
     }
 
     // Edit member details (name and email)
-    async editMemberDetails(driver, newName, newEmail) {
-        console.log(`Editing member details to - Name: ${newName}, Email: ${newEmail}`);
+    async editMemberDetails(driver, newName) {
+        console.log(`Editing member details to - Name: ${newName}`);
         await this.memberNameField(driver).clearValue();
         await this.memberNameField(driver).setValue(newName);
-        await this.memberEmailField(driver).clearValue();
-        await this.memberEmailField(driver).setValue(newEmail);
     }
 
     // Delete a member
@@ -80,7 +78,16 @@ class MemberPage {
         await driver.pause(1000);
         console.log("Member deleted.");
     }
-
+    async openMemberByTitle(driver, title) {
+        console.log(`Opening member with title "${title}"...`);
+        const memberNameElement = await this.memberListSelector(driver);
+        const memberName = await memberNameElement.getText();
+        if (memberName === title) {
+            await memberNameElement.click();
+        } else {
+            throw new Error(`Member with title "${title}" not found in the list.`);
+        }
+    }
     // Verify that a member with a specific name is not visible in the members list
     async verifyMemberNotInList(driver, name) {
         console.log(`Verifying that member with name "${name}" is not in the list...`);
