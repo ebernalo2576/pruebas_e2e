@@ -23,7 +23,7 @@ class Login {
     // Then: El usuario debería ver el dashboard
     thenUserShouldSeeDashboard() {
         cy.url().should('include', '/ghost/#/dashboard');
-        cy.wait(1000)
+        cy.wait(1000);
     }
 }
 
