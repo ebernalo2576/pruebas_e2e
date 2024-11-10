@@ -159,7 +159,9 @@ class UnpublishPage extends Page {
     // Then: El usuario verifica que la página esté en estado de borrador
     thenPageShouldBeInDraftState(title) {
         cy.get(this.confirmDraftPage).should('contain', 'Draft');
-        cy.get(this.backToPagesButton).click();
+        cy.wait(500);
+        cy.get(this.backToPagesButton).should('be.visible').click();
+        cy.wait(500);
         cy.contains(this.pageListSelector, title).should('be.visible');
     }
 }

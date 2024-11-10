@@ -54,8 +54,8 @@ Este proyecto contiene un conjunto de pruebas automatizadas para verificar las f
 Clona este repositorio en tu máquina local usando el siguiente comando:
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
-cd <NOMBRE_DEL_REPOSITORIO>
+git clone https://github.com/ebernalo2576/pruebas_e2e
+cd pruebas_e2e/pruebas_cypress
 ```
 
 #### Paso 2: Instalar las Dependencias

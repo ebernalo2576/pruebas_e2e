@@ -100,7 +100,7 @@ class EditMember extends Member {
 class DeleteMember extends Member {
     constructor() {
         super();
-        this.settingsMenuButton = 'button.gh-btn.gh-btn-icon.icon-only.gh-btn-action-icon.closed.ember-view';        
+        this.settingsMenuButton = 'button.closed.ember-view';        
         this.deleteMemberButton = '[data-test-button="delete-member"]';     
         this.confirmDeleteButton = '.modal-footer .gh-btn-red';    
     }
@@ -109,6 +109,7 @@ class DeleteMember extends Member {
     givenUserIsOnMembersPageAndSelectsMemberToDelete(name) {
         cy.get(this.membersMenuButton).should('be.visible').click();
         cy.contains(this.memberListSelector, name).click(); 
+        cy.get('.gh-main').scrollTo('top');
         cy.get(this.settingsMenuButton).should('be.visible').click(); 
     }
 
@@ -120,7 +121,7 @@ class DeleteMember extends Member {
 
     // Then: El usuario verifica que el miembro ya no esté en la lista de miembros
     thenMemberShouldNotBeVisibleInMembersList(name) {
-        cy.get(this.membersMenuButton).click(); 
+        cy.get(this.membersMenuButton).should('be.visible').click(); 
         cy.contains(this.memberListSelector, name).should('not.exist');
     }
 }

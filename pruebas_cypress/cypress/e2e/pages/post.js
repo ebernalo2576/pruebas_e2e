@@ -101,25 +101,30 @@ class EditPost extends Post {
         this.updateButton = 'a.ember-view.gh-btn-editor.gh-editor-back-button';
     }
 
+    // Given: El usuario navega a la lista de posts.
     givenUserIsOnPostsList() {
         cy.get(this.postsListButton).click();
         cy.url().should('include', '/ghost/#/posts');
     }
 
+    // When: El usuario selecciona un post específico para editarlo.
     whenUserSelectsPostToEdit(title) {
         cy.contains(this.postTitleSelector, title).click();
     }
 
+    // When: El usuario edita los detalles del post, incluyendo el título y el contenido.
     whenUserEditsPostDetails(newTitle, newContent) {
         cy.get(this.postTitleField).clear().type(newTitle);
         cy.get(this.postContentField).clear().type(newContent);
     }
 
+    // When: El usuario guarda los cambios en el post.
     whenUserUpdatesPost() {
         cy.get(this.publishMenuButton).click();
         cy.get(this.updateButton).click();
     }
 
+    // Then: El usuario verifica que el post editado esté visible en la lista con el nuevo título.
     thenPostShouldBeUpdated(newTitle) {
         cy.get(this.postsListButton).click();
         cy.contains(this.postTitleSelector, newTitle).should('exist');
@@ -134,25 +139,30 @@ class UnpublishPost extends Post {
         this.confirmDraftPost = 'span > div';
     }
 
+    // Given: El usuario navega a la lista de posts.
     givenUserIsOnPostsList() {
         cy.get(this.postsListButton).click();
         cy.url().should('include', '/ghost/#/posts');
     }
 
+    // When: El usuario selecciona un post específico para despublicarlo.
     whenUserSelectsPostToUnpublish(title) {
         cy.contains(this.postTitleSelector, title).click();
 
     }
 
+    // When: El usuario cambia el estado del post a borrador (despublica el post).
     whenUserUnpublishesPost() {
         cy.get(this.unpublishPostButton).click();
         cy.get(this.confirmUnpublishPostButton).click();
-
     }
 
+    // Then: El usuario verifica que el post esté en estado borrador y regresa a la lista.
     thenPostShouldNotBeVisibleInPostsList(title) {
         cy.get(this.confirmDraftPost).should('contain', 'Draft');
-        cy.get(this.backToPostsButton).click();
+        cy.wait(500);
+        cy.get(this.backToPostsButton).should('be.visible').click();
+        cy.wait(500);
         cy.contains(this.postTitleSelector, title).should('be.visible');
     }
 }
