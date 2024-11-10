@@ -44,10 +44,14 @@ Link de la Wiki: [Aqui](https://github.com/ebernalo2576/pruebas_e2e/wiki)
 
 ## Ejecución de Pruebas
 
+Configurar los valores **USERNAME1** y **PASSWORD1** con las credenciales correctas para el login de Ghost en el archivo *pruebas_kraken/properties.json*
+
+
 Para ejecutar todas las pruebas E2E del proyecto, simplemente ejecute:
 ```bash
 npx kraken-node run
 ```
+
 
 Tambien se puede ejecutar con el comando desde otro sistema operativo como Windows:
 ```bash
@@ -55,13 +59,11 @@ Tambien se puede ejecutar con el comando desde otro sistema operativo como Windo
 ```
 
 ### Nota:
-Kraken ejecutará todas las pruebas en el proyecto simultáneamente. Si desea ejecutar un archivo de pruebas individual, puede comentar los demás archivos de pruebas y especificar el archivo en el siguiente formato:
+Kraken ejecutará todas las pruebas en el proyecto simultáneamente. Si desea ejecutar un archivo de pruebas individual, renombrar todos los demás archivos cambiando la extension *.feature* y luego ejecutar el siguiente comando:
 
 ```bash
 npx kraken-node run
 ```
-
-> **Importante**: Recuerde que Kraken ejecuta los archivos de prueba en conjunto a menos que los comentes como te indico siguientemente login-EP001.feature a login-EP001-feature de este modo no correran .
 
 ---
 
