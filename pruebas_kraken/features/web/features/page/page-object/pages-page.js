@@ -83,21 +83,40 @@ class Page {
         assert.strictEqual(pageTitle, title, "The page was not created correctly");
     }
 
-    // Select an existing page by title for editing or deletion
-    async selectPageByTitle(driver, title) {
-        console.log(`Selecting page with title "${title}"...`);
-        const pageTitleElement = await driver.$(`//h3[contains(text(), "${title}")]`);
-        
-        const isVisible = await pageTitleElement.isDisplayed();
-        if (isVisible) {
-            await pageTitleElement.click();
-            await driver.pause(1000);
-            console.log(`Page "${title}" found and selected.`);
-        } else {
-            throw new Error(`Page with title "${title}" not found in the list.`);
-        }
-    }
 
+
+    async selectPageByTitle(driver, title) {
+        const postContainers = await this.pagesContainer(driver);
+        for (const container of postContainers) {
+          const titleElement = await this.pagesTitleInContainer(container);
+          const postTitle = await titleElement.getText();
+          if (postTitle === title) {
+            await titleElement.click();
+            await driver.pause(1000);
+            return;
+          }
+        }
+        throw new Error(`El page con título "${title}" no se encontró en la lista.`);
+      }
+    
+        // Go back to the pages list
+        async goBackToPagesList(driver) {
+            console.log("Going back to the pages list...");
+            await this.backToPagesButton(driver).click();
+            await driver.pause(1000);
+        }
+    // Verify the page details (title and content)
+    async verifyPageDetails(driver, title, content) {
+        console.log(`Verifying page details - Title: "${title}", Content: "${content}"`);
+        await this.pageTitleField(driver).click();
+        const pageTitle = await this.pageTitleField(driver).getValue();
+        
+        await this.pageContentField(driver).click();
+        const pageContent = await this.pageContentField(driver).getText();
+        
+        assert.strictEqual(pageTitle, title, "The page title does not match.");
+        assert.strictEqual(pageContent, content, "The page content does not match.");
+    }
     // Edit page details (title and content)
     async editPageDetails(driver, newTitle, newContent) {
         console.log(`Editing page details to - Title: ${newTitle}, Content: ${newContent}`);

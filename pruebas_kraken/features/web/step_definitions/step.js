@@ -248,3 +248,33 @@ When('I delete the page', async function() {
   await Page.deletePage(this.driver);
 });
 
+
+// Create a new page with title and content
+When('I create a new page with title {string} and content {string}', async function(title, content) {
+  await Page.startCreatingNewPage(this.driver);
+  await Page.enterPageDetails(this.driver, title, content);
+  await Page.savePage(this.driver);
+});
+
+
+// Verify all pages in the pages list with specific titles
+Then('I should see all pages in the pages list with titles:', async function(table) {
+  const titles = table.raw().flat();
+  await Page.verifyPagesInList(this.driver, titles);
+});
+
+// Open a page by title
+When('I open the page with title {string}', async function(title) {
+  await Page.selectPageByTitle(this.driver, title);
+});
+
+// Verify the page title and content
+Then('I should see the page title {string} and content {string}', async function(title, content) {
+  await Page.verifyPageDetails(this.driver, title, content);
+});
+
+// Go back to the pages list page
+When('I go back to the pages list page', async function() {
+  await Page.goBackToPagesList(this.driver);
+});
+
