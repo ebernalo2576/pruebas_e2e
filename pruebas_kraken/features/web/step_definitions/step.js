@@ -278,3 +278,6 @@ When('I go back to the pages list page', async function() {
   await Page.goBackToPagesList(this.driver);
 });
 
+When('I edit the page title to {string} and content {string}', async function(newTitle, newContent) {
+  await Page.editPageDetails(this.driver, newTitle, newContent);
+});
