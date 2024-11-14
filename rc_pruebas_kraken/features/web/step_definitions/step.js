@@ -371,12 +371,6 @@ Then('I should not see the member {string} in the members list', async function 
 
 //Settings
 
-/* And I navigate to the settings page
-When I edit title&description
-And I edit site timezone
-And I edit publication language
-Then I should see the modifications in the general settings section */
-
 Given('I navigate to the settings page', async function() {
   await SettingsPage.navigateToSettingsPage(this.driver);
 });

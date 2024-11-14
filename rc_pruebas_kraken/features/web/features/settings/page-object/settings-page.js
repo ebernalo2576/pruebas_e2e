@@ -2,63 +2,67 @@ const assert = require("assert");
 const properties = require("../../../../../properties.json");
 
 class SettingsPage {
-  newPostButton(driver) { return driver.$(".gh-nav-new-post"); }
-  titleInput(driver) { return driver.$('textarea[placeholder="Post title"]'); }
-  contentInput(driver) { return driver.$('[data-koenig-dnd-droppable="true"]'); }
-  publishMenu(driver) { return driver.$("button.gh-btn.gh-btn-editor.darkgrey.gh-publish-trigger"); }
-  finalReviewButton(driver) { return driver.$(".gh-publish-cta > button"); }
-  publishConfirmationButton(driver) { return driver.$(".gh-publish-cta > button"); }
-  closeModalButton(driver) { return driver.$(".modal-content .close"); }
-  postsListButton(driver) { return driver.$('[data-test-nav="posts"]'); }
-  postTitleInList(driver) { return driver.$("h3.gh-content-entry-title"); }
-  postDetailTitle(driver) { return driver.$("textarea[placeholder='Post title']"); }
-  postDetailContent(driver) { return driver.$('[data-koenig-dnd-droppable="true"]'); }
-  updateButton(driver) { return driver.$("button.gh-btn.gh-btn-editor.gh-editor-save-trigger.green"); }
-  backToPostsButton(driver) { return driver.$("a.gh-editor-back-button"); }
+  titleDescriptionEditButton(driver) { return driver.$(".cursor-pointer.text-grey-900.inline-flex.items-center"); }
+  titleInput(driver) { return driver.$(".peer.z-\\[1\\].order-2.h-9.w-full.bg-transparent.px-3.py-1\\.5.text-sm.placeholder\\:text-grey-500.dark\\:placeholder\\:text-grey-700.md\\:h-\\[38px\\].md\\:py-2.md\\:text-md.dark\\:text-white.rounded-lg"); }
+  contentInput(driver) { return driver.$(".peer.z-\\[1\\].order-2.h-9.w-full.bg-transparent.px-3.py-1\\.5.text-sm.placeholder\\:text-grey-500.dark\\:placeholder\\:text-grey-700.md\\:h-\\[38px\\].md\\:py-2.md\\:text-md.dark\\:text-white.rounded-lg"); }
+  saveTitleDescriptionButton(driver) { return driver.$(".cursor-pointer.bg-green.text-white.hover\\:bg-green-400.inline-flex.items-center.justify-center.whitespace-nowrap.rounded.text-sm.transition.font-bold.h-7.px-3"); }
 
-  postContainers(driver) { return driver.$$("div.gh-posts-list-item-group"); }
-  postTitleInContainer(container) { return container.$("h3.gh-content-entry-title"); }
-  unpublishPostButton(driver) { return driver.$(".gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span"); }
-  confirmUnpublishPostButton(driver) { return driver.$(".gh-revert-to-draft > span"); }
-  confirmDraftPost(driver) { return driver.$("span:contains('Draft')"); }
-  draftStatusIndicator(driver) { return driver.$(".gh-content-entry-status .draft"); }  // Indicador de notificación de borrador
+  siteTimezoneEditButton(driver) { return driver.$('[data-testid="timezone"] > .flex.items-start.justify-between.gap-4 > div > .flex.items-center.justify-start.rounded.gap-2.-mr-1.mt-\\[-5px\\] > button'); }
+  siteTimezoneInput(driver) { return driver.$('input[id="\\:r18\\:"]'); }
 
+  languageEditButton(driver) { return driver.$('[data-testid="publication-language"] > .flex.items-start.justify-between.gap-4 > div > .flex.items-center.justify-start.rounded.gap-2.-mr-1.mt-\\[-5px\\] > button'); }
+  languageInput(driver) { return driver.$('.peer.z-\\[1\\].order-2.h-9.w-full.bg-transparent.px-3.py-1\\.5.text-sm.placeholder\\:text-grey-500.dark\\:placeholder\\:text-grey-700.md\\:h-\\[38px\\].md\\:py-2.md\\:text-md.dark\\:text-white.rounded-lg'); }
+
+  titleDescriptionDiv(driver) { return driver.$('[data-testid="title-and-description"] > .grid.grid-cols-1.md\\:grid-cols-2.gap-x-8.gap-y-6.undefined > .flex.flex-col > .flex.items-center.mt-1'); }
+  siteTimezoneDiv(driver) { return driver.$('[data-testid="timezone"] > .flex.flex-col.gap-x-5.gap-y-7.undefined > .flex.flex-col > .flex.items-center.undefined > .flex.flex-col'); }
+  languageDiv(driver) { return driver.$('[data-testid="publication-language"] > .flex.flex-col.gap-x-5.gap-y-7.undefined > .flex.flex-col > .flex.items-center.mt-1'); }
 
   // Método para abrir la configuracion
   async navigateToSettingsPage(driver) {
-    console.log("Navigating to posts list page...");
+    console.log("Navigating to settings page...");
     await driver.url(properties["URL"] + "#/settings/general");
     await driver.pause(2000);
   }
 
-  async editTitleDescription(driver, title, content) {
-    console.log("Editing post title and content...");
+  async editTitleDescription(driver) {
+    console.log("Editing title and description...");
+    await this.titleDescriptionEditButton(driver).click();
     await this.titleInput(driver).clearValue();
-    await this.titleInput(driver).setValue(title);
+    await this.titleInput(driver).setValue("Edited Title");
     await this.contentInput(driver).click();
-    await this.contentInput(driver).setValue(content);
+    await this.contentInput(driver).clearValue();
+    await this.contentInput(driver).setValue("Edited Description");
+    await this.saveTitleDescriptionButton(driver).click();
   }
 
   async editSiteTimezone(driver, timezone) {
     console.log("Editing site timezone...");
-    await driver.$(".gh-setting-timezone").click();
-    await driver.$(".gh-setting-timezone").setValue(timezone);
-    await driver.$(".gh-setting-timezone").click();
+    console.log(await this.siteTimezoneEditButton(driver));
+    await this.siteTimezoneEditButton(driver).click();
+    await this.siteTimezoneInput(driver).click();
+    await this.siteTimezoneInput(driver).clearValue(); 
+    await this.siteTimezoneInput(driver).setValue('(GMT -6:00) Central Time (US & Canada)'); 
+    await this.siteTimezoneInput(driver).addValue('\uE007'); // Unicode para "Enter"
+    await this.saveTitleDescriptionButton(driver).click();
   }
 
   async editPublicationLanguage(driver, language) {
     console.log("Editing publication language...");
-    await driver.$(".gh-setting-language").click();
-    await driver.$(".gh-setting-language").setValue(language);
-    await driver.$(".gh-setting-language").click();
+    await this.languageEditButton(driver).click();
+    await this.languageInput(driver).click();
+    await this.languageInput(driver).clearValue();
+    await this.languageInput(driver).setValue("de");
+    await this.saveTitleDescriptionButton(driver).click();
   }
 
   async verifySettingsChanges(driver, title, content) {
     console.log("Verifying settings changes...");
-    await this.postsListButton(driver).click();
+    assert(await this.titleDescriptionDiv(driver).getText() === 'Edited Description', 'Title & Description was edited');
     await driver.pause(1000);
-    const postContainers = await this.postContainers(driver);
-    const postTitles = await Promise.all(postContainers.map(async post => await post.$("h3.gh-content-entry-title").getText()));
-    assert(postTitles.includes(title), `The post "${title}" is not visible in the posts list`);
+    assert((await this.siteTimezoneDiv(driver).getText()).includes('(GMT -6:00) Central Time (US & Canada)'), 'Site timezone was edited');
+    await driver.pause(1000);
+    assert((await this.languageDiv(driver).getText()).includes('de'), 'Publication language was edited');
   }
 }
+
+module.exports = new SettingsPage();

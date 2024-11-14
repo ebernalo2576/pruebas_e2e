@@ -9,7 +9,7 @@
     "DETAILPOSTEDIT": "Editar el detalle del Post.....",
     "NAME": "Nombre Cambiado",
     "PASSWORDNEW": "tJnAQA#T632v#cD???",
-    "URL": "http://localhost:3001/ghost/",
+    "URL": "http://localhost:2368/ghost/",
     "POST": "http://localhost:3001/ghost/#/posts/",
     "EDITORPOST": "http://localhost:3001/ghost/#/editor/post/",
     "PAGE": "http://localhost:3001/ghost/#/pages/",

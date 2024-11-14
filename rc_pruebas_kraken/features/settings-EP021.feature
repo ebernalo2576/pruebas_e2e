@@ -11,7 +11,9 @@ Scenario: Debería permitir al usuario cambiar la configuración general del sit
   And I submit login
   And I wait for 5 seconds
   And I navigate to the settings page
+
   When I edit title&description
   And I edit site timezone
   And I edit publication language
+  
   Then I should see the modifications in the general settings section
