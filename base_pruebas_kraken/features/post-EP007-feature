@@ -12,10 +12,10 @@ Scenario: Debería permitir al usuario eliminar un post existente
   And I wait for 5 seconds
   And I am on the posts list page
   
-  When I create a new post with title "My New Post x" and content "This is the content of my first post"
+  When I create a new post with title "My New Post xy" and content "This is the content of my first post"
   And I publish the post
-  Then I should see the post with title "My New Post x" in the posts list
-  When I open the post with title "My New Post x"
+  Then I should see the post with title "My New Post xy" in the posts list
+  When I open the post with title "My New Post xy"
   And I delete the post
   And I wait for 3 seconds
-  Then I should not see the post with title "My New Post x" in the posts list
+  Then I should not see the post with title "My New Post xy" in the posts list

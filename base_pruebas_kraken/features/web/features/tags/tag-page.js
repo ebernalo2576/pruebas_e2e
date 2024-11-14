@@ -132,6 +132,7 @@ class TagPage {
         console.log(`Confirmed: Tag with name "${tagName}" is not in the list.`);
     }
     async verifyTagIsVisible(driver, tagName) {
+        await this.navigateToTagsPage(driver);
         console.log(`Verifying that tag "${tagName}" is visible...`);
     
         // Use a simple text-based selector to check for visibility of the tag name

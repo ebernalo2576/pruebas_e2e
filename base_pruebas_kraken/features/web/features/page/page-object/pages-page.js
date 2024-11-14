@@ -13,11 +13,11 @@ class Page {
     confirmDeleteButton(driver) { return driver.$('.modal-footer .gh-btn-red'); }
     backToPagesButton(driver) { return driver.$('a.ember-view.gh-editor-back-button'); }
     publishMenuButton(driver) { return driver.$('.gh-publishmenu.ember-view > div'); }
-    edithMenuButton(driver) { return driver.$('.gh-btn.gh-btn-editor.gh-editor-save-trigger.green.ember-view'); }
+    edithMenuButton(driver) { return driver.$('.gh-publishmenu.ember-view'); }
     publishButton(driver) { return driver.$('.gh-publish-cta > .gh-btn > span'); }
     confirmPublishButton(driver) { return driver.$('.gh-btn.gh-btn-black.gh-publishmenu-button.gh-btn-icon.ember-view'); }
     closeModalButton(driver) { return driver.$(".modal-content .close"); }
-    pagesContainer(driver) { return driver.$$('.posts-list.gh-list'); }
+    pagesContainer(driver) { return driver.$$('.ember-view.permalink.gh-list-data.gh-post-list-title'); }
     pagesTitleInContainer(container) { return container.$('h3.gh-content-entry-title'); }
     pageTitleInList(driver) { return driver.$("h3.gh-content-entry-title"); }
     unpublishButton(driver) { return driver.$('.gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span'); }
@@ -74,9 +74,8 @@ class Page {
     async publishPage(driver) {
         console.log("Publishing the page...");
         await this.publishMenuButton(driver).click();
-        await this.publishButton(driver).click();
         await this.confirmPublishButton(driver).click();
-        await this.closeModalButton(driver).click();
+        await this.navigateToPagesPage(driver);
         console.log("Page published.");
     }
 
@@ -158,6 +157,7 @@ class Page {
         console.log("Updating page...");
         await this.edithMenuButton(driver).click();
         await driver.pause(1000);
+        await this.confirmPublishButton(driver).click();
         console.log("Page updated.");
     }
 

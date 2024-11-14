@@ -3,20 +3,20 @@ const properties = require("../../../../../properties.json");
 
 class PostPage {
   newPostButton(driver) { return driver.$(".gh-nav-new-post"); }
-  titleInput(driver) { return driver.$('textarea[placeholder="Post title"]'); }
-  contentInput(driver) { return driver.$('[data-koenig-dnd-droppable="true"]'); }
-  publishMenu(driver) { return driver.$("button.gh-btn.gh-btn-editor.darkgrey.gh-publish-trigger"); }
+  titleInput(driver) { return driver.$('.gh-editor-title.ember-text-area.gh-input.ember-view'); }
+  contentInput(driver) { return driver.$('.koenig-editor__editor.__mobiledoc-editor > p'); }
+  publishMenu(driver) { return driver.$(".gh-publishmenu.ember-view > div"); }
   finalReviewButton(driver) { return driver.$(".gh-publish-cta > button"); }
-  publishConfirmationButton(driver) { return driver.$(".gh-publish-cta > button"); }
+  publishConfirmationButton(driver) { return driver.$(".gh-btn.gh-btn-black.gh-publishmenu-button.gh-btn-icon.ember-view"); }
   closeModalButton(driver) { return driver.$(".modal-content .close"); }
   postsListButton(driver) { return driver.$('[data-test-nav="posts"]'); }
   postTitleInList(driver) { return driver.$("h3.gh-content-entry-title"); }
-  postDetailTitle(driver) { return driver.$("textarea[placeholder='Post title']"); }
-  postDetailContent(driver) { return driver.$('[data-koenig-dnd-droppable="true"]'); }
-  updateButton(driver) { return driver.$("button.gh-btn.gh-btn-editor.gh-editor-save-trigger.green"); }
+  postDetailTitle(driver) { return driver.$(".gh-editor-title.ember-text-area.gh-input.ember-view"); }
+  postDetailContent(driver) { return driver.$('.koenig-editor__editor.__mobiledoc-editor > p'); }
+  updateButton(driver) { return driver.$(".gh-publishmenu.ember-view"); }
   backToPostsButton(driver) { return driver.$("a.gh-editor-back-button"); }
 
-  postContainers(driver) { return driver.$$("div.gh-posts-list-item-group"); }
+  postContainers(driver) { return driver.$$(".ember-view.permalink.gh-list-data.gh-post-list-title"); }
   postTitleInContainer(container) { return container.$("h3.gh-content-entry-title"); }
   unpublishPostButton(driver) { return driver.$(".gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span"); }
   confirmUnpublishPostButton(driver) { return driver.$(".gh-revert-to-draft > span"); }
@@ -46,12 +46,15 @@ class PostPage {
     console.log(`Content entered: ${content}`);
   }
   async deletePost(driver) {
+    const settingsButton = await driver.$('.gh-btn.gh-btn-editor.gh-btn-icon.only-has-icon.gh-actions-cog.ml3'); // Cambia el selector por el adecuado
+    await settingsButton.click();
+
     // Selecciona el botón de eliminación en el post abierto
-    const deleteButton = await driver.$('.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon'); // Cambia el selector por el adecuado
+    const deleteButton = await driver.$('.gh-btn.gh-btn-hover-red.gh-btn-icon.settings-menu-delete-button'); // Cambia el selector por el adecuado
     await deleteButton.click();
   
     // Confirmar eliminación si es necesario
-    const confirmButton = await driver.$('.settings-menu-delete-button > button'); // Cambia el selector por el adecuado
+    const confirmButton = await driver.$('.gh-btn.gh-btn-red.gh-btn-icon.ember-view'); // Cambia el selector por el adecuado
     await confirmButton.click();
   
     console.log("Post eliminado exitosamente.");
@@ -62,12 +65,9 @@ class PostPage {
     console.log("Publishing post...");
     await this.publishMenu(driver).waitForDisplayed({ timeout: 5000 });
     await this.publishMenu(driver).click();
-    await this.finalReviewButton(driver).waitForDisplayed({ timeout: 5000 });
-    await this.finalReviewButton(driver).click();
     await this.publishConfirmationButton(driver).waitForDisplayed({ timeout: 5000 });
     await this.publishConfirmationButton(driver).click();
-    await this.closeModalButton(driver).waitForDisplayed({ timeout: 5000 });
-    await this.closeModalButton(driver).click();
+    await this.openPostsList(driver);
     console.log("Post published and modal closed.");
   }
 
@@ -136,8 +136,10 @@ class PostPage {
     const updateButton = await this.updateButton(driver);
     await updateButton.waitForDisplayed({ timeout: 5000 });
     await updateButton.click();
-    await this.backToPostsButton(driver).waitForDisplayed({ timeout: 5000 });
-    await this.backToPostsButton(driver).click();
+    const confirmUpdateButton = await this.publishConfirmationButton(driver);
+    await confirmUpdateButton.waitForDisplayed({ timeout: 5000 });
+    await confirmUpdateButton.click();
+    await this.openPostsList(driver);
     console.log("Post updated and returned to posts list.");
   }
 
