@@ -6,6 +6,7 @@ const PostPage = require("../features/post/page-object/post-page");
 const TagPage = require('../features/tags/tag-page');
 const Page = require('../features/page/page-object/pages-page');
 const MemberPage = require('../features/members/page-object/members-page');
+const SettingsPage = require('../features/settings/page-object/settings-page');
 const properties = require("../../../properties.json");  // Adjust the path as needed
 const assert = require("assert");
 
@@ -348,6 +349,7 @@ When('I update the member', async function () {
 });
 
 
+
 // members
 
 
@@ -364,4 +366,27 @@ When('I delete the member', async function () {
 // Then I should not see the member "Updated member name" in the members list
 Then('I should not see the member {string} in the members list', async function (newName) {
   await MemberPage.verifyMemberNotInList(this.driver, newName);
+});
+
+
+//Settings
+
+Given('I navigate to the settings page', async function() {
+  await SettingsPage.navigateToSettingsPage(this.driver);
+});
+
+When('I edit title&description', async function() {
+  await SettingsPage.editTitleDescription(this.driver);
+});
+
+When('I edit site timezone', async function() {
+  await SettingsPage.editSiteTimezone(this.driver);
+});
+
+When('I edit publication language', async function() {
+  await SettingsPage.editPublicationLanguage(this.driver);
+});
+
+Then('I should see the modifications in the general settings section', async function() {
+  await SettingsPage.verifySettingsChanges(this.driver);
 });
