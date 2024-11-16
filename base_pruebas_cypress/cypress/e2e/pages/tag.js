@@ -61,8 +61,8 @@ class EditTag extends Tag {
 
     // When: El usuario modifica el nombre y la descripción del tag
     whenUserEditsTagDetails(newName, newDescription) {
-        cy.get(this.tagNameField).clear().type(newName);
-        cy.get(this.tagDescriptionField).clear().type(newDescription);
+        cy.get(this.tagNameField).clear().type(newName, {force: true});
+        cy.get(this.tagDescriptionField).clear().type(newDescription, {force: true});
     }
 
     // When: El usuario guarda los cambios del tag
@@ -73,7 +73,7 @@ class EditTag extends Tag {
 
     // Then: El usuario verifica que el tag se haya actualizado en la lista de tags
     thenTagShouldBeUpdatedInTagsList(newName) {
-        cy.get(this.tagsMenuButton).click(); 
+        cy.get(this.tagsMenuButton).first().click(); 
         cy.contains(this.tagListSelector, newName).should('be.visible');
     }
 }
@@ -103,7 +103,7 @@ class DeleteTag extends Tag {
 
     // Then: El usuario verifica que el tag ya no está en la lista de tags
     thenTagShouldNotBeVisibleInTagsList(name) {
-        cy.get(this.tagsMenuButton).click(); 
+        cy.get(this.tagsMenuButton).first().click(); 
         cy.contains(this.tagListSelector, name).should('not.exist');
     }
 }
