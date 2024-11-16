@@ -2,7 +2,7 @@ class Post {
     constructor() {
         this.postTitleField = 'textarea[placeholder="Post Title"]';
         this.postContentField = 'div[class="koenig-editor__editor __mobiledoc-editor __has-no-content"]';
-        this.postsListButton = '[data-test-nav="posts"]';
+        this.postsListButton = 'a[href=\\#\\/posts\\/]';
         this.postTitleSelector = 'h3.gh-content-entry-title';
         this.backToPostsButton = 'a.ember-view.gh-btn-editor.gh-editor-back-button'
     }
@@ -50,18 +50,19 @@ class CreatePost extends Post {
 class ViewPosts extends Post {
     constructor() {
         super();
-        this.postAllSelector = 'div.posts-list.gh-list.feature-memberAttribution';
+        //this.postAllSelector = 'div.posts-list.gh-list.feature-memberAttribution';
+        this.postAllSelector = 'ol.posts-list.gh-list';
     }
 
     // Given: El usuario está en la lista de posts
     givenUserIsOnPostsList() {
-        cy.get(this.postsListButton).click();
+        cy.get(this.postsListButton).first().click();
         cy.url().should('include', '/ghost/#/posts');
     }
 
     // When: El usuario revisa la lista de posts
     whenUserViewsPostsList() {
-        cy.get(this.postAllSelector).should('exist'); 
+        cy.get(this.postAllSelector).first().should('exist'); 
     }
 
     // Then: Verifica que el post con el título especificado esté visible en la lista

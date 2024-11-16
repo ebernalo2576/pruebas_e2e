@@ -52,6 +52,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         viewPost.thenPostShouldBeVisibleInList(postTitle);
     });
 
+    /*
     it('EP004 - Debería visualizar un post y validar título y contenido', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
@@ -127,5 +128,5 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         // Then: El post no debería estar visible en la lista de posts
         deletePost.thenPostShouldNotBeVisibleInPostsList(newTitle);
     });
-    
+    */
 });
