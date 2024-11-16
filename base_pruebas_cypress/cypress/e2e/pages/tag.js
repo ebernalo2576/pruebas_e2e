@@ -88,4 +88,4 @@ class DeleteTag extends Tag {
     }
 }
 
-export { CreateTag, EditTag, DeleteTag };
+export { CreateTag, DeleteTag };

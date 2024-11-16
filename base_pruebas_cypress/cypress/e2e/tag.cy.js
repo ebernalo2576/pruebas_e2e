@@ -1,9 +1,8 @@
 import login from './pages/login';
-import { CreateTag, EditTag, DeleteTag } from './pages/tag';
+import { CreateTag, DeleteTag } from './pages/tag';
 import { faker } from '@faker-js/faker'
 
 const createTag = new CreateTag();
-const editTag = new EditTag();
 const deleteTag = new DeleteTag();
 const tagName = faker.commerce.productName();         
 const tagDescription = faker.lorem.sentence();
