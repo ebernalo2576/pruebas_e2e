@@ -10,10 +10,10 @@ const editPost = new EditPost();
 const unpublishPost = new UnpublishPost();
 const deletePost = new DeletePost();
 
-const postTitle = faker.lorem.sentence();
-const postContent = faker.lorem.paragraph();
-const newTitle = faker.lorem.sentence();
-const newContent = faker.lorem.paragraph();
+const postTitle = "Titulo de Prueba"; //faker.lorem.sentence();
+const postContent = "Contenido de prueba"; //faker.lorem.paragraph();
+const newTitle = "Nuevo Titulo de Prueba"; //faker.lorem.sentence();
+const newContent = "Nuevo Contenido de prueba";  //faker.lorem.paragraph();
 
 describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base', () => {
 
@@ -52,7 +52,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         viewPost.thenPostShouldBeVisibleInList(postTitle);
     });
 
-    /*
+    
     it('EP004 - Debería visualizar un post y validar título y contenido', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
@@ -69,6 +69,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         validatePost.thenPostContentShouldMatch(postContent);
     });
 
+    
     it('EP005 - Debería permitir al usuario editar un post existente', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
@@ -90,7 +91,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         // Then: El post debería estar visible en la lista de posts con el nuevo título
         editPost.thenPostShouldBeUpdated(newTitle);
     });
-
+    /*
     it('EP006 - Debería permitir despublicar un post existente', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
@@ -129,4 +130,5 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         deletePost.thenPostShouldNotBeVisibleInPostsList(newTitle);
     });
     */
+    
 });

@@ -1,7 +1,7 @@
 class Post {
     constructor() {
         this.postTitleField = 'textarea[placeholder="Post Title"]';
-        this.postContentField = 'div[class="koenig-editor__editor __mobiledoc-editor __has-no-content"]';
+        this.postContentField = 'div.koenig-editor__editor-wrapper[data-kg="editor-wrapper"]';
         this.postsListButton = 'a[href=\\#\\/posts\\/]';
         this.postTitleSelector = 'h3.gh-content-entry-title';
         this.backToPostsButton = 'a.ember-view.gh-btn-editor.gh-editor-back-button'
@@ -78,7 +78,7 @@ class ValidatePost extends Post {
 
     // Given: El usuario navega a la lista de posts
     givenUserIsOnPostsList() {
-        cy.get(this.postsListButton).click();         
+        cy.get(this.postsListButton).first().click();         
         cy.url().should('include', '/ghost/#/posts');  
     }
 
@@ -89,8 +89,8 @@ class ValidatePost extends Post {
 
     // Then: El contenido del post debe coincidir con el contenido esperado
     thenPostContentShouldMatch(expectedContent) {
-        cy.get(this.postContentField).should('contain.text', expectedContent); 
-        cy.get(this.backToPostsButton).click(); 
+        cy.get(this.postContentField).first().should('contain.text', expectedContent); 
+        cy.get(this.postsListButton).first().click(); 
         cy.url().should('include', '/ghost/#/posts'); 
     }
 
@@ -99,13 +99,13 @@ class ValidatePost extends Post {
 class EditPost extends Post {
     constructor() {
         super();
-        this.publishMenuButton = '.gh-editor-header > .gh-editor-publish-buttons > .green > span';
-        this.updateButton = 'a.ember-view.gh-btn-editor.gh-editor-back-button';
+        this.publishMenuButton = 'div.gh-publishmenu'; //'.gh-editor-header > .gh-editor-publish-buttons > .green > span';
+        this.updateButton = 'button.gh-publishmenu-button'; //'a.ember-view.gh-btn-editor.gh-editor-back-button';
     }
 
     // Given: El usuario navega a la lista de posts.
     givenUserIsOnPostsList() {
-        cy.get(this.postsListButton).click();
+        cy.get(this.postsListButton).first().click();
         cy.url().should('include', '/ghost/#/posts');
     }
 
@@ -122,13 +122,13 @@ class EditPost extends Post {
 
     // When: El usuario guarda los cambios en el post.
     whenUserUpdatesPost() {
-        cy.get(this.publishMenuButton).click();
-        cy.get(this.updateButton).click();
+        cy.get(this.publishMenuButton).first().click(); //publishMenuButton
+        cy.get(this.updateButton).first().click();
     }
 
     // Then: El usuario verifica que el post editado esté visible en la lista con el nuevo título.
     thenPostShouldBeUpdated(newTitle) {
-        cy.get(this.postsListButton).click();
+        cy.get(this.postsListButton).first().click();
         cy.contains(this.postTitleSelector, newTitle).should('exist');
     }
 }
