@@ -1,9 +1,9 @@
 class Tag {
     constructor() {
-        this.tagsMenuButton = '[data-test-nav="tags"]'
+        this.tagsMenuButton = 'a[href=\\#\\/tags\\/]'
         this.tagNameField = '#tag-name';
         this.tagDescriptionField = '#tag-description';
-        this.saveTagButton = 'button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view';
+        this.saveTagButton = 'section > button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view';
         this.tagListSelector = '.gh-tag-list-name';
     }
 }
@@ -28,20 +28,21 @@ class CreateTag extends Tag {
 
     // When: El usuario ingresa el nombre y descripción del tag
     whenUserEntersTagDetails(name, description) {
-        cy.get(this.tagNameField).clear().type(name);
-        cy.get(this.tagDescriptionField).clear().type(description);
+        cy.get(this.tagNameField).clear().type(name, {force: true});
+        cy.get(this.tagDescriptionField).clear().type(description, {force: true});
     }
 
     // When: El usuario guarda el tag
     whenUserSavesTag() {
         cy.get('.gh-main').scrollTo('top');
-        cy.get(this.saveTagButton).should('be.visible').click();
+        //cy.get(this.saveTagButton).should('be.visible').click();
+        cy.contains(this.saveTagButton, "Save").should('be.visible').click();
 
     }
 
     // Then: El usuario valida que el tag esté en la lista de tags
     thenTagShouldBeVisibleInTagsList(name) {
-        cy.get(this.tagsMenuButton).click(); 
+        cy.get(this.tagsMenuButton).first().click(); 
         cy.contains(this.tagListSelector, name).should('be.visible');
     }
 }
@@ -66,8 +67,8 @@ class EditTag extends Tag {
 
     // When: El usuario guarda los cambios del tag
     whenUserSavesTagChanges() {
-        cy.get('.gh-main').scrollTo('top');
-        cy.get(this.saveTagButton).should('be.visible').click();
+        //cy.get('.gh-main').scrollTo('top');
+        cy.get(this.saveTagButton).first().should('be.visible').click();
     }
 
     // Then: El usuario verifica que el tag se haya actualizado en la lista de tags

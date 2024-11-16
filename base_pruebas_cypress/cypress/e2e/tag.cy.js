@@ -5,10 +5,10 @@ import { faker } from '@faker-js/faker'
 const createTag = new CreateTag();
 const editTag = new EditTag();
 const deleteTag = new DeleteTag();
-const tagName = faker.commerce.productName();         
-const tagDescription = faker.lorem.sentence();
-const newTagName = faker.commerce.productName(); 
-const newTagDescription = faker.lorem.sentence();       
+const tagName = "Tag de Prueba";//faker.commerce.productName();         
+const tagDescription = "Descripcion Tag de prueba";  //faker.lorem.sentence();
+const newTagName = "Nuevo Tag de Prueba"; //faker.commerce.productName(); 
+const newTagDescription = "Nueva Descripcion Tag de prueba"; //faker.lorem.sentence();       
 
 describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
     Cypress.on('uncaught:exception', (err) => {
