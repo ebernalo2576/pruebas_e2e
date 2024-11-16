@@ -7,10 +7,10 @@ const createPost = new CreatePost();
 const editPost = new EditPost();
 const deletePost = new DeletePost();
 
-const postTitle = "Titulo de Prueba"; //faker.lorem.sentence();
-const postContent = "Contenido de prueba"; //faker.lorem.paragraph();
-const newTitle = "Nuevo Titulo de Prueba"; //faker.lorem.sentence();
-const newContent = "Nuevo Contenido de prueba";  //faker.lorem.paragraph();
+const postTitle = faker.lorem.sentence();
+const postContent = faker.lorem.paragraph();
+const newTitle = faker.lorem.sentence();
+const newContent = faker.lorem.paragraph();
 
 describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base', () => {
 

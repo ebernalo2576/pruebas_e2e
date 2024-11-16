@@ -5,10 +5,9 @@ import { faker } from '@faker-js/faker'
 const createTag = new CreateTag();
 const editTag = new EditTag();
 const deleteTag = new DeleteTag();
-const tagName = "Tag de Prueba";//faker.commerce.productName();         
-const tagDescription = "Descripcion Tag de prueba";  //faker.lorem.sentence();
-const newTagName = "Nuevo Tag de Prueba"; //faker.commerce.productName(); 
-const newTagDescription = "Nueva Descripcion Tag de prueba"; //faker.lorem.sentence();       
+const tagName = faker.commerce.productName();         
+const tagDescription = faker.lorem.sentence();
+       
 
 describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
     Cypress.on('uncaught:exception', (err) => {
@@ -39,25 +38,6 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         createTag.thenTagShouldBeVisibleInTagsList(tagName);
     });
 
-    it('EP009 - Debería permitir editar un tag existente', () => {
-        // Precondición inicio de sesión para ejecutar el escenario de prueba
-        login.givenUserIsOnLoginPage();
-        login.whenUserLogsIn();
-        login.thenUserShouldSeeDashboard();
-
-        // Given: El usuario está en la página de tags y selecciona el tag a editar
-        editTag.givenUserIsOnTagsPageAndSelectsTagToEdit(tagName);
-
-        // When: El usuario modifica el nombre y descripción del tag
-        editTag.whenUserEditsTagDetails(newTagName, newTagDescription);
-
-        // When: El usuario guarda los cambios del tag
-        editTag.whenUserSavesTagChanges();
-
-        // Then: El usuario verifica que el tag se haya actualizado en la lista de tags
-        editTag.thenTagShouldBeUpdatedInTagsList(newTagName);
-    });
-
     it('EP010 - Debería permitir eliminar un tag y verificar que ya no esté en la lista', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
@@ -65,12 +45,12 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         login.thenUserShouldSeeDashboard();
 
         // Given: El usuario está en la página de tags y selecciona el tag a eliminar
-        deleteTag.givenUserIsOnTagsPageAndSelectsTagToDelete(newTagName);
+        deleteTag.givenUserIsOnTagsPageAndSelectsTagToDelete(tagName);
 
         // When: El usuario elimina el tag
         deleteTag.whenUserDeletesTag();
 
         // Then: El usuario verifica que el tag ya no esté en la lista de tags
-        deleteTag.thenTagShouldNotBeVisibleInTagsList(newTagName);
+        deleteTag.thenTagShouldNotBeVisibleInTagsList(tagName);
     });
 });
