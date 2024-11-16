@@ -24,76 +24,34 @@ class CreatePost extends Post {
     givenUserIsOnPostCreation() {
         cy.log('Crear post: Navegando a la página de creación de posts');
         cy.get(this.clickPost).should('be.visible').click();
+        cy.screenshot('create-post-page');
     }
 
     // When: El usuario digita el títuo y contenido del post
     whenUserEntersPostDetails(title, content) {
         cy.get(this.postTitleField).type(title);
+        cy.screenshot('post-title-entered');
         cy.get(this.postContentField).first().type(content);
+        cy.screenshot('post-content-entered'); 
     }
 
     // When: El usuario crea el post
     andWhenUserPublishesPost() {
         cy.get(this.publishMenuButton).first().should('be.visible').click();
+        cy.screenshot('publish-post-clicked');
         cy.get(this.publishButton).should('be.visible').click();
+        cy.screenshot('post-published');
         cy.wait(1000);
-        cy.get(this.returnToPosts).first().should('be.visible').click()
+        cy.get(this.returnToPosts).first().should('be.visible').click();
+        cy.screenshot('returned-to-posts');
     }
 
     // Then: El usuario valida que el post esté creado
     thenPostShouldBeVisibleInPostsList(title) {
         cy.contains(title).should('exist');
+        cy.screenshot('post-visible-in-list');
         cy.wait(1000);
     }
-}
-
-class ViewPosts extends Post {
-    constructor() {
-        super();
-        //this.postAllSelector = 'div.posts-list.gh-list.feature-memberAttribution';
-        this.postAllSelector = 'ol.posts-list.gh-list';
-    }
-
-    // Given: El usuario está en la lista de posts
-    givenUserIsOnPostsList() {
-        cy.get(this.postsListButton).first().click();
-        cy.url().should('include', '/ghost/#/posts');
-    }
-
-    // When: El usuario revisa la lista de posts
-    whenUserViewsPostsList() {
-        cy.get(this.postAllSelector).first().should('exist'); 
-    }
-
-    // Then: Verifica que el post con el título especificado esté visible en la lista
-    thenPostShouldBeVisibleInList(title) {
-        cy.contains(this.postTitleSelector, title).should('be.visible');
-    }
-}
-
-class ValidatePost extends Post {
-    constructor() {
-        super();
-    }
-
-    // Given: El usuario navega a la lista de posts
-    givenUserIsOnPostsList() {
-        cy.get(this.postsListButton).first().click();         
-        cy.url().should('include', '/ghost/#/posts');  
-    }
-
-    // When: El usuario selecciona un post específico para verlo en detalle
-    whenUserSelectsPostToView(title) {
-        cy.contains(this.postTitleSelector, title).click();
-    }
-
-    // Then: El contenido del post debe coincidir con el contenido esperado
-    thenPostContentShouldMatch(expectedContent) {
-        cy.get(this.postContentField).first().should('contain.text', expectedContent); 
-        cy.get(this.postsListButton).first().click(); 
-        cy.url().should('include', '/ghost/#/posts'); 
-    }
-
 }
 
 class EditPost extends Post {
@@ -107,76 +65,36 @@ class EditPost extends Post {
     givenUserIsOnPostsList() {
         cy.get(this.postsListButton).first().click();
         cy.url().should('include', '/ghost/#/posts');
+        cy.screenshot('posts-list-page');
     }
 
     // When: El usuario selecciona un post específico para editarlo.
     whenUserSelectsPostToEdit(title) {
         cy.contains(this.postTitleSelector, title).click();
+        cy.screenshot('post-selected-for-edit');
     }
 
     // When: El usuario edita los detalles del post, incluyendo el título y el contenido.
     whenUserEditsPostDetails(newTitle, newContent) {
         cy.get(this.postTitleField).clear().type(newTitle);
+        cy.screenshot('edited-post-title');
         cy.get(this.postContentField).clear().type(newContent);
+        cy.screenshot('edited-post-content'); 
     }
 
     // When: El usuario guarda los cambios en el post.
     whenUserUpdatesPost() {
-        cy.get(this.publishMenuButton).first().click(); //publishMenuButton
+        cy.get(this.publishMenuButton).first().click();
+        cy.screenshot('publish-menu-opened');
         cy.get(this.updateButton).first().click();
+        cy.screenshot('post-updated');
     }
 
     // Then: El usuario verifica que el post editado esté visible en la lista con el nuevo título.
     thenPostShouldBeUpdated(newTitle) {
         cy.get(this.postsListButton).first().click();
         cy.contains(this.postTitleSelector, newTitle).should('exist');
-    }
-}
-
-class UnpublishPost extends Post {
-    constructor() {
-        super();
-        this.publishMenuButton = 'div.gh-publishmenu';
-        this.unpublishPostButton = '.gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span';
-        this.unpublishPostRadiButton = 'div.gh-publishmenu-radio-label'
-        this.confirmUnpublishPostButton = 'button.gh-btn-black.gh-publishmenu-button > span';
-        this.backToPostsButton = 'a[href=\\#\\/posts\\/]';
-        this.confirmDraftPost = 'span.gh-content-status-draft';
-    }
-
-    // Given: El usuario navega a la lista de posts.
-    givenUserIsOnPostsList() {
-        cy.get(this.postsListButton).first().click();
-        cy.url().should('include', '/ghost/#/posts');
-    }
-
-    // When: El usuario selecciona un post específico para despublicarlo.
-    whenUserSelectsPostToUnpublish(title) {
-        cy.contains(this.postTitleSelector, title).click();
-
-    }
-
-    // When: El usuario cambia el estado del post a borrador (despublica el post).
-    whenUserUnpublishesPost() {
-
-        //cy.get(this.publishMenuButton).first().click()
-        cy.get(this.publishMenuButton).first().should('be.visible').click();
-        cy.contains(this.unpublishPostRadiButton, "Unpublished").click();
-        cy.contains(this.confirmUnpublishPostButton, "Unpublish").click();
-        cy.get(this.backToPostsButton).first().click();
-
-        //cy.get(this.unpublishPostButton).first().click();
-        //cy.get(this.confirmUnpublishPostButton).click();
-    }
-
-    // Then: El usuario verifica que el post esté en estado borrador y regresa a la lista.
-    thenPostShouldNotBeVisibleInPostsList(title) {
-
-        cy.get(this.confirmDraftPost).should('contain', 'Draft');
-        cy.wait(500);
-        //cy.get(this.backToPostsButton).should('be.visible').click();
-        //cy.wait(500);
-        cy.contains(this.postTitleSelector, title).should('be.visible');
+        cy.screenshot('updated-post-visible');
     }
 }
 
@@ -193,19 +111,25 @@ class DeletePost extends Post {
     givenUserIsOnPostsList() {
         cy.get(this.postsListButton).first().click();
         cy.url().should('include', '/ghost/#/posts');
+        cy.screenshot('posts-list-page');
     }
 
     // When: El usuario selecciona un post específico por su título
     whenUserSelectsPostToDelete(title) {
         cy.contains(this.postTitleSelector, title).click();
+        cy.screenshot('post-selected-for-delete'); 
         cy.get(this.settingsMenuButton).should('be.visible').click();
+        cy.screenshot('settings-menu-opened'); 
     }
 
     // When: El usuario confirma la eliminación del post
     whenUserConfirmsDeletion() {
         cy.get(this.settingsPanel).first().scrollTo('bottom');
+        cy.screenshot('scrolled-to-delete'); 
         cy.get(this.deletePostButton).first().should('be.visible').click();
+        cy.screenshot('delete-button-clicked'); 
         cy.contains(this.confirmDeleteButton, "Delete").should('be.visible').click();
+        cy.screenshot('post-deletion-confirmed');
         //cy.get(this.confirmDeleteButton).should('be.visible').click();
     }
 
@@ -213,7 +137,8 @@ class DeletePost extends Post {
     thenPostShouldNotBeVisibleInPostsList(title) {
         cy.get(this.postsListButton).first().click(); // Navega de regreso a la lista de posts
         cy.contains(this.postTitleSelector, title).should('not.exist');
+        cy.screenshot('post-not-visible-in-list');
     }
 }
 
-export { CreatePost, ViewPosts, ValidatePost, EditPost, UnpublishPost, DeletePost };
+export { CreatePost, EditPost, DeletePost };
