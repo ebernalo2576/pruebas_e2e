@@ -15,7 +15,7 @@ const postContent = faker.lorem.paragraph();
 const newTitle = faker.lorem.sentence();
 const newContent = faker.lorem.paragraph();
 
-describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
+describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base', () => {
 
     it('EP002 - Debería permitir crear un post con un título y descripción aleatoria', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
@@ -30,7 +30,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.whenUserEntersPostDetails(postTitle, postContent);
 
         // When: El usuario publica el post
-        createPost.whenUserPublishesPost();
+        createPost.andWhenUserPublishesPost();
 
         // Then: El post debería estar visible en la lista de posts
         createPost.thenPostShouldBeVisibleInPostsList(postTitle);

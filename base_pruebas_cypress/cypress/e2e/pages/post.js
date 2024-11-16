@@ -1,7 +1,7 @@
 class Post {
     constructor() {
-        this.postTitleField = 'textarea[placeholder="Post title"]';
-        this.postContentField = '[data-secondary-instance="false"] > .koenig-lexical > [data-kg="editor"] > .kg-prose > p';
+        this.postTitleField = 'textarea[placeholder="Post Title"]';
+        this.postContentField = 'div[class="koenig-editor__editor __mobiledoc-editor __has-no-content"]';
         this.postsListButton = '[data-test-nav="posts"]';
         this.postTitleSelector = 'h3.gh-content-entry-title';
         this.backToPostsButton = 'a.ember-view.gh-btn-editor.gh-editor-back-button'
@@ -13,9 +13,10 @@ class CreatePost extends Post {
         super();
         this.url = Cypress.env('GHOST_URL') + '/ghost/#/dashboard';
         this.clickPost = '.gh-secondary-action.gh-nav-new-post.ember-view';
-        this.publishMenuButton = '.gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span';
-        this.publishButton = '.gh-publish-cta > .gh-btn > span';
+        this.publishMenuButton = 'div.gh-publishmenu';
+        this.publishButton = 'button.gh-btn-black.gh-publishmenu-button > span';
         this.confirmPublishButton = 'button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view';
+        this.returnToPosts = 'a.gh-editor-back-button[href=\\#\\/posts\\/]'
         this.closeButton = 'button.close';
     }
 
@@ -28,15 +29,15 @@ class CreatePost extends Post {
     // When: El usuario digita el títuo y contenido del post
     whenUserEntersPostDetails(title, content) {
         cy.get(this.postTitleField).type(title);
-        cy.get(this.postContentField).type(content);
+        cy.get(this.postContentField).first().type(content);
     }
 
     // When: El usuario crea el post
-    whenUserPublishesPost() {
-        cy.get(this.publishMenuButton).should('be.visible').click();
+    andWhenUserPublishesPost() {
+        cy.get(this.publishMenuButton).first().should('be.visible').click();
         cy.get(this.publishButton).should('be.visible').click();
-        cy.get(this.confirmPublishButton).should('be.visible').click();
-        cy.get(this.closeButton).should('be.visible').click();
+        cy.wait(1000);
+        cy.get(this.returnToPosts).first().should('be.visible').click()
     }
 
     // Then: El usuario valida que el post esté creado

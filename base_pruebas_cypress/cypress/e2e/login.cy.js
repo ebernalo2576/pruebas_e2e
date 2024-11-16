@@ -1,6 +1,6 @@
 import login from './pages/login';
 
-describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
+describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base', () => {
 
     it('EP001 - Debería permitir iniciar sesión con un usuario existente', () => {
         // Given: El usuario está en la página de inicio de sesión
