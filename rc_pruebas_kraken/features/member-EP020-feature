@@ -12,7 +12,7 @@ Scenario: Debería permitir eliminar un miembro existente (edited)
   And I wait for 5 seconds
   And I go back to the pages members page
 
-  When I open the member with title "Updated member name"
+  When I open the member with title "My New member"
   And I delete the member
   
-  Then I should not see the member "Updated member name" in the members list
+  Then I should not see the member "My New member" in the members list
