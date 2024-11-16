@@ -91,7 +91,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         // Then: El post debería estar visible en la lista de posts con el nuevo título
         editPost.thenPostShouldBeUpdated(newTitle);
     });
-    /*
+    
     it('EP006 - Debería permitir despublicar un post existente', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
@@ -111,6 +111,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         unpublishPost.thenPostShouldNotBeVisibleInPostsList(newTitle);
     });
 
+    
     it('EP007 - Debería permitir al usuario eliminar un post existente', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
@@ -129,6 +130,6 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         // Then: El post no debería estar visible en la lista de posts
         deletePost.thenPostShouldNotBeVisibleInPostsList(newTitle);
     });
-    */
+    
     
 });

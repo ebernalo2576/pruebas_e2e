@@ -136,14 +136,17 @@ class EditPost extends Post {
 class UnpublishPost extends Post {
     constructor() {
         super();
+        this.publishMenuButton = 'div.gh-publishmenu';
         this.unpublishPostButton = '.gh-editor-header > .gh-editor-publish-buttons > .darkgrey > span';
-        this.confirmUnpublishPostButton = '.gh-revert-to-draft > span';
-        this.confirmDraftPost = 'span > div';
+        this.unpublishPostRadiButton = 'div.gh-publishmenu-radio-label'
+        this.confirmUnpublishPostButton = 'button.gh-btn-black.gh-publishmenu-button > span';
+        this.backToPostsButton = 'a[href=\\#\\/posts\\/]';
+        this.confirmDraftPost = 'span.gh-content-status-draft';
     }
 
     // Given: El usuario navega a la lista de posts.
     givenUserIsOnPostsList() {
-        cy.get(this.postsListButton).click();
+        cy.get(this.postsListButton).first().click();
         cy.url().should('include', '/ghost/#/posts');
     }
 
@@ -155,16 +158,24 @@ class UnpublishPost extends Post {
 
     // When: El usuario cambia el estado del post a borrador (despublica el post).
     whenUserUnpublishesPost() {
-        cy.get(this.unpublishPostButton).click();
-        cy.get(this.confirmUnpublishPostButton).click();
+
+        //cy.get(this.publishMenuButton).first().click()
+        cy.get(this.publishMenuButton).first().should('be.visible').click();
+        cy.contains(this.unpublishPostRadiButton, "Unpublished").click();
+        cy.contains(this.confirmUnpublishPostButton, "Unpublish").click();
+        cy.get(this.backToPostsButton).first().click();
+
+        //cy.get(this.unpublishPostButton).first().click();
+        //cy.get(this.confirmUnpublishPostButton).click();
     }
 
     // Then: El usuario verifica que el post esté en estado borrador y regresa a la lista.
     thenPostShouldNotBeVisibleInPostsList(title) {
+
         cy.get(this.confirmDraftPost).should('contain', 'Draft');
         cy.wait(500);
-        cy.get(this.backToPostsButton).should('be.visible').click();
-        cy.wait(500);
+        //cy.get(this.backToPostsButton).should('be.visible').click();
+        //cy.wait(500);
         cy.contains(this.postTitleSelector, title).should('be.visible');
     }
 }
@@ -172,14 +183,15 @@ class UnpublishPost extends Post {
 class DeletePost extends Post {
     constructor() {
         super();
-        this.settingsMenuButton = '.settings-menu-toggle';
-        this.deletePostButton = '.settings-menu-delete-button > .gh-btn > span';
-        this.confirmDeleteButton = '.modal-footer .gh-btn-red';
+        this.settingsMenuButton = 'button.gh-btn-editor[title="Settings"]'; //'.settings-menu-toggle';
+        this.settingsPanel = 'div.settings-menu-pane';
+        this.deletePostButton = 'button.settings-menu-delete-button';
+        this.confirmDeleteButton = 'button.gh-btn-red';
     }
 
     // Given: El usuario está en la lista de posts
     givenUserIsOnPostsList() {
-        cy.get(this.postsListButton).click();
+        cy.get(this.postsListButton).first().click();
         cy.url().should('include', '/ghost/#/posts');
     }
 
@@ -191,15 +203,15 @@ class DeletePost extends Post {
 
     // When: El usuario confirma la eliminación del post
     whenUserConfirmsDeletion() {
-        cy.get('.settings-menu').scrollTo('bottom');
-        cy.get(this.deletePostButton).should('be.visible').click();
-
-        cy.get(this.confirmDeleteButton).should('be.visible').click();
+        cy.get(this.settingsPanel).first().scrollTo('bottom');
+        cy.get(this.deletePostButton).first().should('be.visible').click();
+        cy.contains(this.confirmDeleteButton, "Delete").should('be.visible').click();
+        //cy.get(this.confirmDeleteButton).should('be.visible').click();
     }
 
     // Then: El usuario verifica que el post ya no esté visible en la lista de posts
     thenPostShouldNotBeVisibleInPostsList(title) {
-        cy.get(this.postsListButton).click(); // Navega de regreso a la lista de posts
+        cy.get(this.postsListButton).first().click(); // Navega de regreso a la lista de posts
         cy.contains(this.postTitleSelector, title).should('not.exist');
     }
 }
