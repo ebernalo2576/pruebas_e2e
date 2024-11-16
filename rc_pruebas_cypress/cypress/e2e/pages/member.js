@@ -18,30 +18,36 @@ class CreateMember extends Member {
     givenUserIsOnMembersPage() {
         cy.get(this.membersMenuButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/members');
+        cy.screenshot('members-page');
     }
 
     // When: El usuario hace clic en "New Member" para crear un nuevo miembro
     whenUserStartsCreatingNewMember() {
         cy.get(this.newMemberButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/members/new');
+        cy.screenshot('new-member-page');
     }
 
     // When: El usuario ingresa el nombre y correo electrónico del miembro
     whenUserEntersMemberDetails(name, email) {
         cy.get(this.memberNameField).clear().type(name);
+        cy.screenshot('member-name-entered');
         cy.get(this.memberEmailField).clear().type(email);
+        cy.screenshot('member-email-entered');
     }
 
     // When: El usuario guarda el miembro
     whenUserSavesMember() {
         cy.get('.gh-main').scrollTo('top');
         cy.get(this.saveMemberButton).should('be.visible').click();
+        cy.screenshot('member-saved');
     }
 
     // Then: El usuario verifica que el miembro esté visible en la lista de miembros
     thenMemberShouldBeVisibleInMembersList(name) {
         cy.get(this.membersMenuButton).click(); 
         cy.contains(this.memberListSelector, name).should('be.visible');
+        cy.screenshot('member-visible-in-list'); 
     }
 }
 class ViewMembers {
@@ -53,17 +59,20 @@ class ViewMembers {
     // Given: El usuario navega a la sección de miembros
     givenUserIsOnMembersPage() {
         cy.get(this.membersMenuButton).should('be.visible').click(); 
-        cy.url().should('include', '/ghost/#/members');      
+        cy.url().should('include', '/ghost/#/members');  
+        cy.screenshot('members-page-view');     
     }
 
     // When: El usuario visualiza la lista de miembros
     whenUserViewsMembersList() {
-        cy.get(this.memberListSelector).should('exist');   
+        cy.get(this.memberListSelector).should('exist');
+        cy.screenshot('members-list-visible');   
     }
 
     // Then: Verifica que la lista de miembros esté visible
     thenMembersListShouldBeVisible() {
         cy.get(this.memberListSelector).should('be.visible');   
+        cy.screenshot('members-list-validated');
     }
 }
 
@@ -75,25 +84,32 @@ class EditMember extends Member {
     // Given: El usuario navega a la lista de miembros y selecciona un miembro para editar
     givenUserIsOnMembersPageAndSelectsMemberToEdit(name) {
         cy.get(this.membersMenuButton).should('be.visible').click();
-        cy.contains(this.memberListSelector, name).click(); // Selecciona el miembro para editar
+        cy.screenshot('members-page-for-edit');
+        cy.contains(this.memberListSelector, name).click(); 
+        cy.screenshot('member-selected-for-edit'); 
+
     }
 
     // When: El usuario modifica el nombre y/o correo electrónico del miembro
     whenUserEditsMemberDetails(newName, newEmail) {
         cy.get(this.memberNameField).clear().type(newName);
+        cy.screenshot('member-name-edited');
         cy.get(this.memberEmailField).clear().type(newEmail);
+        cy.screenshot('member-email-edited'); 
     }
 
     // When: El usuario guarda los cambios
     whenUserSavesEditedMember() {
         cy.get('.gh-main').scrollTo('top');
         cy.get(this.saveMemberButton).should('be.visible').click();
+        cy.screenshot('edited-member-saved');
     }
 
     // Then: El usuario verifica que el miembro editado esté visible en la lista de miembros con el nuevo nombre
     thenMemberShouldBeUpdatedInMembersList(newName) {
         cy.get(this.membersMenuButton).click(); 
         cy.contains(this.memberListSelector, newName).should('be.visible');
+        cy.screenshot('edited-member-visible-in-list');
     }
 }
 
@@ -108,21 +124,26 @@ class DeleteMember extends Member {
     // Given: El usuario navega a la lista de miembros y selecciona el miembro para eliminar
     givenUserIsOnMembersPageAndSelectsMemberToDelete(name) {
         cy.get(this.membersMenuButton).should('be.visible').click();
+        cy.screenshot('members-page-for-delete');
         cy.contains(this.memberListSelector, name).click(); 
         cy.get('.gh-main').scrollTo('top');
         cy.get(this.settingsMenuButton).should('be.visible').click(); 
+        cy.screenshot('member-settings-opened'); 
     }
 
     // When: El usuario confirma la eliminación del miembro
     whenUserDeletesMember() {
         cy.get(this.deleteMemberButton).should('be.visible').click();
+        cy.screenshot('delete-member-clicked');
         cy.get(this.confirmDeleteButton).should('be.visible').click();
+        cy.screenshot('delete-member-confirmed'); 
     }
 
     // Then: El usuario verifica que el miembro ya no esté en la lista de miembros
     thenMemberShouldNotBeVisibleInMembersList(name) {
         cy.get(this.membersMenuButton).should('be.visible').click(); 
         cy.contains(this.memberListSelector, name).should('not.exist');
+        cy.screenshot('member-not-visible-in-list');
     }
 }
 

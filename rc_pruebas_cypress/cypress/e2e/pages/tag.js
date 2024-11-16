@@ -18,24 +18,29 @@ class CreateTag extends Tag {
     givenUserIsOnTags() {
         cy.get(this.tagsMenuButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/tags');
+        cy.screenshot('tags-page');
     }
 
     // When: El usuario hace clic en "New Tag" para crear un tag
     whenUserStartsCreatingNewTag() {
         cy.get(this.newTagButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/tags/new');
+        cy.screenshot('new-tag-page');
     }
 
     // When: El usuario ingresa el nombre y descripción del tag
     whenUserEntersTagDetails(name, description) {
         cy.get(this.tagNameField).clear().type(name);
+        cy.screenshot('tag-name-entered'); 
         cy.get(this.tagDescriptionField).clear().type(description);
+        cy.screenshot('tag-description-entered'); 
     }
 
     // When: El usuario guarda el tag
     whenUserSavesTag() {
         cy.get('.gh-main').scrollTo('top');
         cy.get(this.saveTagButton).should('be.visible').click();
+        cy.screenshot('tag-saved');
 
     }
 
@@ -43,6 +48,7 @@ class CreateTag extends Tag {
     thenTagShouldBeVisibleInTagsList(name) {
         cy.get(this.tagsMenuButton).click(); 
         cy.contains(this.tagListSelector, name).should('be.visible');
+        cy.screenshot('tag-visible-in-list'); 
     }
 }
 
@@ -55,25 +61,31 @@ class EditTag extends Tag {
     givenUserIsOnTagsPageAndSelectsTagToEdit(name) {
         cy.get(this.tagsMenuButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/tags');
-        cy.contains(name).click();  // Seleccionar el tag por su nombre
+        cy.screenshot('tags-page-before-edit');
+        cy.contains(name).click();  
+        cy.screenshot('tag-selected-for-edit'); 
     }
 
     // When: El usuario modifica el nombre y la descripción del tag
     whenUserEditsTagDetails(newName, newDescription) {
         cy.get(this.tagNameField).clear().type(newName);
+        cy.screenshot('tag-name-edited'); 
         cy.get(this.tagDescriptionField).clear().type(newDescription);
+        cy.screenshot('tag-description-edited'); 
     }
 
     // When: El usuario guarda los cambios del tag
     whenUserSavesTagChanges() {
         cy.get('.gh-main').scrollTo('top');
         cy.get(this.saveTagButton).should('be.visible').click();
+        cy.screenshot('tag-changes-saved');
     }
 
     // Then: El usuario verifica que el tag se haya actualizado en la lista de tags
     thenTagShouldBeUpdatedInTagsList(newName) {
         cy.get(this.tagsMenuButton).click(); 
         cy.contains(this.tagListSelector, newName).should('be.visible');
+        cy.screenshot('tag-updated-in-list');
     }
 }
 
@@ -88,15 +100,20 @@ class DeleteTag extends Tag {
     givenUserIsOnTagsPageAndSelectsTagToDelete(name) {
         cy.get(this.tagsMenuButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/tags');
+        cy.screenshot('tags-page-before-delete');
         cy.contains(name).click(); 
+        cy.screenshot('tag-selected-for-delete'); 
     }
 
     // When: El usuario hace clic en el botón para eliminar el tag
     whenUserDeletesTag() {
         cy.get('.gh-main').scrollTo('bottom'); 
+        cy.screenshot('scroll-to-delete-button');
         cy.get(this.deleteTagButton).should('be.visible').click();
+        cy.screenshot('delete-button-clicked');
         cy.wait(500); 
         cy.get(this.confirmDeleteTagButton).click();
+        cy.screenshot('delete-confirmed');
         //cy.wait(1000);
     }
 
@@ -104,6 +121,7 @@ class DeleteTag extends Tag {
     thenTagShouldNotBeVisibleInTagsList(name) {
         cy.get(this.tagsMenuButton).click(); 
         cy.contains(this.tagListSelector, name).should('not.exist');
+        cy.screenshot('tag-not-visible-in-list');
     }
 }
 

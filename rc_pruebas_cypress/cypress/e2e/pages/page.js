@@ -23,26 +23,33 @@ class CreatePage extends Page {
     givenUserIsOnPages() {
         cy.get(this.pagesMenuButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/pages');
+        cy.screenshot('pages-list-page');
     }
 
     // When: El usuario hace clic en "New Page" para crear una nueva página
     whenUserStartsCreatingNewPage() {
         cy.get(this.newPageButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/editor/page');
+        cy.screenshot('new-page-editor'); 
     }
 
     // When: El usuario ingresa el título y el contenido de la página
     whenUserEntersPageDetails(title, content) {
         cy.get(this.pageTitleField).clear().type(title);
+        cy.screenshot('page-title-entered');
         cy.get(this.pageContentField).click().type(content);
+        cy.screenshot('page-content-entered'); 
     }
 
     // When: El usuario publica la página
     whenUserPublishesPage() {
         cy.get(this.publishMenuButton).should('be.visible').click();
+        cy.screenshot('publish-menu-opened');
         cy.get(this.publishButton).should('be.visible').click();
+        cy.screenshot('page-published');
         cy.get(this.confirmPublishButton).should('be.visible').click();
         cy.get(this.closeButton).should('be.visible').click();
+        cy.screenshot('closed-page-editor');
     }
 
     // Then: El usuario verifica que la página esté en la lista de páginas
@@ -56,25 +63,23 @@ class ViewPages extends Page {
         super();
     }
 
-    // Then: El usuario verifica que una página con el título especificado esté visible en la lista
-    thenPageShouldBeVisible(title) {
-        cy.contains(this.pageListSelector, title).should('be.visible');
-    }
-
     // Given: El usuario navega a la sección de páginas
     givenUserIsOnPagesSection() {
         cy.get(this.pagesMenuButton).should('be.visible').click();   
-        cy.url().should('include', '/ghost/#/pages');              
+        cy.url().should('include', '/ghost/#/pages');   
+        cy.screenshot('view-pages-list');            
     }
 
     // When: El usuario visualiza la lista de páginas
     whenUserViewsPagesList() {
         cy.get(this.pageListSelector).should('exist'); 
+        cy.screenshot('pages-list-visible'); 
     }
 
     // Then: Verifica que una página con el título especificado esté visible en la lista
     thenPageShouldBeVisible(title) {
         cy.contains(this.pageListSelector, title).should('be.visible'); 
+        cy.screenshot('page-visible'); 
     }
 }
 
@@ -87,18 +92,23 @@ class ValidatePage extends Page {
     // Given: El usuario navega a la lista de páginas
     givenUserIsOnPagesSection() {
         cy.get(this.pagesMenuButton).should('be.visible').click();
+        cy.screenshot('pages-list-before-validation');
         cy.url().should('include', '/ghost/#/pages');
+        cy.screenshot('pages-list-loaded');
     }
 
     // When: El usuario selecciona una página específica para ver sus detalles
     whenUserSelectsPageToValidate(title) {
-        cy.contains(this.pageListSelector, title).click(); // Abre la página para ver sus detalles
+        cy.contains(this.pageListSelector, title).click(); 
+        cy.screenshot('selected-page-for-validation'); 
     }
 
     // Then: El usuario valida que el título y el contenido de la página coincidan con los valores esperados
     thenPageDetailsShouldMatch(expectedTitle, expectedContent) {
         cy.get(this.pageContentSelector).should('contain.text', expectedContent);
+        cy.screenshot('page-title-validated');
         cy.get(this.backToPagesButton).should('be.visible').click();
+        cy.screenshot('page-content-validated');
         cy.url().should('include', '/ghost/#/pages'); 
     }
 }
@@ -114,25 +124,33 @@ class EditPage extends Page {
     // Given: El usuario navega a la lista de páginas y selecciona una página para editar
     givenUserIsOnPagesAndSelectsPageToEdit(title) {
         cy.get(this.pagesMenuButton).should('be.visible').click();
+        cy.screenshot('pages-list-before-edit');
         cy.contains(this.pageListSelector, title).click();
+        cy.screenshot('page-selected-for-edit');
     }
 
     // When: El usuario modifica el título y el contenido de la página
     whenUserEditsPageDetails(newTitle, newContent) {
         cy.get(this.pageTitleField).clear().type(newTitle);
+        cy.screenshot('edited-page-title');
         cy.get(this.pageContentField).clear().type(newContent);
+        cy.screenshot('edited-page-content');
     }
 
     // When: El usuario guarda los cambios
     whenUserUpdatesPage() {
         cy.get(this.publishMenuButton).click();
+        cy.screenshot('publish-menu-opened');
         cy.get(this.updateButton).should('be.visible').click();
+        cy.screenshot('page-updated');
     }
 
     // Then: El usuario verifica que la página editada esté en la lista de páginas
     thenPageShouldBeUpdatedInPagesList(newTitle) {
         cy.get(this.pagesMenuButton).click();
+        cy.screenshot('returned-to-pages-list');
         cy.contains(this.pageListSelector, newTitle).should('be.visible');
+        cy.screenshot('updated-page-visible-in-list');
     }
 }
 
@@ -147,22 +165,29 @@ class UnpublishPage extends Page {
     // Given: El usuario navega a la lista de páginas y selecciona una página para despublicar
     givenUserIsOnPagesAndSelectsPageToUnpublish(title) {
         cy.get(this.pagesMenuButton).should('be.visible').click();
+        cy.screenshot('pages-list-before-unpublish');
         cy.contains(this.pageListSelector, title).click(); 
+        cy.screenshot('page-selected-for-unpublish');
     }
 
     // When: El usuario cambia el estado de la página a borrador
     whenUserUnpublishesPage() {
         cy.get(this.unpublishButton).should('be.visible').click();
+        cy.screenshot('unpublish-button-clicked'); 
         cy.get(this.confirmUnpublishButton).should('be.visible').click();
+        cy.screenshot('unpublish-confirmed');
     }
 
     // Then: El usuario verifica que la página esté en estado de borrador
     thenPageShouldBeInDraftState(title) {
         cy.get(this.confirmDraftPage).should('contain', 'Draft');
+        cy.screenshot('page-in-draft-state');
         cy.wait(500);
         cy.get(this.backToPagesButton).should('be.visible').click();
+        cy.screenshot('returned-to-pages-list');
         cy.wait(500);
         cy.contains(this.pageListSelector, title).should('be.visible');
+        cy.screenshot('draft-page-visible-in-list');
     }
 }
 class DeletePage extends Page {
@@ -176,21 +201,29 @@ class DeletePage extends Page {
     // Given: El usuario navega a la lista de páginas y selecciona la página para eliminar
     givenUserIsOnPagesAndSelectsPageToDelete(title) {
         cy.get(this.pagesMenuButton).should('be.visible').click();
+        cy.screenshot('pages-list-before-delete');
         cy.contains(this.pageListSelector, title).click();
+        cy.screenshot('page-selected-for-delete');
         cy.get(this.settingsMenuButton).should('be.visible').click(); 
+        cy.screenshot('settings-menu-opened');
     }
 
     // When: El usuario confirma la eliminación de la página
     whenUserDeletesPage() {
         cy.get('.settings-menu').scrollTo('bottom');
+        cy.screenshot('scroll-to-delete');
         cy.get(this.deletePageButton).should('be.visible').click();
+        cy.screenshot('delete-button-clicked');
         cy.get(this.confirmDeleteButton).should('be.visible').click();
+        cy.screenshot('delete-confirmed');
     }
 
     // Then: El usuario verifica que la página ya no esté en la lista de páginas
     thenPageShouldNotBeVisibleInPagesList(title) {
         cy.get(this.pagesMenuButton).click();
+        cy.screenshot('returned-to-pages-list'); 
         cy.contains(this.pageListSelector, title).should('not.exist');
+        cy.screenshot('page-not-visible-in-list');
     }
 }
 
