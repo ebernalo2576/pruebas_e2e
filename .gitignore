@@ -10,3 +10,4 @@ base_pruebas_cypress/node_modules
 base_pruebas_kraken/node_modules
 rc_pruebas_cypress/node_modules
 rc_pruebas_kraken/node_modules
+resemble/screenshots/compare
