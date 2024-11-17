@@ -176,7 +176,7 @@ node index.js
 ```   
 
 
-Este script utiliza **Pixelmatch** para comparar las imágenes en las carpetas `resemble/before` y `resemble/after`. Las diferencias se almacenarán en `resemble/compare`.
+Este script utiliza **ResembleJs** para comparar las imágenes en las carpetas `resemble/before` y `resemble/after`. Las diferencias se almacenarán en `resemble/compare`.
 
 
 ### Ver el Reporte
