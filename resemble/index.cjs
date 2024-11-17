@@ -33,7 +33,7 @@ function checkFileExists(file) {
 async function readDirectory(dir) {
     try {
         const items = await fs.promises.readdir(dir, { withFileTypes: true });
-        return items.filter((item) => item.isDirectory()).map((item) => item.name); 
+        return items.filter((item) => item.isDirectory()).map((item) => item.name);
     } catch (error) {
         throw new Error(`Failed to read directory ${dir}: ${error.message}`);
     }
@@ -57,7 +57,6 @@ async function compareDirectories(dirName, subDir3, subDir4) {
                 fs.readFileSync(filePath4),
                 options
             );
-
             if (!data) {
                 console.error(`Comparison failed: No data returned for ${filePath3} vs ${filePath4}`);
                 continue;
@@ -83,22 +82,25 @@ async function compareDirectories(dirName, subDir3, subDir4) {
     return resultInfo;
 }
 
-function screenshotHTML(dirName, imageName) {
+function screenshotHTML(dirName, imageName, mismatchPercentage) {
     return `
         <div class="browser">
             <div class="btitle"><h3>Image: ${imageName}</h3></div>
+            <div class="mismatch-percentage">
+                <p>Mismatch Percentage: <strong>${mismatchPercentage}%</strong></p>
+            </div>
             <div class="imgline">
                 <div class="imgcontainer">
-                    <span>Reference</span>
-                    <img src="./screenshots/before/${dirName}/${imageName}" alt="Reference">
+                    <span class="imgname">Base 4.5</span>
+                    <img class="img2" src="./screenshots/before/${dirName}/${imageName}" alt="Reference">
                 </div>
                 <div class="imgcontainer">
-                    <span>Test</span>
-                    <img src="./screenshots/after/${dirName}/${imageName}" alt="Test">
+                    <span class="imgname">Rc 5.96</span>
+                    <img class="img2" src="./screenshots/after/${dirName}/${imageName}" alt="Test">
                 </div>
                 <div class="imgcontainer">
-                    <span>Diff</span>
-                    <img src="./screenshots/compare/${dirName}/${imageName}" alt="Diff">
+                    <span class="imgname">Diff</span>
+                    <img class="imgfull" src="./screenshots/compare/${dirName}/${imageName}" alt="Diff">
                 </div>
             </div>
         </div>`;
@@ -106,12 +108,14 @@ function screenshotHTML(dirName, imageName) {
 
 function generateReportHTML(datetime, response) {
     const content = Object.entries(response)
-        .map(
-            ([dirName, images]) =>
-                `<h2>${dirName}</h2>${Object.keys(images)
-                    .map((imageName) => screenshotHTML(dirName, imageName))
-                    .join("")}`
-        )
+        .map(([dirName, images]) => {
+            return `<h2>${dirName}</h2>${Object.entries(images)
+                .map(([imageName, data]) => {
+                    const mismatch = data.misMatchPercentage || 0;
+                    return screenshotHTML(dirName, imageName, mismatch);
+                })
+                .join("")}`;
+        })
         .join("");
 
     return `
@@ -163,11 +167,14 @@ async function executeTest() {
 
     return response;
 }
+
 async function main() {
     const datetime = new Date().toISOString().replace(/:/g, "-");
     const response = await executeTest();
     const reportHTML = generateReportHTML(datetime, response);
-    fs.writeFileSync(`./index.html`, reportHTML);
+
+    const outputDir = "./";
+    fs.writeFileSync(`${outputDir}/index.html`, reportHTML);
 
     console.log("Execution finished. Check the report in the docs folder.");
 }
