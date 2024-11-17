@@ -76,6 +76,72 @@ El proyecto está organizado de la siguiente manera:
 
 ¡Listo! Ahora puedes ejecutar y personalizar tus pruebas según sea necesario.
 
+
+## Pruebas de Regresión Visual con Pixelmatch
+
+Para garantizar la consistencia visual entre versiones, utilizamos [Pixelmatch](https://github.com/mapbox/pixelmatch) como herramienta para comparar las capturas de pantalla generadas en las pruebas con Kraken. Este proceso nos permite identificar cambios visuales no deseados entre una versión base y la release candidate (RC).
+
+### Proceso
+
+1. **Captura de Pantallas**: Las pruebas automatizadas con Kraken generan capturas de pantalla de las diferentes vistas y escenarios probados.
+2. **Comparación con Pixelmatch**: Las capturas generadas se comparan con las imágenes de referencia utilizando Pixelmatch, destacando las diferencias en una imagen de salida que resalta los cambios.
+3. **Resultados**: Los resultados de las comparaciones se almacenan en "./pixelmatch/test-results" y pueden ser revisados para identificar inconsistencias visuales.
+
+### Ejecución
+
+Asegúrate de haber ejecutado las pruebas con Kraken y haber generado las capturas de pantalla. Luego, sigue estos pasos:
+
+1. Mueve las capturas de pantalla de la **versión base** a la carpeta:
+
+   ```plaintext
+   ./pixelmatch/before  
+   ```
+
+2. Mueve las capturas de pantalla de la **versión rc** a la carpeta:
+
+   ```plaintext
+   ./pixelmatch/after  
+   ```
+
+3. Asegúrate de que las imágenes a comparar tengan el **mismo nombre** en ambas carpetas.
+
+4. Desde el directorio `./pixelmatch`, ejecuta el script de comparación:
+
+```bash
+node index.js    
+```   
+
+
+Este script utiliza **Pixelmatch** para comparar las imágenes en las carpetas `pixelmatch/before` y `pixelmatch/after`. Las diferencias se almacenarán en `pixelmatch/compare`.
+
+Finalmente, dentro de la carpeta `test-results`, se generará una subcarpeta con el **timestamp** del momento de ejecución de las comparaciones. Si accedes a esta subcarpeta, encontrarás un archivo HTML que contiene el reporte de ejecución.
+
+### Ver el Reporte
+
+Para visualizar el reporte, abre el archivo HTML generado con cualquier navegador web. Por ejemplo:
+
+1. Navega a la carpeta generada:
+   ```plaintext
+   ./test-results/YYYY-MM-DD_HH-MM-S
+   ```   
+
+2. Abre el archivo report.html en tu navegador:
+   - En sistemas Unix (Linux/Mac), puedes usar el siguiente comando:   
+   
+   ```bash
+   open ./test-results/YYYY-MM-DD_HH-MM-SS/report.html   
+   ```   
+
+   - En Windows, simplemente haz doble clic en el archivo desde el explorador de archivos, ejecútalo con LiveServer o utiliza:   
+
+   ```bash
+   start ./test-results/YYYY-MM-DD_HH-MM-SS/report.html   
+   ```   
+
+
+¡Ahora podrás visualizar las diferencias y resultados directamente en el navegador!
+
+
 # Cypress
 ## 1. Requisitos Previos
 

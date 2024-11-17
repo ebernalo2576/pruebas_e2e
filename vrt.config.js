@@ -5,3 +5,5 @@ export const options = {
     aaColor: [255, 0, 0],
     diffColor: [255, 0, 255]
   }
+
+export const mismatchMaxValue = 8;
