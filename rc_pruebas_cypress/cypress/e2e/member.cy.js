@@ -19,19 +19,16 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         loginPage.whenUserLogsIn();
         loginPage.thenUserShouldSeeDashboard();
 
-        // Given: El usuario navega a la sección de miembros
+        // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
-        // When: El usuario comienza a crear un nuevo miembro
-        createMember.whenUserStartsCreatingNewMember();
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
 
-        // When: El usuario ingresa los detalles del miembro
+        // When El usuario ingresa los detalles del miembro
         createMember.whenUserEntersMemberDetails(memberName, memberEmail);
 
-        // When: El usuario guarda el miembro
-        createMember.whenUserSavesMember();
-
-        // Then: El usuario verifica que el miembro esté visible en la lista de miembros
+        // Then El usuario verifica que el miembro esté visible en la lista de miembros
         createMember.thenMemberShouldBeVisibleInMembersList(memberName);
     });
 
@@ -41,13 +38,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         loginPage.whenUserLogsIn();                    
         loginPage.thenUserShouldSeeDashboard();   
     
-        // Given: El usuario navega a la sección de miembros
+        // Given El usuario navega a la sección de miembros
         viewMembers.givenUserIsOnMembersPage();  
     
-        // When: El usuario visualiza la lista de miembros
+        // When El usuario visualiza la lista de miembros
         viewMembers.whenUserViewsMembersList();   
     
-        // Then: El usuario verifica que haya miembros en la lista
+        // Then El usuario verifica que haya miembros en la lista
         viewMembers.thenMembersListShouldBeVisible();  
     });
 
@@ -57,16 +54,16 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         loginPage.whenUserLogsIn();                
         loginPage.thenUserShouldSeeDashboard();      
     
-        // Given: El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        // Given El usuario navega a la lista de miembros y selecciona un miembro específico para editar
         editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
     
-        // When: El usuario edita el nombre y el correo del miembro
+        // When El usuario edita el nombre y el correo del miembro
         editMember.whenUserEditsMemberDetails(newMemberName, newMemberEmail);
     
-        // When: El usuario guarda los cambios en el miembro
+        // When El usuario guarda los cambios en el miembro
         editMember.whenUserSavesEditedMember();    
     
-        // Then: El usuario verifica que el miembro editado esté en la lista de miembros con el nuevo nombre
+        // Then El usuario verifica que el miembro editado esté en la lista de miembros con el nuevo nombre
         editMember.thenMemberShouldBeUpdatedInMembersList(newMemberName); 
     });
 
@@ -76,13 +73,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         loginPage.whenUserLogsIn();                    
         loginPage.thenUserShouldSeeDashboard();       
     
-        // Given: El usuario navega a la lista de miembros y selecciona un miembro específico para eliminar
+        // Given El usuario navega a la lista de miembros y selecciona un miembro específico para eliminar
         deleteMember.givenUserIsOnMembersPageAndSelectsMemberToDelete(newMemberName); 
     
-        // When: El usuario confirma la eliminación del miembro
+        // When El usuario confirma la eliminación del miembro
         deleteMember.whenUserDeletesMember();        
     
-        // Then: El usuario verifica que el miembro eliminado ya no esté en la lista de miembros
+        // Then El usuario verifica que el miembro eliminado ya no esté en la lista de miembros
         deleteMember.thenMemberShouldNotBeVisibleInMembersList(newMemberName);
     });
 });

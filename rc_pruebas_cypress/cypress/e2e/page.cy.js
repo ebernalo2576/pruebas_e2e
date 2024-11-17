@@ -21,19 +21,17 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         loginPage.whenUserLogsIn();
         loginPage.thenUserShouldSeeDashboard();
 
-        // Given: El usuario navega a la sección de páginas
+        // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
 
-        // When: El usuario comienza a crear una nueva página
-        createPage.whenUserStartsCreatingNewPage();
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
 
-        // When: El usuario ingresa los detalles de la página
+        // When El usuario ingresa los detalles de la página
         createPage.whenUserEntersPageDetails(pageTitle, pageContent);
 
-        // When: El usuario publica la página
-        createPage.whenUserPublishesPage();
 
-        // Then: El usuario valida que la página esté visible en la lista de páginas
+        // Then El usuario valida que la página esté visible en la lista de páginas
         createPage.thenPageShouldBeVisibleInPagesList(pageTitle);
     });
 
@@ -43,13 +41,13 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         loginPage.whenUserLogsIn();
         loginPage.thenUserShouldSeeDashboard();
     
-        // Given: El usuario navega a la sección de páginas
+        // Given El usuario navega a la sección de páginas
         viewPages.givenUserIsOnPagesSection();
     
-        // When: El usuario visualiza la lista de páginas
+        // When El usuario visualiza la lista de páginas
         viewPages.whenUserViewsPagesList();
     
-        // Then: El usuario verifica que la página con el título especificado esté visible en la lista
+        // Then El usuario verifica que la página con el título especificado esté visible en la lista
         viewPages.thenPageShouldBeVisible(pageTitle);
     });
 
@@ -59,13 +57,13 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         loginPage.whenUserLogsIn();                    
         loginPage.thenUserShouldSeeDashboard();       
     
-        // Given: El usuario navega a la sección de páginas
+        // Given El usuario navega a la sección de páginas
         validatePage.givenUserIsOnPagesSection();   
     
-        // When: El usuario selecciona la página para ver sus detalles
+        // When El usuario selecciona la página para ver sus detalles
         validatePage.whenUserSelectsPageToValidate(pageTitle);
     
-        // Then: El usuario valida que el título y el contenido de la página coincidan con los valores esperados
+        // Then El usuario valida que el título y el contenido de la página coincidan con los valores esperados
         validatePage.thenPageDetailsShouldMatch(pageTitle, pageContent);
     });
 
@@ -75,16 +73,13 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         loginPage.whenUserLogsIn();                
         loginPage.thenUserShouldSeeDashboard();    
 
-        // Given: El usuario navega a la lista de páginas y selecciona una página para editar
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
         editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
     
-        // When: El usuario edita el título y el contenido de la página
-        editPage.whenUserEditsPageDetails(newPageTitle, newPageContent);
-
-        // When: El usuario guarda los cambios en la página
-        editPage.whenUserUpdatesPage();          
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(newPageTitle, newPageContent);       
     
-        // Then: El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
         editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle); 
     });
 
@@ -94,13 +89,13 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         loginPage.whenUserLogsIn();                 
         loginPage.thenUserShouldSeeDashboard();      
     
-        // Given: El usuario navega a la lista de páginas y selecciona la página para despublicar
+        // Given El usuario navega a la lista de páginas y selecciona la página para despublicar
         unpublishPage.givenUserIsOnPagesAndSelectsPageToUnpublish(newPageTitle);
     
-        // When: El usuario cambia el estado de la página a borrador
+        // When El usuario cambia el estado de la página a borrador
         unpublishPage.whenUserUnpublishesPage();     
     
-        // Then: El usuario verifica que la página esté en estado de borrador en la lista de páginas
+        // Then El usuario verifica que la página esté en estado de borrador en la lista de páginas
         unpublishPage.thenPageShouldBeInDraftState(newPageTitle);
     });
 
@@ -110,13 +105,13 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         loginPage.whenUserLogsIn();                 
         loginPage.thenUserShouldSeeDashboard();     
     
-        // Given: El usuario navega a la lista de páginas y selecciona la página que desea eliminar
+        // Given El usuario navega a la lista de páginas y selecciona la página que desea eliminar
         deletePage.givenUserIsOnPagesAndSelectsPageToDelete(newPageTitle); 
     
-        // When: El usuario confirma la eliminación de la página
+        // When El usuario confirma la eliminación de la página
         deletePage.whenUserDeletesPage();      
     
-        // Then: El usuario verifica que la página eliminada ya no esté en la lista de páginas
+        // Then El usuario verifica que la página eliminada ya no esté en la lista de páginas
         deletePage.thenPageShouldNotBeVisibleInPagesList(newPageTitle);
     });
 });

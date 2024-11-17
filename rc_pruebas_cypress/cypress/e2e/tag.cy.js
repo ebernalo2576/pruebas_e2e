@@ -23,19 +23,16 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
-        // Given: El usuario navega a la página de tags
+        // Given El usuario navega a la página de tags
         createTag.givenUserIsOnTags();
 
-        // When: El usuario comienza a crear un nuevo tag
-        createTag.whenUserStartsCreatingNewTag();
+        // and El usuario comienza a crear un nuevo tag
+        createTag.andGivenUserStartsCreatingNewTag();
 
-        // When: El usuario ingresa los detalles del tag
+        // When El usuario ingresa los detalles del tag
         createTag.whenUserEntersTagDetails(tagName, tagDescription);
 
-        // When: El usuario guarda el tag
-        createTag.whenUserSavesTag();
-
-        // Then: El usuario valida que el tag esté visible en la lista de tags
+        // Then El usuario valida que el tag esté visible en la lista de tags
         createTag.thenTagShouldBeVisibleInTagsList(tagName);
     });
 
@@ -45,16 +42,16 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
-        // Given: El usuario está en la página de tags y selecciona el tag a editar
+        // Given El usuario está en la página de tags y selecciona el tag a editar
         editTag.givenUserIsOnTagsPageAndSelectsTagToEdit(tagName);
 
-        // When: El usuario modifica el nombre y descripción del tag
+        // When El usuario modifica el nombre y descripción del tag
         editTag.whenUserEditsTagDetails(newTagName, newTagDescription);
 
-        // When: El usuario guarda los cambios del tag
+        // When El usuario guarda los cambios del tag
         editTag.whenUserSavesTagChanges();
 
-        // Then: El usuario verifica que el tag se haya actualizado en la lista de tags
+        // Then El usuario verifica que el tag se haya actualizado en la lista de tags
         editTag.thenTagShouldBeUpdatedInTagsList(newTagName);
     });
 
@@ -64,13 +61,13 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
-        // Given: El usuario está en la página de tags y selecciona el tag a eliminar
+        // Given El usuario está en la página de tags y selecciona el tag a eliminar
         deleteTag.givenUserIsOnTagsPageAndSelectsTagToDelete(newTagName);
 
-        // When: El usuario elimina el tag
+        // When El usuario elimina el tag
         deleteTag.whenUserDeletesTag();
 
-        // Then: El usuario verifica que el tag ya no esté en la lista de tags
+        // Then El usuario verifica que el tag ya no esté en la lista de tags
         deleteTag.thenTagShouldNotBeVisibleInTagsList(newTagName);
     });
 });
