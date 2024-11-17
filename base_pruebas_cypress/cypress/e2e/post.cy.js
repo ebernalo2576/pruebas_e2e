@@ -20,16 +20,13 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
-        // Given: El usuario está en la página de creación de posts
+        // Given El usuario está en la página de creación de posts
         createPost.givenUserIsOnPostCreation();
 
-        // When: El usuario introduce el título y el contenido del post
+        // When El usuario introduce el título y el contenido del post
         createPost.whenUserEntersPostDetails(postTitle, postContent);
 
-        // When: El usuario publica el post
-        createPost.andWhenUserPublishesPost();
-
-        // Then: El post debería estar visible en la lista de posts
+        // Then El post debería estar visible en la lista de posts
         createPost.thenPostShouldBeVisibleInPostsList(postTitle);
     });
     
@@ -39,19 +36,16 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
-        // Given: El usuario está en la lista de posts
+        // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
 
-        // When: El usuario selecciona un post para editar
-        editPost.whenUserSelectsPostToEdit(postTitle);
+        // When El usuario selecciona un post para editar
+        editPost.andGivenUserSelectsPostToEdit(postTitle);
 
-        // When: El usuario edita el título y el contenido del post
+        // When El usuario edita el título y el contenido del post
         editPost.whenUserEditsPostDetails(newTitle, newContent);
 
-        // When: El usuario actualiza el post
-        editPost.whenUserUpdatesPost();
-
-        // Then: El post debería estar visible en la lista de posts con el nuevo título
+        // Then El post debería estar visible en la lista de posts con el nuevo título
         editPost.thenPostShouldBeUpdated(newTitle);
     });
     
@@ -61,17 +55,17 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost Version Base'
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
-        // Given: El usuario está en la lista de posts
+        // Given El usuario está en la lista de posts
         deletePost.givenUserIsOnPostsList();
 
-        // When: El usuario selecciona un post para eliminar
+        // When El usuario selecciona un post para eliminar
         deletePost.whenUserSelectsPostToDelete(newTitle);
 
-        // When: El usuario confirma la eliminación del post
-        deletePost.whenUserConfirmsDeletion();
+        // When El usuario confirma la eliminación del post
+        deletePost.thenUserConfirmsDeletion();
 
-        // Then: El post no debería estar visible en la lista de posts
-        deletePost.thenPostShouldNotBeVisibleInPostsList(newTitle);
+        // Then El post no debería estar visible en la lista de posts
+        deletePost.andThenPostShouldNotBeVisibleInPostsList(newTitle);
     });
     
     

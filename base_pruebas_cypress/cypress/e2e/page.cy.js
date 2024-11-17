@@ -17,19 +17,16 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         loginPage.whenUserLogsIn();
         loginPage.thenUserShouldSeeDashboard();
 
-        // Given: El usuario navega a la sección de páginas
+        // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
 
-        // When: El usuario comienza a crear una nueva página
-        createPage.whenUserStartsCreatingNewPage();
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
 
-        // When: El usuario ingresa los detalles de la página
+        // When El usuario ingresa los detalles de la página
         createPage.whenUserEntersPageDetails(pageTitle, pageContent);
 
-        // When: El usuario publica la página
-        createPage.whenUserPublishesPage();
-
-        // Then: El usuario valida que la página esté visible en la lista de páginas
+        // Then El usuario valida que la página esté visible en la lista de páginas
         createPage.thenPageShouldBeVisibleInPagesList(pageTitle);
     });
 
@@ -39,16 +36,13 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         loginPage.whenUserLogsIn();                
         loginPage.thenUserShouldSeeDashboard();    
 
-        // Given: El usuario navega a la lista de páginas y selecciona una página para editar
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
         editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
     
-        // When: El usuario edita el título y el contenido de la página
-        editPage.whenUserEditsPageDetails(newPageTitle, newPageContent);
-
-        // When: El usuario guarda los cambios en la página
-        editPage.whenUserUpdatesPage();          
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(newPageTitle, newPageContent);         
     
-        // Then: El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
         editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle); 
     });
 

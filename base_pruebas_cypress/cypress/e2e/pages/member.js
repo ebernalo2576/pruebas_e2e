@@ -14,15 +14,15 @@ class CreateMember extends Member {
         super();
     }
 
-    // Given: El usuario navega a la sección de miembros
+    // Given El usuario navega a la sección de miembros
     givenUserIsOnMembersPage() {
         cy.get(this.membersMenuButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/members');
         cy.screenshot('members-page-loaded'); 
     }
 
-    // When: El usuario hace clic en "New Member" para crear un nuevo miembro
-    whenUserStartsCreatingNewMember() {
+    // and El usuario hace clic en "New Member" para crear un nuevo miembro
+    andGivenUserStartsCreatingNewMember() {
         cy.get(this.newMemberButton).should('be.visible').click();
         cy.screenshot('entered-name');
         cy.url().should('include', '/ghost/#/members/new');
@@ -30,23 +30,19 @@ class CreateMember extends Member {
  
     }
 
-    // When: El usuario ingresa el nombre y correo electrónico del miembro
+    // When El usuario ingresa el nombre y correo electrónico del miembro
     whenUserEntersMemberDetails(name, email) {
         
         cy.get(this.memberNameField).type(name);
         cy.screenshot('entered-name');
         cy.get(this.memberEmailField).type(email);
         cy.screenshot('entered-email'); 
-    }
-
-    // When: El usuario guarda el miembro
-    whenUserSavesMember() {
         cy.get('.gh-main').scrollTo('top');
         cy.get(this.saveMemberButton).should('be.visible').click();
         cy.screenshot('saved-member');
     }
 
-    // Then: El usuario verifica que el miembro esté visible en la lista de miembros
+    // Then El usuario verifica que el miembro esté visible en la lista de miembros
     thenMemberShouldBeVisibleInMembersList(name) {
         cy.get(this.membersMenuButton).click(); 
         cy.contains(this.memberListSelector, name).should('be.visible');
@@ -62,7 +58,7 @@ class DeleteMember extends Member {
         this.confirmDeleteButton = 'div > section > .modal-footer > .gh-btn-red.gh-btn-icon > span';    
     }
 
-    // Given: El usuario navega a la lista de miembros y selecciona el miembro para eliminar
+    // Given El usuario navega a la lista de miembros y selecciona el miembro para eliminar
     givenUserIsOnMembersPageAndSelectsMemberToDelete(name) {
         cy.get(this.membersMenuButton).should('be.visible').click();
         cy.screenshot('members-page-before-delete');
@@ -71,7 +67,7 @@ class DeleteMember extends Member {
         cy.screenshot('selected-member-to-delete'); 
     }
 
-    // When: El usuario confirma la eliminación del miembro
+    // When El usuario confirma la eliminación del miembro
     whenUserDeletesMember() {
         cy.get(this.deleteMemberButton).should('be.visible').click();
         cy.screenshot('clicked-delete-member'); 
@@ -80,7 +76,7 @@ class DeleteMember extends Member {
         cy.screenshot('confirmed-delete');
     }
 
-    // Then: El usuario verifica que el miembro ya no esté en la lista de miembros
+    // Then El usuario verifica que el miembro ya no esté en la lista de miembros
     thenMemberShouldNotBeVisibleInMembersList(name) {
         cy.log('ingresa por aca');
         cy.get(this.membersMenuButton).should('be.visible').click(); 

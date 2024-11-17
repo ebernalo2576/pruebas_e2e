@@ -14,38 +14,32 @@ class CreateTag extends Tag {
         this.newTagButton = 'a.gh-btn.gh-btn-primary';                           
     }
 
-    // Given: El usuario navega a la página de tags
+    // Given El usuario navega a la página de tags
     givenUserIsOnTags() {
         cy.get(this.tagsMenuButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/tags');
         cy.screenshot('tags-page');
     }
 
-    // When: El usuario hace clic en "New Tag" para crear un tag
-    whenUserStartsCreatingNewTag() {
+    // When El usuario hace clic en "New Tag" para crear un tag
+    andGivenUserStartsCreatingNewTag() {
         cy.get(this.newTagButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/tags/new');
         cy.screenshot('new-tag-page');
     }
 
-    // When: El usuario ingresa el nombre y descripción del tag
+    // When El usuario ingresa el nombre y descripción del tag
     whenUserEntersTagDetails(name, description) {
         cy.get(this.tagNameField).clear().type(name, {force: true});
         cy.screenshot('tag-name-entered');
         cy.get(this.tagDescriptionField).clear().type(description, {force: true});
         cy.screenshot('tag-description-entered');
-    }
-
-    // When: El usuario guarda el tag
-    whenUserSavesTag() {
         cy.get('.gh-main').scrollTo('top');
-        //cy.get(this.saveTagButton).should('be.visible').click();
         cy.contains(this.saveTagButton, "Save").should('be.visible').click();
         cy.screenshot('tag-saved');
-
     }
 
-    // Then: El usuario valida que el tag esté en la lista de tags
+    // Then El usuario valida que el tag esté en la lista de tags
     thenTagShouldBeVisibleInTagsList(name) {
         cy.get(this.tagsMenuButton).first().click(); 
         cy.contains(this.tagListSelector, name).should('be.visible');
@@ -60,7 +54,7 @@ class DeleteTag extends Tag {
         this.confirmDeleteTagButton = '.modal-footer .gh-btn-red';
     }
 
-    // Given: El usuario está en la página de tags y selecciona el tag a eliminar
+    // Given El usuario está en la página de tags y selecciona el tag a eliminar
     givenUserIsOnTagsPageAndSelectsTagToDelete(name) {
         cy.get(this.tagsMenuButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/tags');
@@ -69,7 +63,7 @@ class DeleteTag extends Tag {
         cy.screenshot('tag-selected-for-delete'); 
     }
 
-    // When: El usuario hace clic en el botón para eliminar el tag
+    // When El usuario hace clic en el botón para eliminar el tag
     whenUserDeletesTag() {
         cy.get('.gh-main').scrollTo('bottom'); 
         cy.get(this.deleteTagButton).should('be.visible').click();
@@ -80,7 +74,7 @@ class DeleteTag extends Tag {
         //cy.wait(1000);
     }
 
-    // Then: El usuario verifica que el tag ya no está en la lista de tags
+    // Then El usuario verifica que el tag ya no está en la lista de tags
     thenTagShouldNotBeVisibleInTagsList(name) {
         cy.get(this.tagsMenuButton).first().click(); 
         cy.contains(this.tagListSelector, name).should('not.exist');

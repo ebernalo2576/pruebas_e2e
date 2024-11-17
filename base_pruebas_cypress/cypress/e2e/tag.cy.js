@@ -9,7 +9,7 @@ const tagDescription = faker.lorem.sentence();
        
 
 describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
-    Cypress.on('uncaught:exception', (err) => {
+    Cypress.on('uncaughtexception', (err) => {
         if (err.message.includes('TransitionAborted')) {
             return false; 
         }
@@ -21,19 +21,16 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
-        // Given: El usuario navega a la página de tags
+        // Given El usuario navega a la página de tags
         createTag.givenUserIsOnTags();
 
-        // When: El usuario comienza a crear un nuevo tag
-        createTag.whenUserStartsCreatingNewTag();
+        // When El usuario comienza a crear un nuevo tag
+        createTag.andGivenUserStartsCreatingNewTag();
 
-        // When: El usuario ingresa los detalles del tag
+        // When El usuario ingresa los detalles del tag
         createTag.whenUserEntersTagDetails(tagName, tagDescription);
 
-        // When: El usuario guarda el tag
-        createTag.whenUserSavesTag();
-
-        // Then: El usuario valida que el tag esté visible en la lista de tags
+        // Then El usuario valida que el tag esté visible en la lista de tags
         createTag.thenTagShouldBeVisibleInTagsList(tagName);
     });
 
@@ -43,13 +40,13 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
-        // Given: El usuario está en la página de tags y selecciona el tag a eliminar
+        // Given El usuario está en la página de tags y selecciona el tag a eliminar
         deleteTag.givenUserIsOnTagsPageAndSelectsTagToDelete(tagName);
 
-        // When: El usuario elimina el tag
+        // When El usuario elimina el tag
         deleteTag.whenUserDeletesTag();
 
-        // Then: El usuario verifica que el tag ya no esté en la lista de tags
+        // Then El usuario verifica que el tag ya no esté en la lista de tags
         deleteTag.thenTagShouldNotBeVisibleInTagsList(tagName);
     });
 });

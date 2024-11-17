@@ -16,19 +16,16 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         loginPage.whenUserLogsIn();
         loginPage.thenUserShouldSeeDashboard();
 
-        // Given: El usuario navega a la sección de miembros
+        // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
-        // When: El usuario comienza a crear un nuevo miembro
-        createMember.whenUserStartsCreatingNewMember();
+        // and El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
 
-        // When: El usuario ingresa los detalles del miembro
+        // Given El usuario ingresa los detalles del miembro
         createMember.whenUserEntersMemberDetails(memberName, memberEmail);
 
-        // When: El usuario guarda el miembro
-        createMember.whenUserSavesMember();
-
-        // Then: El usuario verifica que el miembro esté visible en la lista de miembros
+        // Then El usuario verifica que el miembro esté visible en la lista de miembros
         createMember.thenMemberShouldBeVisibleInMembersList(memberName);
     });
 
@@ -38,13 +35,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         loginPage.whenUserLogsIn();                    
         loginPage.thenUserShouldSeeDashboard();       
     
-        // Given: El usuario navega a la lista de miembros y selecciona un miembro específico para eliminar
+        // Given El usuario navega a la lista de miembros y selecciona un miembro específico para eliminar
         deleteMember.givenUserIsOnMembersPageAndSelectsMemberToDelete(memberName); 
     
-        // When: El usuario confirma la eliminación del miembro
+        // When El usuario confirma la eliminación del miembro
         deleteMember.whenUserDeletesMember();        
     
-        // Then: El usuario verifica que el miembro eliminado ya no esté en la lista de miembros
+        // Then El usuario verifica que el miembro eliminado ya no esté en la lista de miembros
         deleteMember.thenMemberShouldNotBeVisibleInMembersList(memberName);
     });
 });
