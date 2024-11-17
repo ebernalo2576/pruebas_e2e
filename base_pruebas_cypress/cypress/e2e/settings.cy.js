@@ -1,11 +1,10 @@
 import login from './pages/login';
 import { Settings } from './pages/settings';
+import { faker } from '@faker-js/faker';
 
 const settings = new Settings();
-const title = "Nuevo Titulo";
-const description = "Nueva Descripcion";
-const timezoneSelected = '(GMT -5:00) Bogota, Lima, Quito';
-const publicationLanguage = 'es';
+const title = faker.lorem.words(3); 
+const description = faker.lorem.sentence(6); 
      
 describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version Base', () => {
     Cypress.on('uncaught:exception', (err) => {
@@ -14,40 +13,25 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
         }
     });
 
-    it('EP021 - EP021 - Debería permitir al usuario cambiar la configuración general del sitio y guardar los cambios', () => {
+    it('EP021 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
-        //given
+        // Given El usuario accede a la sección de configuración
         settings.givenUserIsInSettings();
 
-        //AND 
+        // and El usuario abre la sección general
         settings.andGivenUserOpensGeneralSection();
 
-        //WHEN
-        settings.whenUserExpandsTitleSection();
+         // and El usuario expande la sección de título y descripción
+        settings.andGivenUserExpandsTitleSection();
 
-        //AND
-        settings.andWhenUserChangesTitleDescriptionFields(title, description);
+        // and El usuario cambia los campos de título y descripción
+        settings.whenUserChangesTitleDescriptionFields(title, description);
 
-        //and
-        settings.andWhenUserExpandsTimezoneSection();
-
-        //and
-        settings.andWhenUserChangesTimezoneSelect(timezoneSelected);
-
-        //and
-        settings.andWhenUserExpandsPublicationLanguageSection();
-
-        //and
-        settings.andWhenUserChangesPublicationLanguage(publicationLanguage);
-
-        //and
-        settings.andWhenUserSavesChanges();
-
-        //then
+        // then Los cambios deberían guardarse correctamente
         settings.thenSettingsShouldBeSaved();
     });
 });

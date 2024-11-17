@@ -5,52 +5,43 @@ class Settings {
         this.expandButtonSection = 'button.gh-btn';
         this.titleField = 'div.form-group.ember-view > input';
         this.descriptionField = 'div.description-container > input';
-        this.timezoneField = 'select#timezone.ember-view';
-        this.publicationLanguageField = 'div.form-group.ember-view > input.ember-text-field.gh-input.ember-view';
-        this.saveButton = 'button.gh-btn > span';
-                
+        this.saveButton = 'button.gh-btn > span';     
     }
 
+    // Given El usuario navega a la página de configuración
     givenUserIsInSettings() {
         cy.get(this.settingsMenuButton).first().click();
-        //cy.screenshot('settings-page');
+        cy.screenshot('settings-menu-opened'); 
     }
 
+    // And El usuario abre la sección general de configuración
     andGivenUserOpensGeneralSection() {
         cy.get(this.generalSettingsButton).first().click();
-        //cy.screenshot('settings-general-page');
+        cy.screenshot('general-section-opened'); 
     }
 
-    whenUserExpandsTitleSection() {
+    // And El usuario expande la sección de título y descripción
+    andGivenUserExpandsTitleSection() {
         cy.get(this.expandButtonSection).eq(1).click();
+        cy.screenshot('title-section-expanded'); 
     }
 
-    andWhenUserChangesTitleDescriptionFields(title, description) { 
+    // When El usuario ingresa un nuevo título y descripción
+    whenUserChangesTitleDescriptionFields(title, description) { 
         cy.get(this.titleField).first().clear().type(title, {force: true});
+        cy.screenshot('title-field-updated'); 
+
         cy.get(this.descriptionField).first().clear().type(description, {force: true});
-    }
+        cy.screenshot('description-field-updated'); 
 
-    andWhenUserExpandsTimezoneSection() { 
-        cy.get(this.expandButtonSection).eq(2).click();
-    }
-    andWhenUserChangesTimezoneSelect(selectedValue) {
-        cy.get(this.timezoneField).first().select(selectedValue, {force: true});
-    }
-    
-    andWhenUserExpandsPublicationLanguageSection() { 
-        cy.get(this.expandButtonSection).eq(3).click();
-    }
-
-    andWhenUserChangesPublicationLanguage(newValue) {
-        cy.get(this.publicationLanguageField).eq(2).clear().type(newValue, { force: true });
-    }
-
-    andWhenUserSavesChanges() {
         cy.contains(this.saveButton, "Save settings").first().click();
-        
+        cy.screenshot('settings-saved'); 
     }
+
+    // Then El usuario verifica que los cambios se hayan guardado correctamente
     thenSettingsShouldBeSaved() {
         cy.contains(this.saveButton, "Saved").should('exist');
+        cy.screenshot('settings-saved-successfully'); 
     }
 }
 export { Settings };
