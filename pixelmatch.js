@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
+import sharp from 'sharp'; // Importa sharp
 import { options } from './vrt.config.js';
 
 // Calcula la ruta del archivo actual
@@ -24,27 +25,48 @@ const referenceImages = fs.readdirSync(beforePath);
 const testImages = fs.readdirSync(afterPath);
 
 // Compara las imágenes que coinciden por nombre
-referenceImages.forEach((fileName) => {
+referenceImages.forEach(async (fileName) => {
     if (testImages.includes(fileName)) {
         const referencePath = path.join(beforePath, fileName);
         const testPath = path.join(afterPath, fileName);
         const diffPath = path.join(comparePath, `diff-${fileName}`);
 
-        // Carga las imágenes PNG
-        const img1 = PNG.sync.read(fs.readFileSync(referencePath));
-        const img2 = PNG.sync.read(fs.readFileSync(testPath));
-        const { width, height } = img1;
+        // Carga las imágenes con sharp
+        const referenceBuffer = fs.readFileSync(referencePath);
+        const testBuffer = fs.readFileSync(testPath);
+
+        const referenceImg = PNG.sync.read(referenceBuffer);
+        let testImg = PNG.sync.read(testBuffer);
+
+        // Verifica si las dimensiones coinciden
+        if (
+            referenceImg.width !== testImg.width ||
+            referenceImg.height !== testImg.height
+        ) {
+            console.log(
+                `Redimensionando ${fileName} para igualar dimensiones...`
+            );
+
+            // Redimensiona la imagen de prueba
+            const resizedTestBuffer = await sharp(testBuffer)
+                .resize(referenceImg.width, referenceImg.height)
+                .toBuffer();
+            testImg = PNG.sync.read(resizedTestBuffer);
+        }
 
         // Crea una nueva imagen para la diferencia
-        const diff = new PNG({ width, height });
+        const diff = new PNG({
+            width: referenceImg.width,
+            height: referenceImg.height,
+        });
 
         // Realiza la comparación
         const numDiffPixels = pixelmatch(
-            img1.data,
-            img2.data,
+            referenceImg.data,
+            testImg.data,
             diff.data,
-            width,
-            height,
+            referenceImg.width,
+            referenceImg.height,
             options
         );
 
@@ -56,3 +78,4 @@ referenceImages.forEach((fileName) => {
         console.log(`No se encontró la imagen de prueba para ${fileName}`);
     }
 });
+
