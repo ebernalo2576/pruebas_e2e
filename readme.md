@@ -35,7 +35,24 @@ Link de la Wiki: [Aqui](https://github.com/ebernalo2576/pruebas_e2e/wiki)
   cd pruebas_e2e/pruebas_kraken
   ```
 
-3. **Instalar Dependencias del Proyecto**
+2. Ubicación de carpeta
+
+#### Opción 1: Versión RC (Ghost 5.96)
+
+Para ubicarse en la ruta de la versión RC 
+
+```bash
+cd pruebas_e2e/rc_pruebas_kraken
+```
+
+#### Opción 2: Versión base (Ghost 4.5)
+
+Para ubicarse en la ruta de la versión RC 
+
+```bash
+cd pruebas_e2e/base_pruebas_kraken
+
+4. **Instalar Dependencias del Proyecto**
 
    Desde el directorio `pruebas_kraken`, ejecute:
    ```bash
@@ -141,6 +158,101 @@ Para visualizar el reporte, abre el archivo HTML generado con cualquier navegado
 
 ¡Ahora podrás visualizar las diferencias y resultados directamente en el navegador!
 
+***
+
+# Cypress
+## 1. Requisitos Previos
+
+   - Node.js (versión 20.18.0 es la recomendada)
+   - Git
+   - Cypress (si no está instalado, se instalará como parte de este proyecto)
+
+
+### 2. Instalación
+
+
+#### Paso 1: Clonar el Repositorio
+Clona este repositorio en tu máquina local usando el siguiente comando:
+
+```bash
+git clone https://github.com/ebernalo2576/pruebas_e2e
+cd pruebas_e2e/pruebas_cypress
+```
+#### Paso 2: Ubicación de carpeta
+
+#### Opción 1: Versión RC (Ghost 5.96)
+
+Para ubicarse en la ruta de la versión RC 
+
+```bash
+cd pruebas_e2e/rc_pruebas_cypress
+```
+
+#### Opción 2: Versión base (Ghost 4.5)
+
+Para ubicarse en la ruta de la versión RC 
+
+```bash
+cd pruebas_e2e/base_pruebas_cypress
+```
+
+#### Paso 3: Instalar las Dependencias
+Instala todas las dependencias necesarias usando npm. Esto incluirá Cypress y cualquier otra dependencia requerida para los tests.
+
+```bash
+npm install
+```
+
+### Paso 4: Configuración del Entorno de Pruebas
+
+Configura el archivo `cypress.env.json` en la raíz del proyecto para agregar las variables de entorno necesarias (por ejemplo, URL de Ghost, credenciales de usuario, etc.). Un ejemplo de configuración:
+
+```json
+{
+  "GHOST_URL": "http://localhost:2368",
+  "GHOST_USER": "tu_usuario@example.com",
+  "GHOST_PASSWORD": "tu_contraseña"
+}
+```
+
+### Ejecución de las Pruebas
+
+#### Opción 1: Ejecución en el Modo Interactivo (Cypress UI)
+
+Para ejecutar las pruebas en el modo interactivo de Cypress (útil para ver cada paso de las pruebas en detalle):
+
+```bash
+npx cypress open
+```
+
+Luego, selecciona el archivo de prueba que deseas ejecutar en la interfaz de Cypress.
+
+#### Opción 2: Ejecución en Modo Headless (sin interfaz)
+
+Para ejecutar todas las pruebas en modo headless (sin abrir la interfaz de Cypress):
+
+```bash
+npx cypress run
+```
+
+Esto ejecutará todos los escenarios de prueba de manera continua y mostrará los resultados en la consola.
+
+### Paso 5: Resultados de las Pruebas
+
+- **En Modo Interactivo**: Los resultados se muestran en la interfaz de Cypress en tiempo real mientras se ejecutan las pruebas.
+- **En Modo Headless**: Al final de la ejecución, la consola mostrará un resumen del resultado de todas las pruebas (pasadas o fallidas).
+- **Capturas y Videos**: Cypress genera capturas de pantalla y videos de cada prueba (especialmente útil para pruebas fallidas). Puedes encontrar estos archivos en las carpetas `cypress/screenshots` y `cypress/videos`.
+
+***
+
+### Notas Adicionales
+
+- Asegúrate de que el servidor de Ghost esté activo y accesible en la URL configurada antes de ejecutar las pruebas.
+- En caso de cualquier error en la configuración, revisa el archivo `cypress.env.json` para asegurarte de que las variables de entorno son correctas.
+
+**¡Listo!** Ahora deberías tener todo lo necesario para ejecutar y evaluar los escenarios de prueba en Ghost.
+
+
 ## Pruebas de Regresión Visual con ResembleJs
 
 Para garantizar la consistencia visual entre versiones, utilizamos [ResembleJs](https://github.com/rsmbl/Resemble.js) como herramienta para comparar las capturas de pantalla generadas en las pruebas con Kraken. Este proceso nos permite identificar cambios visuales no deseados entre una versión base y la release candidate (RC).
@@ -203,79 +315,3 @@ Para visualizar el reporte, abre el archivo HTML generado con cualquier navegado
 
 
 ¡Ahora podrás visualizar las diferencias y resultados directamente en el navegador!
-
-
-# Cypress
-## 1. Requisitos Previos
-
-   - Node.js (versión 20.18.0 es la recomendada)
-   - Git
-   - Cypress (si no está instalado, se instalará como parte de este proyecto)
-
-
-### 2. Instalación
-
-
-#### Paso 1: Clonar el Repositorio
-Clona este repositorio en tu máquina local usando el siguiente comando:
-
-```bash
-git clone https://github.com/ebernalo2576/pruebas_e2e
-cd pruebas_e2e/pruebas_cypress
-```
-
-#### Paso 2: Instalar las Dependencias
-Instala todas las dependencias necesarias usando npm. Esto incluirá Cypress y cualquier otra dependencia requerida para los tests.
-
-```bash
-npm install
-```
-
-### Paso 3: Configuración del Entorno de Pruebas
-
-Configura el archivo `cypress.env.json` en la raíz del proyecto para agregar las variables de entorno necesarias (por ejemplo, URL de Ghost, credenciales de usuario, etc.). Un ejemplo de configuración:
-
-```json
-{
-  "GHOST_URL": "http://localhost:2368",
-  "GHOST_USER": "tu_usuario@example.com",
-  "GHOST_PASSWORD": "tu_contraseña"
-}
-```
-
-### Ejecución de las Pruebas
-
-#### Opción 1: Ejecución en el Modo Interactivo (Cypress UI)
-
-Para ejecutar las pruebas en el modo interactivo de Cypress (útil para ver cada paso de las pruebas en detalle):
-
-```bash
-npx cypress open
-```
-
-Luego, selecciona el archivo de prueba que deseas ejecutar en la interfaz de Cypress.
-
-#### Opción 2: Ejecución en Modo Headless (sin interfaz)
-
-Para ejecutar todas las pruebas en modo headless (sin abrir la interfaz de Cypress):
-
-```bash
-npx cypress run
-```
-
-Esto ejecutará todos los escenarios de prueba de manera continua y mostrará los resultados en la consola.
-
-### Paso 5: Resultados de las Pruebas
-
-- **En Modo Interactivo**: Los resultados se muestran en la interfaz de Cypress en tiempo real mientras se ejecutan las pruebas.
-- **En Modo Headless**: Al final de la ejecución, la consola mostrará un resumen del resultado de todas las pruebas (pasadas o fallidas).
-- **Capturas y Videos**: Cypress genera capturas de pantalla y videos de cada prueba (especialmente útil para pruebas fallidas). Puedes encontrar estos archivos en las carpetas `cypress/screenshots` y `cypress/videos`.
-
-***
-
-### Notas Adicionales
-
-- Asegúrate de que el servidor de Ghost esté activo y accesible en la URL configurada antes de ejecutar las pruebas.
-- En caso de cualquier error en la configuración, revisa el archivo `cypress.env.json` para asegurarte de que las variables de entorno son correctas.
-
-**¡Listo!** Ahora deberías tener todo lo necesario para ejecutar y evaluar los escenarios de prueba en Ghost.

@@ -34,6 +34,9 @@ Este proyecto contiene un conjunto de pruebas automatizadas para verificar las f
    - EP019 - Debería permitir al usuario editar un miembro existente
    - EP020 - Debería permitir eliminar un miembro existente
 
+### 6. Configuración
+   - EP021 - Debería permitir al usuario cambiar el título y configuración el sitio 
+
 ---
 
 # Cypress
@@ -41,7 +44,7 @@ Este proyecto contiene un conjunto de pruebas automatizadas para verificar las f
 ## Instrucciones de Instalación y Ejecución
 
 ### 1. Requisitos Previos
-   - Ubicarse en la carpeta pruebas_cypress
+   - Ubicarse en la carpeta rc_pruebas_cypress
    - Node.js (versión 16 o superior)
    - Git
    - Cypress (si no está instalado, se instalará como parte de este proyecto)
@@ -55,7 +58,7 @@ Clona este repositorio en tu máquina local usando el siguiente comando:
 
 ```bash
 git clone https://github.com/ebernalo2576/pruebas_e2e
-cd pruebas_e2e/pruebas_cypress
+cd pruebas_e2e/rc_pruebas_cypress
 ```
 
 #### Paso 2: Instalar las Dependencias
