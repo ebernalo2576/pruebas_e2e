@@ -6,3 +6,7 @@ cypress/logs/
 .cypress_cache/          
 package-lock.json        
 .DS_Store
+base_pruebas_cypress/node_modules
+base_pruebas_kraken/node_modules
+rc_pruebas_cypress/node_modules
+rc_pruebas_kraken/node_modules
