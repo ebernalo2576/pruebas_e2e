@@ -48,9 +48,6 @@ describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
         // When El usuario modifica el nombre y descripción del tag
         editTag.whenUserEditsTagDetails(newTagName, newTagDescription);
 
-        // When El usuario guarda los cambios del tag
-        editTag.whenUserSavesTagChanges();
-
         // Then El usuario verifica que el tag se haya actualizado en la lista de tags
         editTag.thenTagShouldBeUpdatedInTagsList(newTagName);
     });

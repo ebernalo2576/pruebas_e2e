@@ -58,10 +58,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
     
         // When El usuario edita el nombre y el correo del miembro
-        editMember.whenUserEditsMemberDetails(newMemberName, newMemberEmail);
-    
-        // When El usuario guarda los cambios en el miembro
-        editMember.whenUserSavesEditedMember();    
+        editMember.whenUserEditsMemberDetails(newMemberName, newMemberEmail);  
     
         // Then El usuario verifica que el miembro editado esté en la lista de miembros con el nuevo nombre
         editMember.thenMemberShouldBeUpdatedInMembersList(newMemberName); 

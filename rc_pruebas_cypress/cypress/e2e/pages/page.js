@@ -1,6 +1,7 @@
 class Page {
     constructor() {
-        this.pagesMenuButton = '[data-test-nav="pages"]';    
+        this.pagesMenuButton = '[data-test-nav="pages"]';  
+         
         this.pageListSelector = '.gh-content-entry-title';
         this.pageTitleField = 'textarea[placeholder="Page title"]';
         this.pageContentField = '[data-secondary-instance="false"] > .koenig-lexical > [data-kg="editor"] > .kg-prose > p';
