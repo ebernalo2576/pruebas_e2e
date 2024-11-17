@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp'; // Importa sharp
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
-import { options } from '../vrt.config.js';
+import { options, mismatchMaxValue } from '../vrt.config.js';
 
 // Función para generar el bloque HTML para una comparación
 function comparison(index, fileName, mismatchPercentage, sameDimensions, passed) {
@@ -32,8 +33,8 @@ function comparison(index, fileName, mismatchPercentage, sameDimensions, passed)
   </div>`;
 }
 
-// Función para generar el reporte HTML
-function createReport(comparisons, reportDate) {
+// Función para generar el reporte HTML con estadísticas
+function createReportWithStats(comparisons, reportDate, passedCount, failedCount) {
     return `
     <html>
         <head>
@@ -43,6 +44,11 @@ function createReport(comparisons, reportDate) {
         <body>
             <h1>Visual Regression Testing Report for Ghost Admin</h1>
             <p><strong>Generated on:</strong> ${reportDate}</p>
+            <p><strong>Missmatch maximum aceptable value:</strong> ${mismatchMaxValue}% </p>
+            <p><strong>Total Tests:</strong> ${passedCount + failedCount}</p>
+            <p><strong>Total Passed:</strong> ${passedCount}</p>
+            <p><strong>Total Failed:</strong> ${failedCount}</p>
+            <p><strong>Pass Percentage:</strong> ${((passedCount / (passedCount + failedCount)) * 100).toFixed(2)}%</p>
             <div id="visualizer">
                 ${comparisons.join('')}
             </div>
@@ -65,54 +71,84 @@ fs.mkdirSync(baseDir, { recursive: true });
 const beforeImages = fs.readdirSync(beforeDir);
 const afterImages = fs.readdirSync(afterDir);
 
+// Variables para contar pruebas pasadas y fallidas
+let passedCount = 0;
+let failedCount = 0;
+
+
 // Crear los bloques de comparación enumerados
-const comparisons = beforeImages.map((fileName, index) => {
-    if (afterImages.includes(fileName)) {
-        const referencePath = path.join(beforeDir, fileName);
-        const testPath = path.join(afterDir, fileName);
-        const diffPath = path.join(compareDir, `diff-${fileName}`);
+const comparisons = await Promise.all(
+    beforeImages.map(async (fileName, index) => {
+        if (afterImages.includes(fileName)) {
+            const referencePath = path.join(beforeDir, fileName);
+            const testPath = path.join(afterDir, fileName);
+            const diffPath = path.join(compareDir, `diff-${fileName}`);
 
-        // Cargar las imágenes
-        const referenceImg = PNG.sync.read(fs.readFileSync(referencePath));
-        const testImg = PNG.sync.read(fs.readFileSync(testPath));
+            // Cargar las imágenes
+            const referenceBuffer = fs.readFileSync(referencePath);
+            const testBuffer = fs.readFileSync(testPath);
 
-        // Verificar dimensiones
-        const sameDimensions = referenceImg.width === testImg.width && referenceImg.height === testImg.height;
+            const referenceImg = PNG.sync.read(referenceBuffer);
+            let testImg = PNG.sync.read(testBuffer);
 
-        // Crear la imagen de diferencia
-        const diffImg = new PNG({ width: referenceImg.width, height: referenceImg.height });
-        const numDiffPixels = pixelmatch(
-            referenceImg.data,
-            testImg.data,
-            diffImg.data,
-            referenceImg.width,
-            referenceImg.height,
-            options
-        );
+            let sameDimensions = true;
+            // Verificar dimensiones y redimensionar si es necesario
+            if (
+                referenceImg.width !== testImg.width ||
+                referenceImg.height !== testImg.height
+            ) {
+                console.log(`Redimensionando ${fileName} para igualar dimensiones...`);
+                sameDimensions = false;
+                const resizedTestBuffer = await sharp(testBuffer)
+                    .resize(referenceImg.width, referenceImg.height)
+                    .toBuffer();
+                testImg = PNG.sync.read(resizedTestBuffer);
+            }
 
-        // Guardar la imagen de diferencias
-        fs.writeFileSync(diffPath, PNG.sync.write(diffImg));
+            // Crear la imagen de diferencia
+            const diffImg = new PNG({ width: referenceImg.width, height: referenceImg.height });
+            console.log(`Comparando ${fileName}...`);
+            const numDiffPixels = pixelmatch(
+                referenceImg.data,
+                testImg.data,
+                diffImg.data,
+                referenceImg.width,
+                referenceImg.height,
+                options
+            );
 
-        // Calcular el porcentaje de diferencias
-        const totalPixels = referenceImg.width * referenceImg.height;
-        const mismatchPercentage = (numDiffPixels / totalPixels) * 100;
+            // Guardar la imagen de diferencias
+            fs.writeFileSync(diffPath, PNG.sync.write(diffImg));
 
-        // Condición para aprobar la prueba
-        const passed = sameDimensions && mismatchPercentage <= 10; // 10% de diferencias
+            // Calcular el porcentaje de diferencias
+            const totalPixels = referenceImg.width * referenceImg.height;
+            const mismatchPercentage = (numDiffPixels / totalPixels) * 100;
 
-        // Crear el bloque de comparación con índice
-        return comparison(index + 1, fileName, mismatchPercentage, sameDimensions, passed);
-    } else {
-        console.log(`No se encontró una imagen de prueba para ${fileName}`);
-        return '';
-    }
-});
+            // Condición para aprobar la prueba
+            const passed = mismatchPercentage <= mismatchMaxValue;
+
+            // Actualizar contadores
+            if (passed) {
+                passedCount++;
+            } else {
+                failedCount++;
+            }
+
+            // Crear el bloque de comparación con índice
+            return comparison(index + 1, fileName, mismatchPercentage, sameDimensions, passed);
+        } else {
+            console.log(`No se encontró una imagen de prueba para ${fileName}`);
+            return '';
+        }
+    })
+);
 
 // Crear el reporte HTML
 const reportPath = path.join(baseDir, 'report.html');
 const cssPath = path.join(baseDir, 'index.css');
 
-fs.writeFileSync(reportPath, createReport(comparisons, reportDate)); // Escribir el HTML del reporte
+// Escribir el HTML del reporte con estadísticas
+fs.writeFileSync(reportPath, createReportWithStats(comparisons, reportDate, passedCount, failedCount));
 fs.copyFileSync('./index.css', cssPath); // Copiar el archivo CSS
 
 console.log(`Reporte generado en ${reportPath}`);
