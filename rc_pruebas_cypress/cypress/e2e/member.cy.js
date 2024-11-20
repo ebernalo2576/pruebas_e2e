@@ -13,11 +13,34 @@ const newMemberEmail = faker.internet.email();
 
 describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
+    before(() => {
+        // Configuración inicial de sesión
+        cy.session('user-session', () => {
+            loginPage.givenUserIsOnLoginPage(); // Navegar a la página de inicio de sesión
+            loginPage.whenUserLogsIn();        // Iniciar sesión
+            loginPage.thenUserShouldSeeDashboard(); // Confirmar que el dashboard se cargó
+        });
+    });
+
+    beforeEach(() => {
+        // Restaurar la sesión antes de cada prueba y navegar al dashboard
+        cy.session('user-session', () => {
+            loginPage.givenUserIsOnLoginPage(); // Navegar a la página de inicio de sesión
+            loginPage.whenUserLogsIn();        // Iniciar sesión
+            loginPage.thenUserShouldSeeDashboard(); // Confirmar que el dashboard se cargó
+        });
+        cy.visit(Cypress.env('GHOST_URL') + '/ghost/#/dashboard'); // Navegar al dashboard
+        cy.wait(1000);
+    });
+
+
+
+    
     it('EP017 - Debería permitir crear y visualizar un nuevo miembro', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
-        loginPage.givenUserIsOnLoginPage();
-        loginPage.whenUserLogsIn();
-        loginPage.thenUserShouldSeeDashboard();
+        // loginPage.givenUserIsOnLoginPage();
+        // loginPage.whenUserLogsIn();
+        // loginPage.thenUserShouldSeeDashboard();
 
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
@@ -34,9 +57,9 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
     it('EP018 - Debería permitir ver la lista de miembros', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
-        loginPage.givenUserIsOnLoginPage();        
-        loginPage.whenUserLogsIn();                    
-        loginPage.thenUserShouldSeeDashboard();   
+        // loginPage.givenUserIsOnLoginPage();        
+        // loginPage.whenUserLogsIn();                    
+        // loginPage.thenUserShouldSeeDashboard();   
     
         // Given El usuario navega a la sección de miembros
         viewMembers.givenUserIsOnMembersPage();  
@@ -50,9 +73,9 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
     it('EP019 - Debería permitir al usuario editar un miembro existente', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
-        loginPage.givenUserIsOnLoginPage();          
-        loginPage.whenUserLogsIn();                
-        loginPage.thenUserShouldSeeDashboard();      
+        // loginPage.givenUserIsOnLoginPage();          
+        // loginPage.whenUserLogsIn();                
+        // loginPage.thenUserShouldSeeDashboard();      
     
         // Given El usuario navega a la lista de miembros y selecciona un miembro específico para editar
         editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
@@ -66,9 +89,9 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
     it('EP020 - Debería permitir eliminar un miembro existente', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
-        loginPage.givenUserIsOnLoginPage();            
-        loginPage.whenUserLogsIn();                    
-        loginPage.thenUserShouldSeeDashboard();       
+        // loginPage.givenUserIsOnLoginPage();            
+        // loginPage.whenUserLogsIn();                    
+        // loginPage.thenUserShouldSeeDashboard();       
     
         // Given El usuario navega a la lista de miembros y selecciona un miembro específico para eliminar
         deleteMember.givenUserIsOnMembersPageAndSelectsMemberToDelete(newMemberName); 
