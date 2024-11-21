@@ -6,6 +6,7 @@ class Member {
         this.memberNameField = '#member-name';
         this.memberEmailField = '#member-email';
         this.saveMemberButton = 'button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view';
+        this.duplicatedEmailError = '.form-group.max-width.error > p';
     }
 }
 
@@ -136,6 +137,12 @@ class DeleteMember extends Member {
         cy.get(this.membersMenuButton).should('be.visible').click(); 
         cy.contains(this.memberListSelector, name).should('not.exist');
         cy.screenshot('member-not-visible-in-list');
+    }
+
+    // Then El usuario debería ver un mensaje de error que indica que el email ya existe
+    thenUserShouldSeeDuplicatedEmailError() {
+        cy.get(this.duplicatedEmailError).should('be.visible');
+        cy.screenshot('duplicated-email-error');
     }
 }
 
