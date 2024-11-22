@@ -33,8 +33,13 @@ class CreateMember extends Member {
     whenUserEntersMemberDetails(name, email) {
         cy.get(this.memberNameField).clear().type(name);
         cy.screenshot('member-name-entered');
-        cy.get(this.memberEmailField).clear().type(email);
-        cy.screenshot('member-email-entered');
+        if (email == '') {
+            cy.get(this.memberEmailField).clear();
+            cy.screenshot('member-email-entered');
+        } else {
+            cy.get(this.memberEmailField).clear().type(email);
+            cy.screenshot('member-email-entered');
+        }
         cy.get('.gh-main').scrollTo('top');
         cy.get(this.saveMemberButton).should('be.visible').click();
         cy.screenshot('member-saved');
@@ -91,7 +96,13 @@ class EditMember extends Member {
     whenUserEditsMemberDetails(newName, newEmail) {
         cy.get(this.memberNameField).clear().type(newName);
         cy.screenshot('member-name-edited');
-        cy.get(this.memberEmailField).clear().type(newEmail);
+        if (newEmail == '') {
+            cy.get(this.memberEmailField).clear();
+            cy.screenshot('member-email-entered');
+        } else {
+            cy.get(this.memberEmailField).clear().type(newEmail);
+            cy.screenshot('member-email-entered');
+        }
         cy.screenshot('member-email-edited'); 
         cy.get('.gh-main').scrollTo('top');
         cy.get(this.saveMemberButton).should('be.visible').click();
