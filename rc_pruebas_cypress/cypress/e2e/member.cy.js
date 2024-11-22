@@ -141,7 +141,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
     }); */
 
     //Debería rechazar la creación de un miembro con un email duplicado. (A priori)
-    it('EP022 - Debería rechazar la creación de un miembro con un email duplicado (A priori)', () => {    
+    it('EP022 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -166,7 +166,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
     });
 
     //Debería rechazar la creación de un miembro con un email duplicado. (Pseudo-aletorio)
-    it('EP023 - Debería rechazar la creación de un miembro con un email duplicado (Pseudo-aletorio)', () => {    
+    it('EP023 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Pseudo-aletorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -192,7 +192,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         deleteMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería rechazar la creación de un miembro con un email duplicado. (Aleatorio)
-    it('EP024 - Debería rechazar la creación de un miembro con un email duplicado (aletorio)', () => { 
+    it('EP024 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (aletorio)', () => { 
         const memberName = faker.person.fullName();
         const memberEmail = faker.internet.email();
 
@@ -220,7 +220,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     //Debería rechazar la edición de un miembro con un email duplicado. (A priori)
-    it('EP025 - Debería rechazar la edición de un miembro con un email duplicado (A priori)', () => {    
+    it('EP025 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -248,13 +248,101 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         // Then El usuario debería ver un mensaje de error que indica que el email ya existe
         deleteMember.thenUserShouldSeeDuplicatedEmailError();
     });
+
     //Debería rechazar la edición de un miembro con un email duplicado. (Pseudo-aletorio)
+    it('EP026 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (Pseudo-aleatorio)', () => {    
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex-1].memberName, pseudoData[pseudoRowIndex-1].memberEmail); 
+                
+        // Given El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
+
+        // When El usuario edita el miembro con un email duplicado
+        editMember.whenUserEditsMemberDetails(pseudoData[pseudoRowIndex-1].memberName, pseudoData[pseudoRowIndex-1].memberEmail);  
+       
+        // Then El usuario debería ver un mensaje de error que indica que el email ya existe
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
     //Debería rechazar la edición de un miembro con un email duplicado. (Aleatorio)
+    it('EP027 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (aleatorio)', () => {   
+        const memberName = faker.person.fullName();
+        const memberEmail = faker.internet.email(); 
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(memberName, memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(memberName, memberEmail); 
+                
+        // Given El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
+
+        // When El usuario edita el miembro con un email duplicado
+        editMember.whenUserEditsMemberDetails(memberName, memberEmail);  
+       
+        // Then El usuario debería ver un mensaje de error que indica que el email ya existe
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
 
 
+    //Debería mostrar un error al intentar crear un miembro con un nombre excesivamente largo de 200 caracteres (A priori)
+    it('EP028 - Debería mostrar un error al intentar CREAR un miembro con un nombre excesivamente largo de 200 caracteres (A priori)', () => {    
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
 
-    //Debería mostrar un error al intentar crear un miembro con un nombre que excede la longitud máxima permitida. (A priori)
-    it('EP024 - Debería mostrar un error al intentar crear un miembro con un nombre que excede la longitud máxima permitida. (A priori)', () => {    
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro con un nombre que excede la longitud máxima permitida
+        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberLongName, aPrioriData[aPrioriRowIndex].memberEmail);  
+    
+        // Then El usuario debería ver un mensaje de error que indica que el nombre excede la longitud máxima permitida
+        deleteMember.thenUserShouldSeeDuplicatedNameError();
+    });
+    //Debería mostrar un error al intentar crear un miembro con un nombre que excede la longitud máxima permitida. (Pseudo-aletorio)
+    it('EP029 - Debería mostrar un error al intentar CREAR un miembro con un nombre excesivamente largo de 200 caracteres (Pseudo-aletorio)', () => {    
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro con un nombre que excede la longitud máxima permitida
+        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberLongName, pseudoData[pseudoRowIndex].memberEmail);  
+    
+        // Then El usuario debería ver un mensaje de error que indica que el nombre excede la longitud máxima permitida
+        deleteMember.thenUserShouldSeeDuplicatedNameError();
+    });
+    //Debería mostrar un error al intentar crear un miembro con un nombre que excede la longitud máxima permitida. (Aleatorio)    
+    it('EP030 - Debería mostrar un error al intentar CREAR un miembro con un nombre excesivamente largo de 200 caracteres (Aleatorio)', () => {
+        const memberName = faker.string(200);
+        const memberEmail = faker.internet.email();    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -265,112 +353,337 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.whenUserEntersMemberDetails(memberName, memberEmail);  
     
         // Then El usuario debería ver un mensaje de error que indica que el nombre excede la longitud máxima permitida
-        deleteMember.thenMemberShouldNotBeVisibleInMembersList(newMemberName);
+        deleteMember.thenUserShouldSeeDuplicatedNameError();
     });
-    //Debería mostrar un error al intentar crear un miembro con un nombre que excede la longitud máxima permitida. (Pseudo-aletorio)
-    //Debería mostrar un error al intentar crear un miembro con un nombre que excede la longitud máxima permitida. (Aleatorio)    
 
 
 
     //Debería rechazar la creación de un miembro con un email vacío. (A priori)
-    it('EP025 - Debería rechazar la creación de un miembro con un email vacío (A priori)', () => {    
+    it('EP031 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
         createMember.andGivenUserStartsCreatingNewMember();
     
-        // And El usuario ingresa los detalles del miembro con un email vacío
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail);       
-    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].emptyEmail); 
+       
         // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
-        deleteMember.thenMemberShouldNotBeVisibleInMembersList(newMemberName);
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería rechazar la creación de un miembro con un email vacío. (Pseudo-aletorio)
+    it('EP032 - Debería rechazar la creación de un miembro con un email vacío (Pseudo-aletorio)', () => {    
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].emptyEmail); 
+       
+        // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
     //Debería rechazar la creación de un miembro con un email vacío. (Aleatorio)
+    it('EP033 - Debería rechazar la creación de un miembro con un email vacío (Aleatorio)', () => {    
+        const memberName = faker.person.fullName();
+        const emptyEmail = "";
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(memberName, emptyEmail); 
+       
+        // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
 
 
 
     //Debería rechazar la edición de un miembro con un email vacío. (A priori)
-    it('EP026 - Debería rechazar la edición de un miembro con un email vacío (A priori)', () => {    
+    it('EP034 - Debería rechazar la edición de un miembro con un email vacío (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
-       // When El usuario edita el miembro con un email vacío
-       editMember.whenUserEditsMemberDetails(newMemberName, newMemberEmail);  
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
     
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        //createMember.givenUserIsOnMembersPage();
+                
+        // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(aPrioriData[aPrioriRowIndex].memberName);
+
+        // And El usuario edita el miembro con un email vacío
+        editMember.whenUserEditsMemberDetails(aPrioriData[aPrioriRowIndex-1].memberName, aPrioriData[aPrioriRowIndex-1].emptyEmail);  
+       
         // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
-        deleteMember.thenMemberShouldNotBeVisibleInMembersList(newMemberName);
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería rechazar la edición de un miembro con un email vacío. (Pseudo-aletorio)
+    it('EP035 - Debería rechazar la edición de un miembro con un email vacío (Paseudo-aleatorio)', () => {    
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        //createMember.givenUserIsOnMembersPage();
+                
+        // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
+
+        // And El usuario edita el miembro con un email vacío
+        editMember.whenUserEditsMemberDetails(pseudoData[pseudoRowIndex-1].memberName, pseudoData[pseudoRowIndex-1].emptyEmail);  
+       
+        // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
     //Debería rechazar la edición de un miembro con un email vacío. (Aleatorio)
-
-
-
-    //Debería mostrar un error al intentar crear un miembro con un label que excede la longitud máxima permitida. (A priori)
-    it('EP027 - Debería mostrar un error al intentar crear un miembro con un label que excede la longitud máxima permitida. (A priori)', () => {    
+    it('EP036 - Debería rechazar la edición de un miembro con un email vacío (Aleatorio)', () => {   
+        const memberName = faker.person.fullName();
+        const memberEmail = faker.internet.email();
+        const emptyEmail = ""; 
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
         createMember.andGivenUserStartsCreatingNewMember();
     
-        // And El usuario ingresa los detalles del miembro con un label que excede la longitud máxima permitida
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail);  
-    
-        // Then El usuario debería ver un mensaje de error que indica que el label excede la longitud máxima permitida
-        deleteMember.thenMemberShouldNotBeVisibleInMembersList(newMemberName);
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(memberName, memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        //createMember.givenUserIsOnMembersPage();
+                
+        // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
+
+        // And El usuario edita el miembro con un email vacío
+        editMember.whenUserEditsMemberDetails(memberName, emptyEmail);  
+       
+        // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
     });
-    //Debería mostrar un error al intentar crear un miembro con un label que excede la longitud máxima permitida. (Pseudo-aletorio)
-    //Debería mostrar un error al intentar crear un miembro con un label que excede la longitud máxima permitida. (Aleatorio)
 
 
-
-    //Debería mostrar un error al intentar crear un miembro con una note que excede la longitud máxima permitida. (A priori)
-    it('EP028 - Debería mostrar un error al intentar crear un miembro con una note que excede la longitud máxima permitida. (A priori)', () => {    
+    //Debería permitir al usuario editar un miembro existente (Pseudo-aleatorio)
+    it('EP037 - Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (Pseudo-aleatorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
         createMember.andGivenUserStartsCreatingNewMember();
     
-        // And El usuario ingresa los detalles del miembro con una note que excede la longitud máxima permitida
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail);  
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        //createMember.givenUserIsOnMembersPage();
+                
+        // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
+
+        // And El usuario edita el miembro con un nombre y email válidos
+        editMember.whenUserEditsMemberDetails(pseudoData[pseudoRowIndex-1].memberName, pseudoData[pseudoRowIndex-1].memberEmail); 
     
-        // Then El usuario debería ver un mensaje de error que indica que la note excede la longitud máxima permitida
-        deleteMember.thenMemberShouldNotBeVisibleInMembersList(newMemberName);
+        // Then El usuario verifica que el miembro editado esté en la lista de miembros con el nuevo nombre
+        editMember.thenMemberShouldBeUpdatedInMembersList(pseudoData[pseudoRowIndex-1].memberName); 
     });
-    //Debería mostrar un error al intentar crear un miembro con una note que excede la longitud máxima permitida. (Pseudo-aletorio)
-    //Debería mostrar un error al intentar crear un miembro con una note que excede la longitud máxima permitida. (Aleatorio)
-
-
-
-    //Debería rechazar la edición de un miembro con un email en un formato inválido. (A priori)
-    it('EP029 - Debería rechazar la edición de un miembro con un email en un formato inválido (A priori)', () => {    
+    //Debería permitir al usuario editar un miembro existente (aleatorio)
+    it('EP038 - Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (aleatorio)', () => {    
+        const memberName = faker.person.fullName();
+        const memberEmail = faker.internet.email();
+        const newMemberName = faker.person.fullName();
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
-       // When El usuario edita el miembro con un email en un formato inválido
-       editMember.whenUserEditsMemberDetails(newMemberName, newMemberEmail);  
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
     
-        // Then El usuario debería ver un mensaje de error que indica que el email tiene un formato inválido
-        deleteMember.thenMemberShouldNotBeVisibleInMembersList(newMemberName);
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(memberName, memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        //createMember.givenUserIsOnMembersPage();
+                
+        // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
+
+        // And El usuario edita el miembro con un nombre y email válidos
+        editMember.whenUserEditsMemberDetails(memberName, newMemberName); 
+    
+        // Then El usuario verifica que el miembro editado esté en la lista de miembros con el nuevo nombre
+        editMember.thenMemberShouldBeUpdatedInMembersList(newMemberName); 
     });
-    //Debería rechazar la edición de un miembro con un email en un formato inválido. (Pseudo-aletorio)
-    //Debería rechazar la edición de un miembro con un email en un formato inválido. (Aleatorio)
 
 
 
-    //No debería ver miembros en la lista de miembros al filtrar por una cadena compuesta de caracteres numéricos. (A priori)
-    it('EP030 - No debería ver miembros en la lista de miembros al filtrar por una cadena compuesta de caracteres numéricos (Aleatorio)', () => {    
+    //Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (A priori)
+    it('EP039 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
-       // When El usuario edita el miembro con un email en un formato inválido
-       editMember.whenUserEditsMemberDetails(newMemberName, newMemberEmail);  
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
     
-        // Then El usuario debería ver un mensaje de error que indica que el email tiene un formato inválido
-        deleteMember.thenMemberShouldNotBeVisibleInMembersList(newMemberName);
+        // And El usuario ingresa los detalles del miembro con un email en un formato inválido
+        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].invalidEmail);  
+    
+        // Then El usuario debería ver un mensaje de error que indica que el email no es válido
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
+    //Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Pseudo-aletorio)
+    it('EP040 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Pseudo-aleatorio)', () => {    
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro con un email en un formato inválido
+        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].invalidEmail);  
+    
+        // Then El usuario debería ver un mensaje de error que indica que el email no es válido
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
+    //Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Aleatorio) 
+    it('EP041 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Aleatorio)', () => {    
+        const memberName = faker.person.fullName();
+        const invalidEmail = faker.string.symbol(10) + faker.internet.emoji() + faker.string.sample(10);
+
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro con un email en un formato inválido
+        createMember.whenUserEntersMemberDetails(memberName, invalidEmail);  
+    
+        // Then El usuario debería ver un mensaje de error que indica que el email no es válido
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
+
+
+
+    //Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (A priori)
+    it('EP042 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (A priori)', () => {    
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        //createMember.givenUserIsOnMembersPage(); 
+                
+        // Given El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(aPrioriData[aPrioriRowIndex].memberName);
+
+        // When El usuario edita el miembro con un email en un formato inválido
+        editMember.whenUserEditsMemberDetails(aPrioriData[aPrioriRowIndex-1].memberName, aPrioriData[aPrioriRowIndex-1].invalidEmail);  
+       
+        // Then El usuario debería ver un mensaje de error que indica que el email no es válido
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
+    //Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Pseudo-aletorio)
+    it('EP043 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Pseudo-aleatorio)', () => {    
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        //createMember.givenUserIsOnMembersPage(); 
+                
+        // Given El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
+
+        // When El usuario edita el miembro con un email en un formato inválido
+        editMember.whenUserEditsMemberDetails(pseudoData[pseudoRowIndex-1].memberName, pseudoData[pseudoRowIndex-1].invalidEmail);  
+       
+        // Then El usuario debería ver un mensaje de error que indica que el email no es válido
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
+    //Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Aleatorio)
+    it('EP044 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (aleatorio)', () => {   
+        const memberName = faker.person.fullName();
+        const memberEmail = faker.internet.email();
+        const invalidEmail = faker.string.symbol(10) + faker.internet.emoji() + faker.string.sample(10);
+
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+    
+        // And El usuario ingresa los detalles del miembro 
+        createMember.whenUserEntersMemberDetails(memberName, memberEmail); 
+        
+        // And El usuario vuelve a la seccion de miembros
+        //createMember.givenUserIsOnMembersPage(); 
+                
+        // Given El usuario navega a la lista de miembros y selecciona un miembro específico para editar
+        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
+
+        // When El usuario edita el miembro con un email en un formato inválido
+        editMember.whenUserEditsMemberDetails(memberName, invalidEmail);  
+       
+        // Then El usuario debería ver un mensaje de error que indica que el email no es válido
+        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+    });
+
+
+    //Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre correctos (Pseudo-aletorio)
+    it('EP045 - Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre correctos (Pseudo-aletorio)', () => {    
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+
+        // And El usuario ingresa los detalles del miembro
+        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail);
+
+        // Then El usuario verifica que el miembro esté visible en la lista de miembros
+        createMember.thenMemberShouldBeVisibleInMembersList(pseudoData[pseudoRowIndex].memberName);
+    });
+    //Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre correctos (Aletorio)
+    it('EP046 - Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre correctos (Aletorio)', () => {  
+        const memberName = faker.person.fullName();
+        const memberEmail = faker.internet.email();
+
+        // Given El usuario navega a la sección de miembros
+        createMember.givenUserIsOnMembersPage();
+
+        // When El usuario comienza a crear un nuevo miembro
+        createMember.andGivenUserStartsCreatingNewMember();
+
+        // And El usuario ingresa los detalles del miembro
+        createMember.whenUserEntersMemberDetails(memberName, memberEmail);
+
+        // Then El usuario verifica que el miembro esté visible en la lista de miembros
+        createMember.thenMemberShouldBeVisibleInMembersList(memberName);
     });
 
 });
