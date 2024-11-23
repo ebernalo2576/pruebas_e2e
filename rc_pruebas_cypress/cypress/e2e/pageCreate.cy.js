@@ -40,7 +40,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     });
 
 
-    it('EP011 - Debería permitir crear y visualizar una nueva página', () => {
+    it('EP011 - Debería permitir crear y visualizar una nueva página (Aleatorio)', () => {
 
         const pageTitle = faker.lorem.sentence();         
         const pageContent = faker.lorem.paragraph();
@@ -59,7 +59,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(pageTitle);
     });
 
-    it('EP045 - Debería permitircrear una página con un título de menos de 255 carácteres (A-priori)', () => {
+    it('EP045 - Debería permitir crear una página con un título de menos de 255 carácteres (A-priori)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();

@@ -6,7 +6,9 @@ class Page {
         this.pageTitleField = 'textarea[placeholder="Page title"]';
         this.pageContentField = '[data-secondary-instance="false"] > .koenig-lexical > [data-kg="editor"] > .kg-prose > p';
         this.settingsMenuButton = '.settings-menu-toggle';
-        this.backToPagesButton = 'a.ember-view.gh-editor-back-button';           
+        this.backToPagesButton = 'a.ember-view.gh-editor-back-button'; 
+        this.confirmLeaveButton = '.modal-footer .gh-btn-red';   
+        this.errorAlert = '.gh-alert';       
     }
 }
 
@@ -17,8 +19,7 @@ class CreatePage extends Page {
         this.newPageButton = 'a.gh-btn.gh-btn-primary';                                  
         this.publishButton = '.gh-publish-cta > .gh-btn > span'; 
         this.confirmPublishButton = 'button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view';
-        this.closeButton = 'button.close';
-        this.confirmLeaveButton = '.modal-footer .gh-btn-red';                   
+        this.closeButton = 'button.close';                
     }
 
     // Given El usuario navega a la sección de páginas
@@ -55,14 +56,10 @@ class CreatePage extends Page {
 
     // Then El usuario verifica que la página esté en la lista de páginas
     thenPageShouldBeVisibleInPagesList(title) {
-        if (title.length <= 255) {
-            cy.get(this.confirmPublishButton).should('be.visible').click();
-            cy.get(this.closeButton).should('be.visible').click();
-            cy.screenshot('closed-page-editor');
-            cy.contains(title).should('exist');
-        } else {
-            
-        }
+        cy.get(this.confirmPublishButton).should('be.visible').click();
+        cy.get(this.closeButton).should('be.visible').click();
+        cy.screenshot('closed-page-editor');
+        cy.contains(title).should('exist');
     }
 
     thenPageShouldNotBeVisibleInPageList(title) {
@@ -157,8 +154,23 @@ class EditPage extends Page {
         cy.screenshot('edited-page-content');
         cy.get(this.publishMenuButton).click();
         cy.screenshot('publish-menu-opened');
-        cy.get(this.updateButton).should('be.visible').click();
-        cy.screenshot('page-updated');
+        if (newTitle.length <= 255) {
+            cy.get(this.updateButton).should('be.visible').click();
+            cy.screenshot('page-updated');
+        } else {
+            cy.contains(this.errorAlert, 'Update failed: Title cannot be longer than 255 characters.').should('be.visible');
+            cy.get(this.updateButton).should('be.visible').click();
+            cy.screenshot('page-not-updated');
+        }
+    }
+
+    thenPageShouldNotBeVisibleInPageList(title) {
+        cy.log('Title is longer than 255 characters. Page will not be published.');
+        cy.get(this.confirmLeaveButton).should('be.visible').click();
+        cy.screenshot('leave-confirmed');
+        cy.url().should('include', '/ghost/#/pages'); 
+        cy.contains(this.pageListSelector, title).should('not.exist');
+        cy.screenshot('page-not-visible-in-list');
     }
 
     // Then El usuario verifica que la página editada esté en la lista de páginas
@@ -166,7 +178,7 @@ class EditPage extends Page {
         cy.get(this.pagesMenuButton).click();
         cy.screenshot('returned-to-pages-list');
         cy.contains(this.pageListSelector, newTitle).should('be.visible');
-        cy.screenshot('updated-page-visible-in-list');
+        cy.screenshot('updated-page-visible-in-list');    
     }
 }
 
