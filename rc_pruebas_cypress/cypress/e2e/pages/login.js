@@ -16,6 +16,7 @@ class Login {
 
     // When: El usuario ingresa sus credenciales y envía el formulario
     whenUserLogsIn(email = this.defaultEmail, password = this.defaultPassword) {
+        console.log('Email: ' + email);
         cy.get(this.emailField).type(email);
         cy.screenshot('email-entered');
         cy.get(this.passwordField).type(password);

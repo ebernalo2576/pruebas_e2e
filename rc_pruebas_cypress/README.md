@@ -29,10 +29,35 @@ Este proyecto contiene un conjunto de pruebas automatizadas para verificar las f
    - EP016 - Debería permitir eliminar una página existente
 
 ### 5. Miembro
-   - EP017 - Debería permitir crear y visualizar un nuevo miembro
+   - EP017 - Debería permitir crear y visualizar un nuevo miembro (A priori)
    - EP018 - Debería permitir ver la lista de miembros
-   - EP019 - Debería permitir al usuario editar un miembro existente
+   - EP019 - Debería permitir al usuario editar un miembro existente (A priori)
    - EP020 - Debería permitir eliminar un miembro existente
+   - EP022 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (A priori)
+   - EP023 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Pseudo-aleatorio)
+   - EP024 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Aleatorio)
+   - EP025 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (A priori)
+   - EP026 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (Pseudo-aleatorio)
+   - EP027 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (Aleatorio)
+   - EP028 - Debería mostrar un error al intentar crear un miembro con un email excesivamente largo de 200 caracteres (A priori)
+   - EP029 - Debería mostrar un error al intentar crear un miembro con un email excesivamente largo de 200 caracteres (Pseudo-aletorio)
+   - EP030 - Debería mostrar un error al intentar crear un miembro con un email excesivamente largo de 200 caracteres (Aleatorio)
+   - EP031 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (A priori)
+   - EP032 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (Pseudo-aleatorio)
+   - EP033 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (Aleatorio)
+   - EP034 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (A priori)
+   - EP035 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Pseudo-aleatorio)
+   - EP036 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Aleatorio)
+   - EP037 - Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (Pseudo-aleatorio)
+   - EP038 - Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (Aleatorio)
+   - EP039 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (A priori)
+   - EP040 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Pseudo-aletorio)
+   - EP041 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Aleatorio)
+   - EP042 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (A priori)
+   - EP043 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Pseudo-aletorio)
+   - EP044 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Aleatorio)
+   - EP045 - Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre válidos (Pseudo-aletorio)
+   - EP046 - Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre válidos (Aletorio)
 
 ### 6. Configuración
    - EP021 - Debería permitir al usuario cambiar el título y configuración el sitio 
