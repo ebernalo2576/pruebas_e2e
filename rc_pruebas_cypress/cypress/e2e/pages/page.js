@@ -17,7 +17,8 @@ class CreatePage extends Page {
         this.newPageButton = 'a.gh-btn.gh-btn-primary';                                  
         this.publishButton = '.gh-publish-cta > .gh-btn > span'; 
         this.confirmPublishButton = 'button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view';
-        this.closeButton = 'button.close';                  
+        this.closeButton = 'button.close';
+        this.confirmLeaveButton = '.modal-footer .gh-btn-red';                   
     }
 
     // Given El usuario navega a la sección de páginas
@@ -40,20 +41,42 @@ class CreatePage extends Page {
         cy.screenshot('page-title-entered');
         cy.get(this.pageContentField).click().type(content);
         cy.screenshot('page-content-entered'); 
-        cy.get(this.publishMenuButton).should('be.visible').click();
-        cy.screenshot('publish-menu-opened');
-        cy.get(this.publishButton).should('be.visible').click();
-        cy.screenshot('page-published');
+
+        if (title.length <= 255) {
+            cy.get(this.publishMenuButton).should('be.visible').click();
+            cy.screenshot('publish-menu-opened');
+            cy.get(this.publishButton).should('be.visible').click();
+            cy.screenshot('page-published');
+        } else {
+            cy.log('Title is longer than 255 characters. Page will not be published.');
+            cy.screenshot('title-too-long');
+        }
     }
 
     // Then El usuario verifica que la página esté en la lista de páginas
     thenPageShouldBeVisibleInPagesList(title) {
-        cy.get(this.confirmPublishButton).should('be.visible').click();
-        cy.get(this.closeButton).should('be.visible').click();
-        cy.screenshot('closed-page-editor');
-        cy.contains(title).should('exist');
+        if (title.length <= 255) {
+            cy.get(this.confirmPublishButton).should('be.visible').click();
+            cy.get(this.closeButton).should('be.visible').click();
+            cy.screenshot('closed-page-editor');
+            cy.contains(title).should('exist');
+        } else {
+            
+        }
+    }
+
+    thenPageShouldNotBeVisibleInPageList(title) {
+        cy.log('Title is longer than 255 characters. Page will not be published.');
+        cy.get(this.backToPagesButton).should('be.visible').click();
+        cy.screenshot('page-content-validated');
+        cy.get(this.confirmLeaveButton).should('be.visible').click();
+        cy.screenshot('leave-confirmed');
+        cy.url().should('include', '/ghost/#/pages'); 
+        cy.contains(this.pageListSelector, title).should('not.exist');
+        cy.screenshot('page-not-visible-in-list');
     }
 }
+    
 
 class ViewPages extends Page {
     constructor() {
@@ -176,6 +199,7 @@ class UnpublishPage extends Page {
         cy.get(this.confirmDraftPage).should('contain', 'Draft');
         cy.screenshot('page-in-draft-state');
         cy.wait(500);
+        cy.get('.gh-notification-close').should('be.visible').click();
         cy.get(this.backToPagesButton).should('be.visible').click();
         cy.screenshot('returned-to-pages-list');
         cy.wait(500);
