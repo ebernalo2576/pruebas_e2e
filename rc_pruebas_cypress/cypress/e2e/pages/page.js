@@ -194,7 +194,7 @@ class EditPage extends Page {
     }
 
     // When El usuario modifica el título y el contenido de la página
-    whenUserEditsPageDetails(newTitle, newContent, date = '') {
+    whenUserEditsPageDetails(newTitle, newContent, date = '', autor = true) {
 
         if (newTitle != '') {
             cy.get(this.pageTitleField).clear().type(newTitle);
@@ -217,6 +217,12 @@ class EditPage extends Page {
             cy.screenshot('settings-menu-opened');
             cy.get('.gh-date-time-picker-date').clear().type(date);
             cy.screenshot('page-content-entered');
+
+            if (autor == false) {
+                cy.get('.ember-power-select-multiple-remove-btn').should('be.visible').click();
+                cy.screenshot('page-content-entered');
+            }
+
             cy.get(this.settingsMenuButton).should('be.visible').click(); 
             cy.screenshot('settings-menu-closed');
         }
@@ -224,12 +230,22 @@ class EditPage extends Page {
         cy.get(this.publishMenuButton).click();
         cy.screenshot('publish-menu-opened');
 
-        if (newTitle.length <= 255) {
-            cy.get(this.closeNotification).should('be.visible').click();
-            cy.get(this.updateButton).should('be.visible').click();
-            cy.screenshot('page-updated');
-        } else {
-            cy.contains(this.errorAlert, 'Update failed: Title cannot be longer than 255 characters.').should('be.visible');
+        if (autor) {
+            if (newTitle.length <= 255) {
+                cy.get(this.closeNotification).should('be.visible').click();
+                cy.get(this.updateButton).should('be.visible').click();
+                cy.screenshot('page-updated');
+            } else {
+                cy.contains(this.errorAlert, 'Update failed: Title cannot be longer than 255 characters.').should('be.visible');
+                cy.get(this.updateButton).should('be.visible').click();
+                cy.screenshot('page-not-updated');
+            }
+        } else {    
+            cy.get(this.publishMenuButton).should('be.visible').click();
+            cy.screenshot('publish-menu-opened');
+            cy.contains(this.errorAlert, 'Update failed: At least one author is required.').should('be.visible');
+            cy.log('At least one author is required.');
+            cy.screenshot('autor-is-required');
             cy.get(this.updateButton).should('be.visible').click();
             cy.screenshot('page-not-updated');
         }

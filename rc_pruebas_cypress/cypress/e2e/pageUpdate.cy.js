@@ -44,7 +44,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
     });
 
-    after(() => {
+    afterEach(() => {
         //Eliminar todo el contenido
         cy.wait(1000);
         settingsDeleteContent.givenUserIsInSettings(); 
@@ -133,6 +133,18 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
      
         // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
         editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle); 
+    });
+
+    it('EP050 - No debería permitir al usuario editar una página existente sin autor (A-priori)', () => { 
+        
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+    
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date, false);       
+    
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldNotBeVisibleInPageList(aPrioriData[aPrioriRowIndex].title); 
     });
 
 });
