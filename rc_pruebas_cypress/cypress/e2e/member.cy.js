@@ -1,7 +1,6 @@
 import loginPage from './pages/login';
 import { CreateMember, ViewMembers, EditMember, DeleteMember } from './pages/member';
 import { faker } from '@faker-js/faker';
-import axios from 'axios';
 
 
 const createMember = new CreateMember();
@@ -12,6 +11,7 @@ const memberName = faker.person.fullName();
 const memberEmail = faker.internet.email();
 const newMemberName = faker.person.fullName(); 
 const newMemberEmail = faker.internet.email(); 
+const apiUrl = Cypress.env('MEMBERS_API_URL');
 
 describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
@@ -48,16 +48,11 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         // Seleccionar un índice aleatorio de la lista de datos a priori
         aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
 
-        // Hacer peticion a la API de mockaroo con axios
-        cy.request("https://my.api.mockaroo.com/a_priori.json?key=99771540").then((response) => {
+        // Hacer peticion a la API de mockaroo
+        cy.request(apiUrl).then((response) => {
             // Guardar los datos de la API en pseudoData
             pseudoData = response.body;
             
-            // Log de datos pseudo-aleatorios
-            cy.log(pseudoData);
-            console.log(pseudoData);
-            console.log(pseudoData.length);
-    
             // Seleccionar un índice aleatorio de la lista de datos pseudo-aleatorios
             pseudoRowIndex = Math.floor(Math.random() * pseudoData.length);
 
@@ -73,7 +68,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     
-    it('EP017 - Debería permitir crear y visualizar un nuevo miembro', () => {
+    it('EP017 - Debería permitir crear y visualizar un nuevo miembro (A priori)', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         // loginPage.givenUserIsOnLoginPage();
         // loginPage.whenUserLogsIn();
@@ -108,7 +103,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         viewMembers.thenMembersListShouldBeVisible();  
     });
 
-    it('EP019 - Debería permitir al usuario editar un miembro existente', () => {
+    it('EP019 - Debería permitir al usuario editar un miembro existente (A priori)', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         // loginPage.givenUserIsOnLoginPage();          
         // loginPage.whenUserLogsIn();                
@@ -146,23 +141,22 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro
-        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail);   
+        createMember.andUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail);   
         
         // And El usuario vuelve a la seccion de miembros
-        createMember.givenUserIsOnMembersPage();
+        createMember.andUserIsOnMembersPage();
 
         // And El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.andUserStartsCreatingNewMember();
         
-
         // And El usuario ingresa los detalles del miembro con un email duplicado
-        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail);
+        createMember.andUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail);
     
         // Then El usuario debería ver un mensaje de error que indica que el email ya existe
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
 
     //Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Pseudo-aleatorio)
@@ -171,25 +165,22 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
-        
-        console.log(pseudoData[pseudoRowIndex])
-
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail);   
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail);   
         
         // And El usuario vuelve a la seccion de miembros
-        createMember.givenUserIsOnMembersPage();
+        createMember.andUserIsOnMembersPage();
         
         // And El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.andUserStartsCreatingNewMember();
 
         // And El usuario ingresa los detalles del miembro con un email duplicado
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail);
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail);
     
         // Then El usuario debería ver un mensaje de error que indica que el email ya existe
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería rechazar la creación de un miembro con un email duplicado. (Aleatorio)
     it('EP024 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Aleatorio)', () => { 
@@ -200,22 +191,22 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail);   
+        createMember.andUserEntersMemberDetails(memberName, memberEmail);   
         
         // And El usuario vuelve a la seccion de miembros
-        createMember.givenUserIsOnMembersPage();
+        createMember.andUserIsOnMembersPage();
 
         // And El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.andUserStartsCreatingNewMember();
 
         // And El usuario ingresa los detalles del miembro con un email duplicado
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail);
+        createMember.andUserEntersMemberDetails(memberName, memberEmail);
     
         // Then El usuario debería ver un mensaje de error que indica que el email ya existe
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
 
 
@@ -225,28 +216,28 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail); 
+        createMember.andUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail); 
         
         // And El usuario vuelve a la seccion de miembros
-        createMember.givenUserIsOnMembersPage();
+        createMember.andUserIsOnMembersPage();
 
         // And El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.andUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail); 
+        createMember.andUserEntersMemberDetails(aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(aPrioriData[aPrioriRowIndex].memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(aPrioriData[aPrioriRowIndex].memberName);
 
         // And El usuario edita el miembro con un email duplicado
-        editMember.whenUserEditsMemberDetails(aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail);  
+        editMember.andUserEditsMemberDetails(aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail);  
        
         // Then El usuario debería ver un mensaje de error que indica que el email ya existe
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
 
     //Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (Pseudo-aleatorio)
@@ -255,28 +246,28 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
         
         // And El usuario vuelve a la seccion de miembros
-        createMember.givenUserIsOnMembersPage();
+        createMember.andUserIsOnMembersPage();
 
         // And El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.andUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail); 
+        createMember.andUserEntersMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
 
         // And El usuario edita el miembro con un email duplicado
-        editMember.whenUserEditsMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail);  
+        editMember.andUserEditsMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail);  
        
         // Then El usuario debería ver un mensaje de error que indica que el email ya existe
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (Aleatorio)
     it('EP027 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (aleatorio)', () => {   
@@ -288,28 +279,28 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(member1Name, member1Email); 
+        createMember.andUserEntersMemberDetails(member1Name, member1Email); 
         
         // And El usuario vuelve a la seccion de miembros
-        createMember.givenUserIsOnMembersPage();
+        createMember.andUserIsOnMembersPage();
 
         // And El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.andUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(member2Name, member2Email); 
+        createMember.andUserEntersMemberDetails(member2Name, member2Email); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(member1Name);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(member1Name);
 
         // And El usuario edita el miembro con un email duplicado
-        editMember.whenUserEditsMemberDetails(member2Name, member2Email);  
+        editMember.andUserEditsMemberDetails(member2Name, member2Email);  
        
         // Then El usuario debería ver un mensaje de error que indica que el email ya existe
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
 
 
@@ -319,13 +310,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro con un email excesivamente largo de 200 caracteres
-        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberLongEmail);  
+        createMember.andUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberLongEmail);  
     
         // Then El usuario debería ver un mensaje de error que indica que el email excede la longitud máxima permitida
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar crear un miembro con un email excesivamente largo de 200 caracteres (Pseudo-aletorio)
     it('EP029 - Debería mostrar un error al intentar CREAR un miembro con un email excesivamente largo de 200 caracteres (Pseudo-aletorio)', () => {    
@@ -333,13 +324,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro con un email excesivamente largo de 200 caracteres
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberLongEmail);  
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberLongEmail);  
     
         // Then El usuario debería ver un mensaje de error que indica que el email excede la longitud máxima permitida
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar crear un miembro con un email excesivamente largo de 200 caracteres (Aleatorio)  
     it('EP030 - Debería mostrar un error al intentar CREAR un miembro con un email excesivamente largo de 200 caracteres (Aleatorio)', () => {
@@ -349,13 +340,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro con un email excesivamente largo de 200 caracteres
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail);  
+        createMember.andUserEntersMemberDetails(memberName, memberEmail);  
     
         // Then El usuario debería ver un mensaje de error que indica que el email excede la longitud máxima permitida
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
 
 
@@ -366,27 +357,27 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro con un email vacío
-        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].emptyEmail); 
+        createMember.andUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].emptyEmail); 
        
         // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
-    });
+        createMember.thenUserShouldSeeDuplicatedEmailError();
+    });   
     //Debería mostrar un error al intentar CREAR un miembro con un email vacío (Pseudo-aleatorio)
     it('EP032 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (Pseudo-aleatorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro 
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro con un email vacío
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].emptyEmail); 
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].emptyEmail); 
        
         // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar CREAR un miembro con un email vacío (Aleatorio)
     it('EP033 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (Aleatorio)', () => {    
@@ -396,13 +387,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro con un email vacío
-        createMember.whenUserEntersMemberDetails(memberName, emptyEmail); 
+        createMember.andUserEntersMemberDetails(memberName, emptyEmail); 
        
         // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
 
 
@@ -413,19 +404,19 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail); 
+        createMember.andUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(aPrioriData[aPrioriRowIndex].memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(aPrioriData[aPrioriRowIndex].memberName);
 
         // And El usuario edita el miembro con un email vacío
-        editMember.whenUserEditsMemberDetails(aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].emptyEmail);  
+        editMember.andUserEditsMemberDetails(aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].emptyEmail);  
        
         // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Pseudo-aleatorio)
     it('EP035 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Pseudo-aleatorio)', () => {    
@@ -433,19 +424,19 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
 
         // And El usuario edita el miembro con un email vacío
-        editMember.whenUserEditsMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].emptyEmail);  
+        editMember.andUserEditsMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].emptyEmail);  
        
         // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Aleatorio)
     it('EP036 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Aleatorio)', () => {   
@@ -456,19 +447,19 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail); 
+        createMember.andUserEntersMemberDetails(memberName, memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
 
         // And El usuario edita el miembro con un email vacío
-        editMember.whenUserEditsMemberDetails(memberName, emptyEmail);  
+        editMember.andUserEditsMemberDetails(memberName, emptyEmail);  
        
         // Then El usuario debería ver un mensaje de error que indica que debe ingresar un email
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
 
 
@@ -478,16 +469,16 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
 
         // And El usuario edita el miembro con un nombre y email válidos
-        editMember.whenUserEditsMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail); 
+        editMember.andUserEditsMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberEmail); 
     
         // Then El usuario verifica que el miembro editado esté en la lista de miembros con el nuevo nombre
         editMember.thenMemberShouldBeUpdatedInMembersList(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName); 
@@ -502,16 +493,16 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail); 
+        createMember.andUserEntersMemberDetails(memberName, memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
 
         // And El usuario edita el miembro con un nombre y email válidos
-        editMember.whenUserEditsMemberDetails(newMemberName, newMemberEmail); 
+        editMember.andUserEditsMemberDetails(newMemberName, newMemberEmail); 
     
         // Then El usuario verifica que el miembro editado esté en la lista de miembros con el nuevo nombre
         editMember.thenMemberShouldBeUpdatedInMembersList(newMemberName); 
@@ -525,13 +516,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro con un email en un formato inválido
-        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].invalidEmail);  
+        createMember.andUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].invalidEmail);  
     
         // Then El usuario debería ver un mensaje de error que indica que el email no es válido
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Pseudo-aletorio)
     it('EP040 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Pseudo-aletorio)', () => {    
@@ -539,13 +530,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro con un email en un formato inválido
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].invalidEmail);  
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].invalidEmail);  
     
         // Then El usuario debería ver un mensaje de error que indica que el email no es válido
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Aleatorio) 
     it('EP041 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Aleatorio)', () => {    
@@ -556,13 +547,13 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro con un email en un formato inválido
-        createMember.whenUserEntersMemberDetails(memberName, invalidEmail);  
+        createMember.andUserEntersMemberDetails(memberName, invalidEmail);  
     
         // Then El usuario debería ver un mensaje de error que indica que el email no es válido
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
 
 
@@ -573,19 +564,19 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro  
-        createMember.whenUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail); 
+        createMember.andUserEntersMemberDetails(aPrioriData[aPrioriRowIndex].memberName, aPrioriData[aPrioriRowIndex].memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(aPrioriData[aPrioriRowIndex].memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(aPrioriData[aPrioriRowIndex].memberName);
 
         // And El usuario edita el miembro con un email en un formato inválido
-        editMember.whenUserEditsMemberDetails(aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].invalidEmail);  
+        editMember.andUserEditsMemberDetails(aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, aPrioriData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].invalidEmail);  
        
         // Then El usuario debería ver un mensaje de error que indica que el email no es válido
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Pseudo-aletorio)
     it('EP043 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Pseudo-aleatorio)', () => {    
@@ -593,19 +584,19 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(pseudoData[pseudoRowIndex].memberName);
 
         // And El usuario edita el miembro con un email en un formato inválido
-        editMember.whenUserEditsMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].invalidEmail);  
+        editMember.andUserEditsMemberDetails(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName, pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].invalidEmail);  
        
         // Then El usuario debería ver un mensaje de error que indica que el email no es válido
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Aleatorio)
     it('EP044 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (aleatorio)', () => {   
@@ -617,19 +608,19 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
     
         // And El usuario ingresa los detalles del miembro 
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail); 
+        createMember.andUserEntersMemberDetails(memberName, memberEmail); 
                 
         // And El usuario navega a la lista de miembros y selecciona un miembro específico para editar
-        editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
+        editMember.andUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
 
         // And El usuario edita el miembro con un email en un formato inválido
-        editMember.whenUserEditsMemberDetails(memberName, invalidEmail);  
+        editMember.andUserEditsMemberDetails(memberName, invalidEmail);  
        
         // Then El usuario debería ver un mensaje de error que indica que el email no es válido
-        deleteMember.thenUserShouldSeeDuplicatedEmailError();
+        createMember.thenUserShouldSeeDuplicatedEmailError();
     });
 
 
@@ -639,10 +630,10 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
 
         // And El usuario ingresa los detalles del miembro con un email y nombre válidos
-        createMember.whenUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail);
+        createMember.andUserEntersMemberDetails(pseudoData[pseudoRowIndex].memberName, pseudoData[pseudoRowIndex].memberEmail);
 
         // Then El usuario verifica que el miembro esté visible en la lista de miembros
         createMember.thenMemberShouldBeVisibleInMembersList(pseudoData[pseudoRowIndex].memberName);
@@ -656,10 +647,10 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.givenUserIsOnMembersPage();
 
         // When El usuario comienza a crear un nuevo miembro
-        createMember.andGivenUserStartsCreatingNewMember();
+        createMember.whenUserStartsCreatingNewMember();
 
         // And El usuario ingresa los detalles del miembro con un email y nombre válidos
-        createMember.whenUserEntersMemberDetails(memberName, memberEmail);
+        createMember.andUserEntersMemberDetails(memberName, memberEmail);
 
         // Then El usuario verifica que el miembro esté visible en la lista de miembros
         createMember.thenMemberShouldBeVisibleInMembersList(memberName);
