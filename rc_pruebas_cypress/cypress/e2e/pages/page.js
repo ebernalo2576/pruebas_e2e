@@ -21,7 +21,8 @@ class CreatePage extends Page {
         this.newPageButton = 'a.gh-btn.gh-btn-primary';                                  
         this.publishButton = '.gh-publish-cta > .gh-btn > span'; 
         this.confirmPublishButton = 'button.gh-btn.gh-btn-large.gh-btn-pulse.ember-view';
-        this.closeButton = 'button.close';                
+        this.closeButton = 'button.close';
+        this.backButton = 'a.ember-view.gh-btn-editor.gh-editor-back-button';              
     }
 
     // Given El usuario navega a la sección de páginas
@@ -39,7 +40,7 @@ class CreatePage extends Page {
     }
 
     // When El usuario ingresa el título y el contenido de la página
-    whenUserEntersPageDetails(title, content, date = '') {
+    whenUserEntersPageDetails(title, content, date = '', autor = true) {
         
         if (title != '') {
             cy.get(this.pageTitleField).clear().type(title);
@@ -59,27 +60,42 @@ class CreatePage extends Page {
             cy.screenshot('settings-menu-opened');
             cy.get('.gh-date-time-picker-date').clear().type(date);
             cy.screenshot('page-content-entered');
+
+            if (autor == false) {
+                cy.get('.ember-power-select-multiple-remove-btn').should('be.visible').click();
+                cy.screenshot('page-content-entered');
+            }
+
             cy.get(this.settingsMenuButton).should('be.visible').click(); 
             cy.screenshot('settings-menu-closed');
         }
 
-        if (title.length <= 255) {
+        if (autor) {
+            if (title.length <= 255) {
+                cy.get(this.publishMenuButton).should('be.visible').click();
+                cy.screenshot('publish-menu-opened');
+                cy.get(this.publishButton).should('be.visible').click();
+                cy.screenshot('page-published');
+            } else {
+                cy.log('Title is longer than 255 characters. Page will not be published.');
+                cy.screenshot('title-too-long');
+            }
+        } else {
             cy.get(this.publishMenuButton).should('be.visible').click();
             cy.screenshot('publish-menu-opened');
-            cy.get(this.publishButton).should('be.visible').click();
-            cy.screenshot('page-published');
-        } else {
-            cy.log('Title is longer than 255 characters. Page will not be published.');
-            cy.screenshot('title-too-long');
+            cy.contains(this.errorAlert, 'Validation failed: At least one author is required.').should('be.visible');
+            cy.log('At least one author is required.');
+            cy.screenshot('autor-is-required');
         }
-        
     }
 
     // Then El usuario verifica que la página esté en la lista de páginas
     thenPageShouldBeVisibleInPagesList(title) {
+        
         cy.get(this.confirmPublishButton).should('be.visible').click();
         cy.get(this.closeButton).should('be.visible').click();
         cy.screenshot('closed-page-editor');
+
         if (title != '') {
             cy.contains(title).should('exist');
         } else {
@@ -88,15 +104,20 @@ class CreatePage extends Page {
         }
     }
 
-    thenPageShouldNotBeVisibleInPageList(title) {
-        cy.log('Title is longer than 255 characters. Page will not be published.');
+    thenPageShouldNotBeVisibleInPageList(title, autor = true) {
+        
         cy.get(this.backToPagesButton).should('be.visible').click();
         cy.screenshot('page-content-validated');
         cy.get(this.confirmLeaveButton).should('be.visible').click();
         cy.screenshot('leave-confirmed');
         cy.url().should('include', '/ghost/#/pages'); 
-        cy.contains(this.pageListSelector, title).should('not.exist');
-        cy.screenshot('page-not-visible-in-list');
+        if (autor == false) {
+            cy.contains(this.pageListSelector, title).should('exist');
+            cy.screenshot('page-visible-in-list');
+        } else {
+            cy.contains(this.pageListSelector, title).should('not.exist');
+            cy.screenshot('page-not-visible-in-list');
+        }
     }
 }
     

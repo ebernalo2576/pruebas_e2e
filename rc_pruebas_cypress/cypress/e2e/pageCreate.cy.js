@@ -18,7 +18,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     });
 
     beforeEach(() => {
-        // Restaurar la sesión antes de cada prueba y navegar al dashboard
+        // Restaurar la sesión antes de cada prueba y navegar alZ dashboard
         cy.session('user-session', () => {
             loginPage.givenUserIsOnLoginPage(); 
             loginPage.whenUserLogsIn();       
@@ -143,6 +143,21 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPage.thenPageShouldBeVisibleInPagesList(aPrioriData[aPrioriRowIndex].title);
+    });
+
+    it('EP049 - No debería permitir crear una página sin autor (A-priori)', () => {
+
+        // Given El usuario navega a la sección de páginas
+        createPage.givenUserIsOnPages();
+
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
+
+        // When El usuario ingresa los detalles de la página
+        createPage.whenUserEntersPageDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date, false);
+
+        // Then El usuario valida que la página esté visible en la lista de páginas
+        createPage.thenPageShouldNotBeVisibleInPageList(aPrioriData[aPrioriRowIndex].title, false);
     });
 
 });
