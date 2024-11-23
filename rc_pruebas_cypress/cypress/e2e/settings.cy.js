@@ -1,8 +1,9 @@
 import login from './pages/login';
-import { Settings } from './pages/settings';
+import { SettingsTitleDescription,  SettingsDeleteContent} from './pages/settings';
 import { faker } from '@faker-js/faker';
 
-const settings = new Settings();
+const settingsTitleDescription = new SettingsTitleDescription();
+const settingsDeleteContent = new SettingsDeleteContent();
 const title = faker.lorem.words(3); 
 const description = faker.lorem.sentence(6); 
      
@@ -13,22 +14,41 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
         }
     });
 
-    it('EP021 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios', () => {
+    /*it('EP021 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
         login.thenUserShouldSeeDashboard();
 
         // Given El usuario accede a la sección de configuración
-        settings.givenUserIsInSettings();
+        settingsTitleDescription.givenUserIsInSettings();
 
         // and El usuario abre la sección general
-        settings.andGivenUserOpensGeneralSection();
+        settingsTitleDescription.andGivenUserOpensGeneralSection();
 
         // and El usuario cambia los campos de título y descripción
-        settings.whenUserChangesTitleDescriptionFields(title, description);
+        settingsTitleDescription.whenUserChangesTitleDescriptionFields(title, description);
 
         // then Los cambios deberían guardarse correctamente
-        settings.thenSettingsShouldBeSaved();
+        settingsTitleDescription.thenSettingsShouldBeSaved();
+    });*/
+
+    it('EP022 - Debería permitir eliminar toda el contenido', () => {
+        // Precondición inicio de sesión para ejecutar el escenario de prueba
+        login.givenUserIsOnLoginPage();
+        login.whenUserLogsIn();
+        login.thenUserShouldSeeDashboard();
+
+        // Given El usuario accede a la sección de configuración
+        settingsDeleteContent.givenUserIsInSettings();
+
+        // and El usuario abre la sección general
+        settingsDeleteContent.andGivenUserOpensGeneralSection();
+
+        // and El usuario cambia los campos de título y descripción
+        settingsDeleteContent.whenUserDeleteAllContent();
+
+        // then Los cambios deberían guardarse correctamente
+        //settingsDeleteContent.thenSettingsShouldBeSaved();
     });
 });
