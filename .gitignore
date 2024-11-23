@@ -10,5 +10,7 @@ base_pruebas_cypress/node_modules
 base_pruebas_kraken/node_modules
 rc_pruebas_cypress/node_modules
 rc_pruebas_kraken/node_modules
+rc_pruebas_cypress/cypress.env.json
+rc_pruebas_cypress/cypress/screenshots
 resemble/screenshots/compare
 resemble/screenshots/index.html
