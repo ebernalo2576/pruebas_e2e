@@ -1,75 +1,62 @@
-class Tag {
-    
-    clickNavigateTags() {
-      cy.get('a[href="#/tags/"]').click();
+export class Tag {
+    constructor() {
+        this.tagsMenuButton = 'a[data-test-nav="tags"]';
+        this.newTagButton = 'a[href="#/tags/new/"].ember-view.gh-btn.gh-btn-primary';
+        this.tagNameField = '#tag-name';
+        this.tagSlugField = '#tag-slug';
+        this.tagDescriptionField = '#tag-description';
+        this.saveTagButton = 'button[data-test-button="save"]';
+        this.errorAlert = '[data-test-task-button-state="failure"]';
+        this.tagListTitle = 'h3.gh-tag-list-name';
+        this.editTagButton = 'a[title="Edit tag"]';
     }
 
-    clickFirstNavigateTags() {
-      cy.get('href="#/tags/"]').first().click()
+    // GIVEN: Navegar a la lista de tags
+    givenUserIsOnTagsPage() {
+        cy.get(this.tagsMenuButton).should('be.visible').click();
+        cy.url().should('include', '/ghost/#/tags');
+        cy.screenshot('tags-list');
     }
 
-    clickFirstNavigateEmberView(){
-      cy.get('a[href="#/tags/"].ember-view').first().click();
+    // GIVEN: Navegar a la edición de un tag existente
+    givenUserIsEditingAnExistingTag() {
+        cy.get(this.editTagButton).last().click();
+        cy.url().should('include', '/ghost/#/tags');
+        cy.screenshot('edit-tag');
     }
 
-    clickEditaLastTag(){
-      cy.get('a[title="Edit tag"').last().click();
+    // AND: Comenzar a crear un nuevo tag
+    andUserStartsCreatingNewTag() {
+        cy.get(this.newTagButton).should('be.visible').click();
+        cy.url().should('include', '/ghost/#/tags/new');
+        cy.screenshot('new-tag-page');
     }
 
-    clearName(){
-      cy.get('#tag-name').clear();
+    // WHEN: Ingresar detalles del tag
+    whenUserEntersTagDetails(name, slug, description) {
+        if (name) cy.get(this.tagNameField).clear().type(name).screenshot('tag-name');
+        if (slug) cy.get(this.tagSlugField).clear().type(slug).screenshot('tag-slug');
+        if (description) cy.get(this.tagDescriptionField).clear().type(description).screenshot('tag-description');
+        cy.get(this.saveTagButton).click();
+        cy.screenshot('tag-saved');
     }
 
-    clearDescription(){
-      cy.get('#tag-description').clear();
+    // WHEN: Limpiar campos
+    whenUserClearsFields() {
+        cy.get(this.tagNameField).clear().screenshot('name-cleared');
+        cy.get(this.tagDescriptionField).clear().screenshot('description-cleared');
     }
 
-    clickTagLink() {
-      cy.wait(1000)
-      cy.get('a[data-test-nav="tags"]').click();
-      cy.wait(1000)
+    // THEN: Verificar que el tag está visible en la lista
+    thenTagShouldBeVisibleInTagsList(name) {
+        cy.get(this.tagsMenuButton).click();
+        cy.contains(this.tagListTitle, name).should('be.visible');
+        cy.screenshot('tag-visible');
     }
-    clickNavigateToTagEditor() {
-        cy.get('a[href="#/tags/new/"].ember-view.gh-btn.gh-btn-primary').click();
+
+    // THEN: Mostrar error
+    thenUserShouldSeeAnError() {
+        cy.get(this.errorAlert).should('be.visible');
+        cy.screenshot('error-message');
     }
-    name(text) {
-        cy.get('#tag-name').type(text);
-    }
-    slug(text) {
-        cy.get('#tag-slug').clear().type(text);
-    }
-    description(text) {
-        cy.get('#tag-description').type(text);
-    }
-    type(value) {
-      cy.get("div.koenig-editor__editor-wrapper > div").last().scrollIntoView();
-      cy.get("div.koenig-editor__editor-wrapper > div")
-        .last()
-        .type(`${value}{enter}`, { force: true });
-    }
-    addImage(url) {
-      this.type(`/image ${url}{enter}`);
-    }
-    addYoutube(url) {
-      this.type(`/youtube ${url}{enter}`);
-    }
-    save() {
-        cy.get('button[data-test-button="save"]').click();
-    }
-  
-    gotoPagesList(){
-              cy.get('a[data-test-link="pages"]').click();
-  
-    }
-  
-    checkTitleInList(title){
-        cy.get('h3.gh-tag-list-name', { timeout: 10000 })
-        .filter(`:contains(${title})`)
-        .should('have.length.at.least', 1);
-    }
-    checkErrorInTag() {
-        cy.get('[data-test-task-button-state="failure"]').should('be.visible');
-    }
-  }
-  
-  module.exports = {Tag}
+}
