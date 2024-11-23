@@ -94,4 +94,40 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         // Then El usuario valida que la página no esté visible en la lista de páginas
         createPage.thenPageShouldNotBeVisibleInPageList(longTitle);
     });
+
+    it('EP047 - Debería validar que una página no se pueda crear con título vacío (Aleatorio)', () => {
+
+        const pageContent = faker.lorem.paragraph();
+
+        // Given El usuario navega a la sección de páginas
+        createPage.givenUserIsOnPages();
+
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
+
+        // When El usuario ingresa los detalles de la página
+        createPage.whenUserEntersPageDetails('', pageContent);
+
+
+        // Then El usuario valida que la página esté visible en la lista de páginas
+        createPage.thenPageShouldBeVisibleInPagesList('');
+    });
+
+    it('EP048 - Debería validar que una página no se pueda crear con contenido vacío (Aleatorio)', () => {
+
+        const pageTitle = faker.lorem.sentence(); 
+
+        // Given El usuario navega a la sección de páginas
+        createPage.givenUserIsOnPages();
+
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
+
+        // When El usuario ingresa los detalles de la página
+        createPage.whenUserEntersPageDetails(pageTitle, '');
+
+        // Then El usuario valida que la página esté visible en la lista de páginas
+        createPage.thenPageShouldBeVisibleInPagesList(pageTitle);
+    });
+
 });

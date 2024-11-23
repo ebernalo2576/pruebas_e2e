@@ -8,7 +8,9 @@ class Page {
         this.settingsMenuButton = '.settings-menu-toggle';
         this.backToPagesButton = 'a.ember-view.gh-editor-back-button'; 
         this.confirmLeaveButton = '.modal-footer .gh-btn-red';   
-        this.errorAlert = '.gh-alert';       
+        this.errorAlert = '.gh-alert';    
+        this.selectImage = '.gh-unsplash-grid > .gh-unsplash-grid-column > .gh-unsplash-photo > .gh-unsplash-photo-container > img';   
+        this.confirmSelectImage = '.absolute > .gh-unsplash-photo > .gh-unsplash-photo-container > .gh-unsplash-photo-overlay > .gh-unsplash-photo-footer > .gh-unsplash-button';
     }
 }
 
@@ -38,10 +40,19 @@ class CreatePage extends Page {
 
     // When El usuario ingresa el título y el contenido de la página
     whenUserEntersPageDetails(title, content) {
-        cy.get(this.pageTitleField).clear().type(title);
-        cy.screenshot('page-title-entered');
-        cy.get(this.pageContentField).click().type(content);
-        cy.screenshot('page-content-entered'); 
+        
+        if (title != '') {
+            cy.get(this.pageTitleField).clear().type(title);
+            cy.screenshot('page-title-entered');
+        }
+
+        if (content != '') {
+            cy.get(this.pageContentField).click().type(content);
+            cy.screenshot('page-content-entered'); 
+        } else {
+            cy.get(this.pageContentField).click().type('{enter}');
+            cy.screenshot('page-content-entered'); 
+        }
 
         if (title.length <= 255) {
             cy.get(this.publishMenuButton).should('be.visible').click();
@@ -59,7 +70,12 @@ class CreatePage extends Page {
         cy.get(this.confirmPublishButton).should('be.visible').click();
         cy.get(this.closeButton).should('be.visible').click();
         cy.screenshot('closed-page-editor');
-        cy.contains(title).should('exist');
+        if (title != '') {
+            cy.contains(title).should('exist');
+        } else {
+            cy.contains('Untitled').should('exist');
+            cy.log('Title is empty. Page will be named "Untitled".')
+        }
     }
 
     thenPageShouldNotBeVisibleInPageList(title) {
