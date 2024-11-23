@@ -130,4 +130,19 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(pageTitle);
     });
 
+    it('EP049 - Debería permitir crear una página con fecha (A-priori)', () => {
+
+        // Given El usuario navega a la sección de páginas
+        createPage.givenUserIsOnPages();
+
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
+
+        // When El usuario ingresa los detalles de la página
+        createPage.whenUserEntersPageDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date);
+
+        // Then El usuario valida que la página esté visible en la lista de páginas
+        createPage.thenPageShouldBeVisibleInPagesList(aPrioriData[aPrioriRowIndex].title);
+    });
+
 });

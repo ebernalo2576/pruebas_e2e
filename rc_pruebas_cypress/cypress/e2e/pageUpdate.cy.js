@@ -54,7 +54,6 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     });
 
     it('EP014 - Debería permitir al usuario editar una página existente (Aleatorio)', () => { 
-        cy.log(pageTitle)
         const newPageTitle = faker.lorem.sentence();  
         const newPageContent = faker.lorem.paragraph(); 
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
@@ -95,6 +94,45 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     
         // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
         editPage.thenPageShouldNotBeVisibleInPageList(longTitle); 
+    });
+
+    it('EP050 - Debería permitir al usuario editar una página existente y poner una fecha (A-priori)', () => { 
+        
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+    
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date);       
+    
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldBeUpdatedInPagesList(aPrioriData[aPrioriRowIndex].title); 
+    });
+
+    it('EP014 - No debería permitir al usuario editar una página existente con el título (Aleatorio)', () => { 
+  
+        const newPageContent = faker.lorem.paragraph(); 
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+   
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails('', newPageContent);       
+     
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldBeUpdatedInPagesList(''); 
+    });
+
+    it('EP014 - No debería permitir al usuario editar una página existente con el título (Aleatorio)', () => { 
+        
+        const newPageTitle = faker.lorem.sentence();  
+        
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+   
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(newPageTitle, '');       
+     
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle); 
     });
 
 });
