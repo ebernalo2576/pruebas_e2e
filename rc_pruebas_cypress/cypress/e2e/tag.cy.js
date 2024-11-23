@@ -1,4 +1,4 @@
-import login from './pages/login';
+import loginPage from './pages/login';
 import { CreateTag, EditTag, DeleteTag } from './pages/tag';
 import { faker } from '@faker-js/faker'
 
@@ -10,61 +10,78 @@ const tagDescription = faker.lorem.sentence();
 const newTagName = faker.commerce.productName(); 
 const newTagDescription = faker.lorem.sentence();       
 
-describe('Escenarios de pruebas para la funcionalidad tags - Ghost', () => {
-    Cypress.on('uncaught:exception', (err) => {
-        if (err.message.includes('TransitionAborted')) {
-            return false; 
-        }
+
+const apiUrl = Cypress.env('MEMBERS_API_URL');
+
+describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
+
+    let aPrioriData = [];
+    let aPrioriRowIndex = 0;
+    let pseudoData = [];
+    let pseudoRowIndex = 0;
+
+    before(() => {
+        // Configuración inicial de sesión
+        cy.session('user-session', () => {
+            loginPage.givenUserIsOnLoginPage(); // Navegar a la página de inicio de sesión
+            loginPage.whenUserLogsIn();        // Iniciar sesión
+            loginPage.thenUserShouldSeeDashboard(); // Confirmar que el dashboard se cargó
+        });
+
+         // Leer datos del archivo CSV (a priori) antes de las pruebas
+         cy.fixture('members-a-priori.json').then((members) => {
+            aPrioriData = members;
+        });
     });
 
-    it('EP008 - Debería permitir crear y visualizar un nuevo tag', () => {
-        // Precondición inicio de sesión para ejecutar el escenario de prueba
-        login.givenUserIsOnLoginPage();
-        login.whenUserLogsIn();
-        login.thenUserShouldSeeDashboard();
+    beforeEach(() => {
+        // Restaurar la sesión antes de cada prueba y navegar al dashboard
+        cy.session('user-session', () => {
+            loginPage.givenUserIsOnLoginPage(); // Navegar a la página de inicio de sesión
+            loginPage.whenUserLogsIn();        // Iniciar sesión
+            loginPage.thenUserShouldSeeDashboard(); // Confirmar que el dashboard se cargó
+        });
+        cy.visit(Cypress.env('GHOST_URL') + '/ghost/#/dashboard'); // Navegar al dashboard
+        
+        cy.log(aPrioriData);
+        console.log(aPrioriData);
+        // Seleccionar un índice aleatorio de la lista de datos a priori
+        aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
 
-        // Given El usuario navega a la página de tags
-        createTag.givenUserIsOnTags();
+        // Hacer peticion a la API de mockaroo
+        cy.request(apiUrl).then((response) => {
+            // Guardar los datos de la API en pseudoData
+            pseudoData = response.body;
+            
+            // Seleccionar un índice aleatorio de la lista de datos pseudo-aleatorios
+            pseudoRowIndex = Math.floor(Math.random() * pseudoData.length);
 
-        // and El usuario comienza a crear un nuevo tag
-        createTag.andGivenUserStartsCreatingNewTag();
+            console.log(pseudoRowIndex)
+            console.log(pseudoData[pseudoRowIndex])
 
-        // When El usuario ingresa los detalles del tag
-        createTag.whenUserEntersTagDetails(tagName, tagDescription);
 
-        // Then El usuario valida que el tag esté visible en la lista de tags
-        createTag.thenTagShouldBeVisibleInTagsList(tagName);
+        });
+
+        cy.wait(1000);
     });
+    // it('EP017 - Debería permitir crear y visualizar un nuevo miembro (A priori)', () => {
+    //     // Precondición inicio de sesión para ejecutar el escenario de prueba
+    //     // loginPage.givenUserIsOnLoginPage();
+    //     // loginPage.whenUserLogsIn();
+    //     // loginPage.thenUserShouldSeeDashboard();
 
-    it('EP009 - Debería permitir editar un tag existente', () => {
-        // Precondición inicio de sesión para ejecutar el escenario de prueba
-        login.givenUserIsOnLoginPage();
-        login.whenUserLogsIn();
-        login.thenUserShouldSeeDashboard();
+    //     // Given El usuario navega a la sección de miembros
+    //     createMember.givenUserIsOnMembersPage();
 
-        // Given El usuario está en la página de tags y selecciona el tag a editar
-        editTag.givenUserIsOnTagsPageAndSelectsTagToEdit(tagName);
+    //     // When El usuario comienza a crear un nuevo miembro
+    //     createMember.andGivenUserStartsCreatingNewMember();
 
-        // When El usuario modifica el nombre y descripción del tag
-        editTag.whenUserEditsTagDetails(newTagName, newTagDescription);
+    //     // And El usuario ingresa los detalles del miembro
+    //     createMember.whenUserEntersMemberDetails(memberName, memberEmail);
 
-        // Then El usuario verifica que el tag se haya actualizado en la lista de tags
-        editTag.thenTagShouldBeUpdatedInTagsList(newTagName);
-    });
+    //     // Then El usuario verifica que el miembro esté visible en la lista de miembros
+    //     createMember.thenMemberShouldBeVisibleInMembersList(memberName);
+    // });
 
-    it('EP010 - Debería permitir eliminar un tag y verificar que ya no esté en la lista', () => {
-        // Precondición inicio de sesión para ejecutar el escenario de prueba
-        login.givenUserIsOnLoginPage();
-        login.whenUserLogsIn();
-        login.thenUserShouldSeeDashboard();
 
-        // Given El usuario está en la página de tags y selecciona el tag a eliminar
-        deleteTag.givenUserIsOnTagsPageAndSelectsTagToDelete(newTagName);
-
-        // When El usuario elimina el tag
-        deleteTag.whenUserDeletesTag();
-
-        // Then El usuario verifica que el tag ya no esté en la lista de tags
-        deleteTag.thenTagShouldNotBeVisibleInTagsList(newTagName);
-    });
 });

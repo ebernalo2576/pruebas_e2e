@@ -16,9 +16,17 @@ Este proyecto contiene un conjunto de pruebas automatizadas para verificar las f
    - EP007 - Debería permitir al usuario eliminar un post existente
 
 ### 3. Tag
-   - EP008 - Debería permitir crear y visualizar un nuevo tag
-   - EP009 - Debería permitir editar un tag existente
-   - EP010 - Debería permitir eliminar un tag y verificar que ya no esté en la lista
+   - EP08 - Crear un nuevo tag desde el panel de Tags con menos de 191 caracteres en el campo slug
+   - EP09 - Crear un nuevo tag desde el panel de Tags con mas de 191 caracteres en el campo slug
+   - EP10 - Crear un nuevo tag desde el panel de Tags con menos de 500 caracteres en el campo description
+   - EP11 - Crear un nuevo tag desde el panel de Tags con mas de 500 caracteres en el campo description
+   - EP12 Crear un nuevo tag desde el panel de Tags con menos de 191 caracteres en el campo name
+   - EP13 Crear un nuevo tag desde el panel de Tags
+   - EP14 Crear un nuevo tag desde el panel de Tags sin datos en los campos
+   - EP15 Crear un nuevo tag desde el panel de Tags sin datos en los campos.
+   - EP16 Editar información de un tag existente
+   - EP17 Editar información de un tag existente dejando campos vacios
+
 
 ### 4. Página
    - EP011 - Debería permitir crear y visualizar una nueva página

@@ -1,119 +1,75 @@
 class Tag {
-    constructor() {
-        this.tagsMenuButton = '[data-test-nav="tags"]'
-        this.tagNameField = '#tag-name';
-        this.tagDescriptionField = '#tag-description';
-        this.saveTagButton = 'button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view';
-        this.tagListSelector = '.gh-tag-list-name';
-    }
-}
-
-class CreateTag extends Tag {
-    constructor() {   
-        super();   
-        this.newTagButton = 'a.gh-btn.gh-btn-primary';                           
+    
+    clickNavigateTags() {
+      cy.get('a[href="#/tags/"]').click();
     }
 
-    // Given El usuario navega a la página de tags
-    givenUserIsOnTags() {
-        cy.get(this.tagsMenuButton).should('be.visible').click();
-        cy.url().should('include', '/ghost/#/tags');
-        cy.screenshot('tags-page');
+    clickFirstNavigateTags() {
+      cy.get('href="#/tags/"]').first().click()
     }
 
-    // and El usuario hace clic en "New Tag" para crear un tag
-    andGivenUserStartsCreatingNewTag() {
-        cy.get(this.newTagButton).should('be.visible').click();
-        cy.url().should('include', '/ghost/#/tags/new');
-        cy.screenshot('new-tag-page');
+    clickFirstNavigateEmberView(){
+      cy.get('a[href="#/tags/"].ember-view').first().click();
     }
 
-    // When El usuario ingresa el nombre y descripción del tag
-    whenUserEntersTagDetails(name, description) {
-        cy.get(this.tagNameField).clear().type(name);
-        cy.screenshot('tag-name-entered'); 
-        cy.get(this.tagDescriptionField).clear().type(description);
-        cy.screenshot('tag-description-entered'); 
-        cy.get('.gh-main').scrollTo('top');
-        cy.get(this.saveTagButton).should('be.visible').click();
-        cy.screenshot('tag-saved');
+    clickEditaLastTag(){
+      cy.get('a[title="Edit tag"').last().click();
     }
 
-    // Then El usuario valida que el tag esté en la lista de tags
-    thenTagShouldBeVisibleInTagsList(name) {
-        cy.get(this.tagsMenuButton).click(); 
-        cy.contains(this.tagListSelector, name).should('be.visible');
-        cy.screenshot('tag-visible-in-list'); 
-    }
-}
-
-class EditTag extends Tag {
-    constructor() {
-        super();
+    clearName(){
+      cy.get('#tag-name').clear();
     }
 
-    // Given El usuario navega a la página de tags y selecciona el tag a editar
-    givenUserIsOnTagsPageAndSelectsTagToEdit(name) {
-        cy.get(this.tagsMenuButton).should('be.visible').click();
-        cy.url().should('include', '/ghost/#/tags');
-        cy.screenshot('tags-page-before-edit');
-        cy.contains(name).click();  
-        cy.screenshot('tag-selected-for-edit'); 
+    clearDescription(){
+      cy.get('#tag-description').clear();
     }
 
-    // When El usuario modifica el nombre y la descripción del tag
-    whenUserEditsTagDetails(newName, newDescription) {
-        cy.get(this.tagNameField).clear().type(newName);
-        cy.screenshot('tag-name-edited'); 
-        cy.get(this.tagDescriptionField).clear().type(newDescription);
-        cy.screenshot('tag-description-edited'); 
-        cy.get('.gh-main').scrollTo('top');
-        cy.get(this.saveTagButton).should('be.visible').click();
-        cy.screenshot('tag-changes-saved');
+    clickTagLink() {
+      cy.wait(1000)
+      cy.get('a[data-test-nav="tags"]').click();
+      cy.wait(1000)
     }
-
-    // Then El usuario verifica que el tag se haya actualizado en la lista de tags
-    thenTagShouldBeUpdatedInTagsList(newName) {
-        cy.get(this.tagsMenuButton).click(); 
-        cy.contains(this.tagListSelector, newName).should('be.visible');
-        cy.screenshot('tag-updated-in-list');
+    clickNavigateToTagEditor() {
+        cy.get('a[href="#/tags/new/"].ember-view.gh-btn.gh-btn-primary').click();
     }
-}
-
-class DeleteTag extends Tag {
-    constructor() {
-        super();         
-        this.deleteTagButton = 'button.gh-btn.gh-btn-red.gh-btn-icon'; 
-        this.confirmDeleteTagButton = '.modal-footer .gh-btn-red';
+    name(text) {
+        cy.get('#tag-name').type(text);
     }
-
-    // Given El usuario está en la página de tags y selecciona el tag a eliminar
-    givenUserIsOnTagsPageAndSelectsTagToDelete(name) {
-        cy.get(this.tagsMenuButton).should('be.visible').click();
-        cy.url().should('include', '/ghost/#/tags');
-        cy.screenshot('tags-page-before-delete');
-        cy.contains(name).click(); 
-        cy.screenshot('tag-selected-for-delete'); 
+    slug(text) {
+        cy.get('#tag-slug').clear().type(text);
     }
-
-    // When El usuario hace clic en el botón para eliminar el tag
-    whenUserDeletesTag() {
-        cy.get('.gh-main').scrollTo('bottom'); 
-        cy.screenshot('scroll-to-delete-button');
-        cy.get(this.deleteTagButton).should('be.visible').click();
-        cy.screenshot('delete-button-clicked');
-        cy.wait(500); 
-        cy.get(this.confirmDeleteTagButton).click();
-        cy.screenshot('delete-confirmed');
-        //cy.wait(1000);
+    description(text) {
+        cy.get('#tag-description').type(text);
     }
-
-    // Then El usuario verifica que el tag ya no está en la lista de tags
-    thenTagShouldNotBeVisibleInTagsList(name) {
-        cy.get(this.tagsMenuButton).click(); 
-        cy.contains(this.tagListSelector, name).should('not.exist');
-        cy.screenshot('tag-not-visible-in-list');
+    type(value) {
+      cy.get("div.koenig-editor__editor-wrapper > div").last().scrollIntoView();
+      cy.get("div.koenig-editor__editor-wrapper > div")
+        .last()
+        .type(`${value}{enter}`, { force: true });
     }
-}
-
-export { CreateTag, EditTag, DeleteTag };
+    addImage(url) {
+      this.type(`/image ${url}{enter}`);
+    }
+    addYoutube(url) {
+      this.type(`/youtube ${url}{enter}`);
+    }
+    save() {
+        cy.get('button[data-test-button="save"]').click();
+    }
+  
+    gotoPagesList(){
+              cy.get('a[data-test-link="pages"]').click();
+  
+    }
+  
+    checkTitleInList(title){
+        cy.get('h3.gh-tag-list-name', { timeout: 10000 })
+        .filter(`:contains(${title})`)
+        .should('have.length.at.least', 1);
+    }
+    checkErrorInTag() {
+        cy.get('[data-test-task-button-state="failure"]').should('be.visible');
+    }
+  }
+  
+  module.exports = {Tag}
