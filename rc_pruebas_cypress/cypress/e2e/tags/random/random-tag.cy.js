@@ -24,7 +24,6 @@ describe('Escenarios de pruebas para la funcionalidad tags - random - Ghost', fu
 
         cy.wait(1000);
     });
-    // Helper function for editing a tag
     const editTag = (tagData) => {
         tag.givenUserIsOnTagsPage();
         tag.givenUserIsEditingAnExistingTag();
@@ -32,9 +31,6 @@ describe('Escenarios de pruebas para la funcionalidad tags - random - Ghost', fu
         tag.thenTagShouldBeVisibleInTagsList(tagData.name);
     };
 
-    /**
-     * Crear un nuevo tag con diferentes condiciones.
-     */
     const testCases = [
         { type: "SHORT_SLUG", description: "menos de 191 caracteres en el campo slug" },
         { type: "LONG_SLUG", description: "más de 191 caracteres en el campo slug" },
@@ -59,10 +55,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - random - Ghost', fu
         });
     });
 
-    /**
-     * Crear un nuevo tag con campos vacíos.
-     */
-    it('Crear un nuevo tag desde el panel de Tags sin datos en los campos.', function () {
+    it(' EP021 - Crear un nuevo tag desde el panel de Tags sin datos en los campos.', function () {
         tag.givenUserIsOnTagsPage();
         tag.andUserStartsCreatingNewTag();
         tag.whenUserClearsFields();
@@ -70,10 +63,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - random - Ghost', fu
         tag.thenUserShouldSeeAnError();
     });
 
-    /**
-     * Editar información de un tag existente.
-     */
-    it('Editar información de un tag existente', function () {
+    it('EP024 - Editar información de un tag existente', function () {
         for (let index = 0; index < 3; index++) {
             const tagData = {
                 name: faker.string.alpha(10),
@@ -84,10 +74,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - random - Ghost', fu
         }
     });
 
-    /**
-     * Editar información de un tag existente dejando campos vacíos.
-     */
-    it('Editar información de un tag existente dejando campos vacíos', function () {
+    it('EP027 - Editar información de un tag existente dejando campos vacíos', function () {
         for (let index = 0; index < 3; index++) {
             const tagData = {
                 name: faker.string.alpha(10),

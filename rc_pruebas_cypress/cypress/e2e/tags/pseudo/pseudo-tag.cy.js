@@ -47,17 +47,12 @@ describe('Escenarios de pruebas para la funcionalidad tags - pseudo - Ghost', fu
         cy.wait(1000);
     });
 
-    /**
-     * Crear un nuevo tag utilizando datos pseudoaleatorios.
-     */
     pseudoData.forEach((tagData, index) => {
         it(`Crear un nuevo tag desde la API de Mockaroo (${index + 1})`, function () {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserEntersTagDetails(tagData.name, tagData.slug, tagData.description);
             tag.saveTagButton();
-
-            // Verificar errores para datos largos
             if (tagData.name.length > 191 || tagData.slug.length > 191 || tagData.description.length > 500) {
                 tag.thenUserShouldSeeAnError();
             } else {
@@ -66,9 +61,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - pseudo - Ghost', fu
         });
     });
 
-    /**
-     * Crear un nuevo tag con campos vacíos.
-     */
+
     it('Crear un nuevo tag desde el panel de Tags sin datos en los campos.', function () {
         tag.givenUserIsOnTagsPage();
         tag.andUserStartsCreatingNewTag();
@@ -77,9 +70,6 @@ describe('Escenarios de pruebas para la funcionalidad tags - pseudo - Ghost', fu
         tag.thenUserShouldSeeAnError();
     });
 
-    /**
-     * Editar información de un tag existente.
-     */
     it('Editar información de un tag existente', function () {
         for (let i = 0; i < 3; i++) {
             const tagData = pseudoData[pseudoRowIndex];

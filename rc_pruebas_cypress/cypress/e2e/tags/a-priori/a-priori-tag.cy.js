@@ -262,9 +262,6 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
     ];
 
 
-    /**
-   * Pruebas para crear un nuevo tag con datos válidos (`tagNormalData`).
-   */
     tagNormalData.forEach((data) => {
         it(`Debería permitir crear un tag con datos válidos: ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
@@ -279,9 +276,6 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
 
 
 
-    // /**
-    //     * Pruebas para crear un nuevo tag sin datos en los campos (`tagWithoutData`).
-    //     */
     tagWithoutData.forEach(() => {
         it('Debería mostrar un error al intentar crear un tag sin datos', () => {
             tag.givenUserIsOnTagsPage();
@@ -296,9 +290,6 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
     });
 
 
-    /**
-         * Pruebas para crear un nuevo tag con menos de 191 caracteres en el campo `slug`.
-         */
     tagData.forEach((data) => {
         it(`Debería permitir crear un tag con slug válido: ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
@@ -311,11 +302,8 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
         });
     });
 
-    /**
-     * Pruebas para crear un nuevo tag con más de 191 caracteres en el campo `slug`.
-     */
     tagDataLongSlug.forEach((data) => {
-        it(`Debería mostrar un error al intentar crear un tag con slug demasiado largo: ${data.name}`, () => {
+        it(`Crear un nuevo tag con menos de 191 caracteres en el campo slug : ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
 
             tag.andUserStartsCreatingNewTag();
@@ -326,9 +314,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
         });
     });
 
-    /**
-     * Pruebas para crear un nuevo tag con menos de 500 caracteres en el campo `description`.
-     */
+
     tagDataDescription.forEach((data) => {
         it(`Debería permitir crear un tag con descripción válida: ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
@@ -341,11 +327,9 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
         });
     });
 
-    /**
-     * Pruebas para crear un nuevo tag con más de 500 caracteres en el campo `description`.
-     */
+
     tagDataLongDescription.forEach((data) => {
-        it(`Debería mostrar un error al intentar crear un tag con descripción demasiado larga: ${data.name}`, () => {
+        it(` Debería mostrar un error al intentar crear un tag con descripción demasiado larga: ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
 
             tag.andUserStartsCreatingNewTag();
@@ -356,24 +340,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
         });
     });
 
-    /**
-     * Pruebas para crear un nuevo tag con menos de 191 caracteres en el campo `name`.
-     */
-    tagNameData.forEach((data) => {
-        it(`Debería permitir crear un tag con name válido: ${data.name}`, () => {
-            tag.givenUserIsOnTagsPage();
 
-            tag.andUserStartsCreatingNewTag();
-
-            tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
-
-            tag.thenTagShouldBeVisibleInTagsList(data.name);
-        });
-    });
-
-    /**
-     * Pruebas para crear un nuevo tag con más de 191 caracteres en el campo `name`.
-     */
     tagLongNameData.forEach((data) => {
         it(`Debería mostrar un error al intentar crear un tag con name demasiado largo: ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
@@ -385,9 +352,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
             tag.thenUserShouldSeeAnError();
         });
     });
-    /**
-        * Prueba: Editar información de un tag existente.
-        */
+
     it('Debería permitir editar un tag existente', function () {
         cy.fixture('tags.json').then((tags) => {
             for (let index = 0; index < 3; index++) {
