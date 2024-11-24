@@ -14,7 +14,7 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
         }
     });
 
-    /*it('EP021 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios', () => {
+    it('EP021 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         login.givenUserIsOnLoginPage();
         login.whenUserLogsIn();
@@ -31,7 +31,7 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
 
         // then Los cambios deberían guardarse correctamente
         settingsTitleDescription.thenSettingsShouldBeSaved();
-    });*/
+    });
 
     it('EP022 - Debería permitir eliminar toda el contenido', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba

@@ -14,6 +14,7 @@ const newMemberEmail = faker.internet.email();
 const apiUrl = Cypress.env('MEMBERS_API_URL');
 const MEMBERS_API_MOCK_PATH = Cypress.env('MEMBERS_API_MOCK_PATH');
 
+
 describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
     let aPrioriData = [];

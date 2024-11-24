@@ -7,6 +7,7 @@ const settingsDeleteContent = new SettingsDeleteContent();
 const createPage = new CreatePage();
 const editPage = new EditPage();
 const unpublishPage = new UnpublishPage();
+const apiUrl = Cypress.env('API_URL')+"/page-pseudo-aleatorio.json?key=6fad6d30";
 
 let pageTitle = '';         
 
@@ -14,6 +15,8 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
 
     let aPrioriData = [];
     let aPrioriRowIndex = 0;
+    let pseudoData = [];
+    let pseudoRowIndex = 0;
 
     before(() => {
         cy.fixture('page-a-priori.json').then((page) => {
@@ -42,9 +45,15 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.givenUserIsOnPages();
 
         aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
+
+        cy.request(apiUrl).then((response) => {
+            pseudoData = response.body;
+
+            pseudoRowIndex = Math.floor(Math.random() * pseudoData.length);
+        });
     });
 
-    after(() => {
+    afterEach(() => {
         //Eliminar todo el contenido
         cy.wait(1000);
         settingsDeleteContent.givenUserIsInSettings(); 
@@ -54,7 +63,6 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     });
 
     it('EP014 - Debería permitir al usuario editar una página existente (Aleatorio)', () => { 
-        cy.log(pageTitle)
         const newPageTitle = faker.lorem.sentence();  
         const newPageContent = faker.lorem.paragraph(); 
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
@@ -95,6 +103,81 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     
         // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
         editPage.thenPageShouldNotBeVisibleInPageList(longTitle); 
+    });
+
+    it('EP050 - Debería permitir al usuario editar una página existente y poner una fecha (A-priori)', () => { 
+        
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+    
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date);       
+    
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldBeUpdatedInPagesList(aPrioriData[aPrioriRowIndex].title); 
+    });
+
+    it('EP014 - No debería permitir al usuario editar una página existente con el título (Aleatorio)', () => { 
+  
+        const newPageContent = faker.lorem.paragraph(); 
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+   
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails('', newPageContent);       
+     
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldBeUpdatedInPagesList(''); 
+    });
+
+    it('EP014 - No debería permitir al usuario editar una página existente con el título (Aleatorio)', () => { 
+        
+        const newPageTitle = faker.lorem.sentence();  
+        
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+   
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(newPageTitle, '');       
+     
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle); 
+    });
+
+    it('EP050 - No debería permitir al usuario editar una página existente sin autor (A-priori)', () => { 
+        
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+    
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date, false);       
+    
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldNotBeVisibleInPageList(aPrioriData[aPrioriRowIndex].title); 
+    });
+
+    it('EP050 - Debería permitir al usuario editar una página existente y poner una fecha (Pseudo-aletorio)', () => { 
+        
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+    
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description, pseudoData[pseudoRowIndex].date);       
+    
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldBeUpdatedInPagesList(pseudoData[pseudoRowIndex].title); 
+    });
+
+    it('EP050 - No debería permitir al usuario editar una página existente sin autor (A-priori)', () => { 
+        
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+    
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description, pseudoData[pseudoRowIndex].date, false);       
+    
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldNotBeVisibleInPageList(pseudoData[pseudoRowIndex].title); 
     });
 
 });
