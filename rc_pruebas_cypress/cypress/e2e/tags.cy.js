@@ -102,7 +102,7 @@ const generarTagsAleatorias = (cantidad, slugType) => {
 };
 const tag = new Tag();
 
-describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', () => {
+describe('Pruebas para la funcionalidad tags en Ghost - aprori', () => {
     const {
         tagNormalData,
         tagWithoutData,
@@ -203,8 +203,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
         });
     });
 });
-
-describe('EP009-EP030: Pruebas para la funcionalidad tags - Pseudo-aleatorio - Ghost', () => {
+describe('Pruebas para la funcionalidad tags - Pseudo-aleatorio - Ghost', () => {
     let pseudoData = [];
 
     before(() => {
@@ -262,7 +261,7 @@ describe('EP009-EP030: Pruebas para la funcionalidad tags - Pseudo-aleatorio - G
         }
     });
 });
-describe('EP010-EP031: Pruebas para la funcionalidad tags - Aleatorio - Ghost', () => {
+describe('Pruebas para la funcionalidad tags - Aleatorio - Ghost', () => {
 
     before(() => {
         cy.session('user-session', () => {
