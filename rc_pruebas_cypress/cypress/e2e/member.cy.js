@@ -12,6 +12,7 @@ const memberEmail = faker.internet.email();
 const newMemberName = faker.person.fullName(); 
 const newMemberEmail = faker.internet.email(); 
 const apiUrl = Cypress.env('MEMBERS_API_URL');
+const MEMBERS_API_MOCK_PATH = Cypress.env('MEMBERS_API_MOCK_PATH');
 
 describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
@@ -49,7 +50,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
 
         // Hacer peticion a la API de mockaroo
-        cy.request(apiUrl).then((response) => {
+        cy.request(apiUrl + "/" + MEMBERS_API_MOCK_PATH).then((response) => {
             // Guardar los datos de la API en pseudoData
             pseudoData = response.body;
             
