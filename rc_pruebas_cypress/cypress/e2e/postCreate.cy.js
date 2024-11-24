@@ -249,7 +249,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(pageTitle);
     });
 
-    it('EP081 - No Debería permitir crear un post con título que supera el límite de caracteres', () => {
+    it('EP081 - No Debería permitir crear un post con título que supera el límite de caracteres (Aleatorio)', () => {
 
         let longTitle = faker.lorem.sentence(1000);
         while (longTitle.length <=  524288) {
@@ -267,5 +267,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldNotBeVisibleInPostsList(longTitle);
 
     });
+
+    
     
 });
