@@ -51,7 +51,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         settingsDeleteContent.thenSettingsShouldDeleted(); 
     });
    
-    it('EP026 - Debería mostrar los posts creados en la lista de posts', () => {
+    it('EP027 - Debería mostrar los posts creados en la lista de posts', () => {
         // Given El usuario navega a la lista de posts
         viewPost.givenUserIsOnPostsList();
 
@@ -62,7 +62,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         viewPost.thenPostShouldBeVisibleInList(postTitle);
     });
 
-    it('EP027 - Debería visualizar un post y validar título y contenido', () => {
+    it('EP028 - Debería visualizar un post y validar título y contenido', () => {
         // Given El usuario está en la lista de posts
         validatePost.givenUserIsOnPostsList();
 

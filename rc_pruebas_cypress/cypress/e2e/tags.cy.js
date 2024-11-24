@@ -132,7 +132,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
     });
 
     tagNormalData?.forEach((data) => {
-        it(`EP093 Debería permitir crear un tag con datos válidos (A priori): ${data.name}`, () => {
+        it(`EP097 Debería permitir crear un tag con datos válidos (A priori): ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserEntersTagDetails(data.name, null, data.description);
@@ -142,7 +142,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
     });
 
     tagWithoutData?.forEach(() => {
-        it('EP094 Debería mostrar un error al intentar crear un tag sin datos (A priori)', () => {
+        it('EP098 Debería mostrar un error al intentar crear un tag sin datos (A priori)', () => {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserClearsFields();
@@ -152,7 +152,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
     });
 
     tagData?.forEach((data) => {
-        it(`EP095 Debería permitir crear un tag con slug válido (A priori): ${data.name}`, () => {
+        it(`EP099 Debería permitir crear un tag con slug válido (A priori): ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
@@ -161,7 +161,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
     });
 
     tagDataLongSlug?.forEach((data) => {
-        it(`EP096 Crear un nuevo tag con menos de 191 caracteres en el campo slug (A priori): ${data.name}`, () => {
+        it(`EP100 Crear un nuevo tag con menos de 191 caracteres en el campo slug (A priori): ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
@@ -169,7 +169,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
         });
     });
     tagDataDescription?.forEach((data) => {
-        it(`EP097 Debería permitir crear un tag con descripción válida (A priori): ${data.name}`, () => {
+        it(`EP101 Debería permitir crear un tag con descripción válida (A priori): ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
@@ -178,7 +178,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
     });
 
     tagDataLongDescription?.forEach((data) => {
-        it(`EP098 Debería mostrar un error al intentar crear un tag con descripción demasiado larga (A priori): ${data.name}`, () => {
+        it(`EP102 Debería mostrar un error al intentar crear un tag con descripción demasiado larga (A priori): ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
@@ -187,7 +187,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
     });
 
     tagLongNameData?.forEach((data) => {
-        it(`EP099 Debería mostrar un error al intentar crear un tag con name demasiado largo (A priori): ${data.name}`, () => {
+        it(`EP103 Debería mostrar un error al intentar crear un tag con name demasiado largo (A priori): ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
@@ -195,7 +195,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
         });
     });
 
-    it('EP100 Debería permitir editar un tag existente (A priori)', () => {
+    it('EP104 Debería permitir editar un tag existente (A priori)', () => {
         cy.fixture('tags.json').then((tags) => {
             for (let i = 0; i < 3; i++) {
                 tag.givenUserIsOnTagsPage();
@@ -235,7 +235,7 @@ describe('EP009-EP030: Pruebas para la funcionalidad tags - Pseudo-aleatorio - G
     });
 
     pseudoData.forEach((data, index) => {
-        it(`EP101 Crear un nuevo tag con datos válidos desde la API de Mockaroo (${index + 1})`, () => {
+        it(`EP105 Crear un nuevo tag con datos válidos desde la API de Mockaroo (${index + 1})`, () => {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
@@ -248,7 +248,7 @@ describe('EP009-EP030: Pruebas para la funcionalidad tags - Pseudo-aleatorio - G
         });
     });
 
-    it('EP102 Crear un nuevo tag sin datos desde la API de Mockaroo', () => {
+    it('EP106 Crear un nuevo tag sin datos desde la API de Mockaroo', () => {
         tag.givenUserIsOnTagsPage();
         tag.andUserStartsCreatingNewTag();
         tag.whenUserClearsFields();
@@ -256,7 +256,7 @@ describe('EP009-EP030: Pruebas para la funcionalidad tags - Pseudo-aleatorio - G
         tag.thenUserShouldSeeAnError();
     });
 
-    it('EP103 Editar información de un tag existente (Pseudo-aleatorio)', () => {
+    it('EP107 Editar información de un tag existente (Pseudo-aleatorio)', () => {
         for (let i = 0; i < 3; i++) {
             const data = pseudoData[randomIndex(pseudoData.length - 1)];
             tag.givenUserIsOnTagsPage();
@@ -297,7 +297,7 @@ describe('EP010-EP031: Pruebas para la funcionalidad tags - Aleatorio - Ghost', 
 
     testCases.forEach((testCase) => {
         generarTagsAleatorias(3, testCase.type).forEach((data) => {
-            it(`EP097 Crear un nuevo tag con ${testCase.description}`, () => {
+            it(`EP108 Crear un nuevo tag con ${testCase.description}`, () => {
                 tag.givenUserIsOnTagsPage();
                 tag.andUserStartsCreatingNewTag();
                 tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
@@ -311,7 +311,7 @@ describe('EP010-EP031: Pruebas para la funcionalidad tags - Aleatorio - Ghost', 
         });
     });
 
-    it('EP104 Editar información de un tag existente con datos aleatorios', () => {
+    it('EP109 Editar información de un tag existente con datos aleatorios', () => {
         for (let i = 0; i < 3; i++) {
             const data = generarTagAleatoria();
             tag.givenUserIsOnTagsPage();

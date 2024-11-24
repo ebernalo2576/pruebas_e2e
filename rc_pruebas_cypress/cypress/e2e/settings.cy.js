@@ -45,7 +45,7 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
     });
 
 
-    it('EP086 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios (Aleatorio)', () => {
+    it('EP087 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios (Aleatorio)', () => {
 
         const title = faker.lorem.words(3); 
         const description = faker.lorem.sentence(6); 
@@ -62,7 +62,7 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
         settingsTitleDescription.thenSettingsShouldBeSaved();
     });
 
-    it('EP087 - No debería permitir al usuario guardar el título del sitio en vacío (Aleatorio)', () => {
+    it('EP088 - No debería permitir al usuario guardar el título del sitio en vacío (Aleatorio)', () => {
 
         const title = faker.lorem.words(3); 
         const description = faker.lorem.sentence(6); 
@@ -79,7 +79,7 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
         settingsTitleDescription.thenSettingsShouldBeSaved();
     });
 
-    it('EP088 - No debería permitir al usuario guardar el título y configuración el sitio en vacío (Aleatorio)', () => {
+    it('EP089 - No debería permitir al usuario guardar el título y configuración el sitio en vacío (Aleatorio)', () => {
 
         const title = faker.lorem.words(3); 
         const description = faker.lorem.sentence(6); 
@@ -96,7 +96,7 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
         settingsTitleDescription.thenSettingsShouldBeSaved();
     });
 
-    it('EP089 - No debería permitir al usuario guardar el título con carácteres especiales (Aleatorio)', () => {
+    it('EP090 - No debería permitir al usuario guardar el título con carácteres especiales (Aleatorio)', () => {
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
@@ -118,7 +118,7 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
         settingsTitleDescription.thenSettingsShouldBeSaved();
     });
 
-    it('EP090 - No debería permitir al usuario guardar la descripción del sitio con carácteres especiales (Aleatorio)', () => {
+    it('EP091 - No debería permitir al usuario guardar la descripción del sitio con carácteres especiales (Aleatorio)', () => {
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
@@ -139,7 +139,7 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
         settingsTitleDescription.thenSettingsShouldBeSaved();
     });
 
-    it('EP091 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios (A-priori)', () => {
+    it('EP092 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios (A-priori)', () => {
 
         // Given El usuario accede a la sección de configuración
         settingsTitleDescription.givenUserIsInSettings();
@@ -154,7 +154,7 @@ describe('Escenarios de pruebas para la funcionalidad Settings - Ghost Version B
         settingsTitleDescription.thenSettingsShouldBeSaved();
     });
 
-    it('EP092 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios (Pseudo-aleatorio)', () => {
+    it('EP093 - Debería permitir al usuario cambiar el título y configuración el sitio y guardar los cambios (Pseudo-aleatorio)', () => {
         // Given El usuario accede a la sección de configuración
         settingsTitleDescription.givenUserIsInSettings();
 

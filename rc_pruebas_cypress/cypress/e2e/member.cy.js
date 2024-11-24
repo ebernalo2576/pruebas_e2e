@@ -70,7 +70,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     
-    it('EP057 - Debería permitir crear y visualizar un nuevo miembro (A priori)', () => {
+    it('EP058 - Debería permitir crear y visualizar un nuevo miembro (A priori)', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         // loginPage.givenUserIsOnLoginPage();
         // loginPage.whenUserLogsIn();
@@ -89,7 +89,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenMemberShouldBeVisibleInMembersList(memberName);
     });
 
-    it('EP058 - Debería permitir ver la lista de miembros', () => {
+    it('EP059 - Debería permitir ver la lista de miembros', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         // loginPage.givenUserIsOnLoginPage();        
         // loginPage.whenUserLogsIn();                    
@@ -105,7 +105,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         viewMembers.thenMembersListShouldBeVisible();  
     });
 
-    it('EP059 - Debería permitir al usuario editar un miembro existente (A priori)', () => {
+    it('EP060 - Debería permitir al usuario editar un miembro existente (A priori)', () => {
 
         // Given El usuario navega a la lista de miembros y selecciona un miembro específico para editar
         editMember.givenUserIsOnMembersPageAndSelectsMemberToEdit(memberName);
@@ -117,7 +117,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         editMember.thenMemberShouldBeUpdatedInMembersList(newMemberName); 
     });
 
-    it('EP060 - Debería permitir eliminar un miembro existente', () => {
+    it('EP061 - Debería permitir eliminar un miembro existente', () => {
         // Precondición inicio de sesión para ejecutar el escenario de prueba
         // loginPage.givenUserIsOnLoginPage();            
         // loginPage.whenUserLogsIn();                    
@@ -134,7 +134,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
     });
 
     //Debería mostrar un error al intentar CREAR un miembro con un email duplicado (A priori)
-    it('EP061 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (A priori)', () => {    
+    it('EP062 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -158,7 +158,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
     });
 
     //Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Pseudo-aleatorio)
-    it('EP062 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Pseudo-aletorio)', () => {    
+    it('EP063 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Pseudo-aletorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -181,7 +181,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería rechazar la creación de un miembro con un email duplicado. (Aleatorio)
-    it('EP063 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Aleatorio)', () => { 
+    it('EP064 - Debería mostrar un error al intentar CREAR un miembro con un email duplicado (Aleatorio)', () => { 
         const memberName = faker.person.fullName();
         const memberEmail = faker.internet.email();
 
@@ -209,7 +209,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     //Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (A priori)
-    it('EP064 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (A priori)', () => {    
+    it('EP065 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -239,7 +239,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
     });
 
     //Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (Pseudo-aleatorio)
-    it('EP065 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (Pseudo-aleatorio)', () => {    
+    it('EP066 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (Pseudo-aleatorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -268,7 +268,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (Aleatorio)
-    it('EP066 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (aleatorio)', () => {   
+    it('EP067 - Debería mostrar un error al intentar EDITAR un miembro con un email duplicado (aleatorio)', () => {   
         const member1Name = faker.person.fullName();
         const member1Email = faker.internet.email(); 
         const member2Name = faker.person.fullName();
@@ -303,7 +303,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     //Debería mostrar un error al intentar crear un miembro con un email excesivamente largo de 200 caracteres (A priori)
-    it('EP067 - Debería mostrar un error al intentar CREAR un miembro con un email excesivamente largo de 200 caracteres (A priori)', () => {    
+    it('EP068 - Debería mostrar un error al intentar CREAR un miembro con un email excesivamente largo de 200 caracteres (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -317,7 +317,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar crear un miembro con un email excesivamente largo de 200 caracteres (Pseudo-aletorio)
-    it('EP068 - Debería mostrar un error al intentar CREAR un miembro con un email excesivamente largo de 200 caracteres (Pseudo-aletorio)', () => {    
+    it('EP069 - Debería mostrar un error al intentar CREAR un miembro con un email excesivamente largo de 200 caracteres (Pseudo-aletorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -331,7 +331,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar crear un miembro con un email excesivamente largo de 200 caracteres (Aleatorio)  
-    it('EP069 - Debería mostrar un error al intentar CREAR un miembro con un email excesivamente largo de 200 caracteres (Aleatorio)', () => {
+    it('EP070 - Debería mostrar un error al intentar CREAR un miembro con un email excesivamente largo de 200 caracteres (Aleatorio)', () => {
         const memberName = faker.person.fullName();
         const memberEmail = faker.string.alphanumeric(100) + '@' + faker.string.alphanumeric(95) + '.com';
         // Given El usuario navega a la sección de miembros
@@ -350,7 +350,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     //Debería mostrar un error al intentar CREAR un miembro con un email vacío (A priori)
-    it('EP070 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (A priori)', () => {    
+    it('EP071 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -364,7 +364,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });   
     //Debería mostrar un error al intentar CREAR un miembro con un email vacío (Pseudo-aleatorio)
-    it('EP071 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (Pseudo-aleatorio)', () => {    
+    it('EP072 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (Pseudo-aleatorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -378,7 +378,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar CREAR un miembro con un email vacío (Aleatorio)
-    it('EP072 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (Aleatorio)', () => {    
+    it('EP073 - Debería mostrar un error al intentar CREAR un miembro con un email vacío (Aleatorio)', () => {    
         const memberName = faker.person.fullName();
         const emptyEmail = "";
         // Given El usuario navega a la sección de miembros
@@ -397,7 +397,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     //Debería mostrar un error al intentar EDITAR un miembro con un email vacío (A priori)
-    it('EP073 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (A priori)', () => {    
+    it('EP074 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -417,7 +417,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Pseudo-aleatorio)
-    it('EP074 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Pseudo-aleatorio)', () => {    
+    it('EP075 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Pseudo-aleatorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -437,7 +437,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Aleatorio)
-    it('EP075 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Aleatorio)', () => {   
+    it('EP076 - Debería mostrar un error al intentar EDITAR un miembro con un email vacío (Aleatorio)', () => {   
         const memberName = faker.person.fullName();
         const memberEmail = faker.internet.email();
         const emptyEmail = ""; 
@@ -462,7 +462,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     //Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (Pseudo-aleatorio)
-    it('EP076 - Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (Pseudo-aleatorio)', () => {    
+    it('EP077 - Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (Pseudo-aleatorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -482,7 +482,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         editMember.thenMemberShouldBeUpdatedInMembersList(pseudoData[(pseudoRowIndex - 1 + pseudoData.length) % pseudoData.length].memberName); 
     });
     //Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (Aleatorio)
-    it('EP077 - Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (Aleatorio)', () => {    
+    it('EP078 - Debería permitir al usuario EDITAR exitosamente un miembro existente con un email y nombre válidos (Aleatorio)', () => {    
         const memberName = faker.person.fullName();
         const memberEmail = faker.internet.email();
         const newMemberName = faker.person.fullName();
@@ -509,7 +509,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     //Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (A priori)
-    it('EP078 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (A priori)', () => {    
+    it('EP079 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -523,7 +523,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Pseudo-aletorio)
-    it('EP079 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Pseudo-aletorio)', () => {    
+    it('EP080 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Pseudo-aletorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -537,7 +537,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Aleatorio) 
-    it('EP080 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Aleatorio)', () => {    
+    it('EP081 - Debería mostrar un error al intentar CREAR un miembro con un email en un formato inválido (Aleatorio)', () => {    
         const memberName = faker.person.fullName();
         const invalidEmail = faker.string.symbol(10) + faker.internet.emoji() + faker.string.sample(10);
 
@@ -557,7 +557,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     //Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (A priori)
-    it('EP081 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (A priori)', () => {    
+    it('EP082 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (A priori)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -577,7 +577,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Pseudo-aletorio)
-    it('EP082 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Pseudo-aleatorio)', () => {    
+    it('EP083 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Pseudo-aleatorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -597,7 +597,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenUserShouldSeeDuplicatedEmailError();
     });
     //Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (Aleatorio)
-    it('EP083 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (aleatorio)', () => {   
+    it('EP084 - Debería mostrar un error al intentar EDITAR un miembro con un email en un formato inválido (aleatorio)', () => {   
         const memberName = faker.person.fullName();
         const memberEmail = faker.internet.email();
         const invalidEmail = faker.string.symbol(10) + faker.internet.emoji() + faker.string.sample(10);
@@ -623,7 +623,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
 
     //Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre válidos (Pseudo-aletorio)
-    it('EP084 - Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre válidos (Pseudo-aletorio)', () => {    
+    it('EP085 - Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre válidos (Pseudo-aletorio)', () => {    
         // Given El usuario navega a la sección de miembros
         createMember.givenUserIsOnMembersPage();
 
@@ -637,7 +637,7 @@ describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
         createMember.thenMemberShouldBeVisibleInMembersList(pseudoData[pseudoRowIndex].memberName);
     });
     //Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre válidos (Aletorio)
-    it('EP085 - Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre válidos (Aletorio)', () => {  
+    it('EP086 - Debería permitir CREAR exitosamente un nuevo miembro con un email y nombre válidos (Aletorio)', () => {  
         const memberName = faker.person.fullName();
         const memberEmail = faker.internet.email();
 

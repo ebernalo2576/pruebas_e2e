@@ -41,7 +41,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
     });
 
 
-    it('EP028 - Debería permitir al usuario eliminar un post existente', () => {
+    it('EP029 - Debería permitir al usuario eliminar un post existente', () => {
      
         // Given El usuario está en la lista de posts
         deletePost.givenUserIsOnPostsList();

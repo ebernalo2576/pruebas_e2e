@@ -61,7 +61,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         settingsDeleteContent.thenSettingsShouldDeleted(); 
     });
 
-    it('EP042 - Debería permitir al usuario editar una página existente (Aleatorio)', () => { 
+    it('EP043 - Debería permitir al usuario editar una página existente (Aleatorio)', () => { 
         const newPageTitle = faker.lorem.sentence();  
         const newPageContent = faker.lorem.paragraph(); 
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
@@ -74,7 +74,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle); 
     });
 
-    it('EP043 - Debería permitir despublicar una página existente (Aleatorio)', () => {      
+    it('EP044 - Debería permitir despublicar una página existente (Aleatorio)', () => {      
     
         // Given El usuario navega a la lista de páginas y selecciona la página para despublicar
         unpublishPage.givenUserIsOnPagesAndSelectsPageToUnpublish(pageTitle);
@@ -86,7 +86,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         unpublishPage.thenPageShouldBeInDraftState(pageTitle);
     });
 
-    it('EP044 - Debería sacar error al intentar editar una página con título de más de 255 carácteres (Aleatorio) ', () => {      
+    it('EP045 - Debería sacar error al intentar editar una página con título de más de 255 carácteres (Aleatorio) ', () => {      
         
         let longTitle = faker.lorem.sentence(10);
         while (longTitle.length <= 255) {
@@ -104,7 +104,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldNotBeVisibleInPageList(longTitle); 
     });
 
-    it('EP045 - Debería permitir al usuario editar una página existente y poner una fecha (A-priori)', () => { 
+    it('EP046 - Debería permitir al usuario editar una página existente y poner una fecha (A-priori)', () => { 
         
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
         editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
@@ -116,7 +116,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(aPrioriData[aPrioriRowIndex].title); 
     });
 
-    it('EP046 - No debería permitir al usuario editar una página existente sin el título(Aleatorio)', () => { 
+    it('EP047 - No debería permitir al usuario editar una página existente sin el título(Aleatorio)', () => { 
   
         const newPageContent = faker.lorem.paragraph(); 
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
@@ -129,7 +129,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(''); 
     });
 
-    it('EP047 - No debería permitir al usuario editar una página existente sin el contenido (Aleatorio)', () => { 
+    it('EP048 - No debería permitir al usuario editar una página existente sin el contenido (Aleatorio)', () => { 
         
         const newPageTitle = faker.lorem.sentence();  
         
@@ -143,7 +143,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle); 
     });
 
-    it('EP048 - No debería permitir al usuario editar una página existente sin autor (A-priori)', () => { 
+    it('EP049 - No debería permitir al usuario editar una página existente sin autor (A-priori)', () => { 
         
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
         editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
@@ -155,7 +155,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldNotBeVisibleInPageList(aPrioriData[aPrioriRowIndex].title); 
     });
 
-    it('EP049 - Debería permitir al usuario editar una página existente y poner una fecha (Pseudo-aletorio)', () => { 
+    it('EP050 - Debería permitir al usuario editar una página existente y poner una fecha (Pseudo-aletorio)', () => { 
         
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
         editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
@@ -167,7 +167,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(pseudoData[pseudoRowIndex].title); 
     });
 
-    it('EP050 - No debería permitir al usuario editar una página existente sin autor (Pseudo-aletorio)', () => { 
+    it('EP051 - No debería permitir al usuario editar una página existente sin autor (Pseudo-aletorio)', () => { 
         
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
         editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
@@ -179,7 +179,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldNotBeVisibleInPageList(pseudoData[pseudoRowIndex].title); 
     });
 
-    it('EP051 - No debería permitir al usuario editar una sin título y sin contenido (Aleatorio)', () => { 
+    it('EP052 - No debería permitir al usuario editar una sin título y sin contenido (Aleatorio)', () => { 
         const newPageTitle = faker.lorem.sentence();  
         const newPageContent = faker.lorem.paragraph(); 
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
@@ -192,7 +192,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(''); 
     });
 
-    it('EP052 - Debería permitir al usuario editar una página existente con un título con carácteres especiales (Aleatorio)', () => { 
+    it('EP053 - Debería permitir al usuario editar una página existente con un título con carácteres especiales (Aleatorio)', () => { 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
 
@@ -211,7 +211,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(newPageTitle); 
     });
 
-    it('EP053 - No debería permitir al usuario editar una página existente con contenido con carácteres especiales(Aleatorio)', () => { 
+    it('EP054 - No debería permitir al usuario editar una página existente con contenido con carácteres especiales(Aleatorio)', () => { 
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 

@@ -54,7 +54,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     });
 
 
-    it('EP029 - Debería permitir crear y visualizar una nueva página (Aleatorio)', () => {
+    it('EP030 - Debería permitir crear y visualizar una nueva página (Aleatorio)', () => {
 
         const pageTitle = faker.lorem.sentence();         
         const pageContent = faker.lorem.paragraph();
@@ -73,7 +73,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(pageTitle);
     });
 
-    it('EP030 - Debería permitir crear una página con un título de menos de 255 carácteres (A-priori)', () => {
+    it('EP031 - Debería permitir crear una página con un título de menos de 255 carácteres (A-priori)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
@@ -88,7 +88,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(aPrioriData[aPrioriRowIndex].title);
     });
 
-    it('EP031 - No debería permitir crear una página con un título de más de 255 carácteres (Aleatorio)', () => {
+    it('EP032 - No debería permitir crear una página con un título de más de 255 carácteres (Aleatorio)', () => {
 
         let longTitle = faker.lorem.sentence(10);
         while (longTitle.length <= 255) {
@@ -109,7 +109,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldNotBeVisibleInPageList(longTitle);
     });
 
-    it('EP032 - Debería validar que una página no se pueda crear con título vacío (Aleatorio)', () => {
+    it('EP033 - Debería validar que una página no se pueda crear con título vacío (Aleatorio)', () => {
 
         const pageContent = faker.lorem.paragraph();
 
@@ -127,7 +127,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList('');
     });
 
-    it('EP033 - Debería validar que una página no se pueda crear con contenido vacío (Aleatorio)', () => {
+    it('EP034 - Debería validar que una página no se pueda crear con contenido vacío (Aleatorio)', () => {
 
         const pageTitle = faker.lorem.sentence(); 
 
@@ -144,7 +144,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(pageTitle);
     });
 
-    it('EP034 - Debería permitir crear una página con fecha (A-priori)', () => {
+    it('EP035 - Debería permitir crear una página con fecha (A-priori)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
@@ -159,7 +159,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(aPrioriData[aPrioriRowIndex].title);
     });
 
-    it('EP035 - No debería permitir crear una página sin autor (A-priori)', () => {
+    it('EP036 - No debería permitir crear una página sin autor (A-priori)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
@@ -174,7 +174,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldNotBeVisibleInPageList(aPrioriData[aPrioriRowIndex].title, false);
     });
 
-    it('EP036 - Debería permitir crear una página con fecha (Pseudo-aletorio)', () => {
+    it('EP037 - Debería permitir crear una página con fecha (Pseudo-aletorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
@@ -189,7 +189,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(pseudoData[pseudoRowIndex].title);
     });
 
-    it('EP037 - No debería permitir crear una página sin autor (Pseudo-aletorio)', () => {
+    it('EP038 - No debería permitir crear una página sin autor (Pseudo-aletorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
@@ -204,7 +204,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldNotBeVisibleInPageList(pseudoData[pseudoRowIndex].title, false);
     });
 
-    it('EP038 - Debería permitir crear una página con un título de menos de 255 carácteres (Pseudo-aletorio)', () => {
+    it('EP039 - Debería permitir crear una página con un título de menos de 255 carácteres (Pseudo-aletorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
@@ -219,7 +219,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(pseudoData[pseudoRowIndex].title);
     });
 
-    it('EP039 - No debería permitir crear una página sin título y sin contenido (Aletorio)', () => {
+    it('EP040 - No debería permitir crear una página sin título y sin contenido (Aletorio)', () => {
 
         const pageTitle = faker.lorem.sentence();         
         const pageContent = faker.lorem.paragraph();
@@ -237,7 +237,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList('');
     });
 
-    it('EP040 - No debería permitir crear una página con un título con carácteres especiales (Aleatorio)', () => {
+    it('EP041 - No debería permitir crear una página con un título con carácteres especiales (Aleatorio)', () => {
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
@@ -262,7 +262,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(pageTitle);
     });
 
-    it('EP041 - No debería permitir crear una página con contenido con carácteres especiales (Aleatorio)', () => {
+    it('EP042 - No debería permitir crear una página con contenido con carácteres especiales (Aleatorio)', () => {
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
