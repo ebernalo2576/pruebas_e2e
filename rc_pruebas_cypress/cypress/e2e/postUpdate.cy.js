@@ -87,7 +87,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         unpublishPost.thenPostShouldNotBeVisibleInPostsList(postTitle);
     });
 
-    it('EP016 - Debería sacar error al intentar editar una página con título de más de 255 carácteres (Aleatorio) ', () => {      
+    it('EP016 - Debería sacar error al intentar editar una página con título de más de 255 carácteres (Aleatorio)', () => {      
         
         let longTitle = faker.lorem.sentence(10);
         while (longTitle.length <= 255) {
@@ -239,7 +239,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldBeUpdated(newPostTitle); 
     });
 
-    it('EP067 - No debería permitir al usuario editar una página existente con contenido con carácteres especiales(Aleatorio)', () => { 
+    it('EP067 - No debería permitir al usuario editar un Post existente con contenido con carácteres especiales(Aleatorio)', () => { 
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
@@ -260,6 +260,29 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
     
         // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo newPostTitle
         editPost.thenPostShouldBeUpdated(newpostTitle); 
+    });
+
+    it("EP082 - No deberia permitir al usuario editar un post existente con un título que supera el límite de caracteres (Aleatorio)", () => { 
+
+        const newPostTitle = faker.lorem.sentence(1000);
+        while (newPostTitle.length <=  524288) {
+            longTitle += ` ${faker.lorem.sentence(1)}`; 
+        }
+        const pageContent = faker.lorem.paragraph();
+
+        const newPostContent = faker.lorem.paragraph(); 
+        // Given El usuario está en la lista de posts
+        editPost.givenUserIsOnPostsList();
+
+        // and El usuario selecciona un post para editar
+        editPost.andGivenUserSelectsPostToEdit(postTitle);
+    
+        // When El usuario edita el título y el contenido de la página
+        editPost.whenUserEditsPostDetails(newPostTitle, newPostContent);       
+    
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPost.thenPostShouldBeUpdated(newPostTitle); 
+
     });
     
 });

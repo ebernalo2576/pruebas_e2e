@@ -22,7 +22,7 @@ Este proyecto contiene un conjunto de pruebas automatizadas para verificar las f
 ### 3. Tag
    - **EP008** - Debería permitir crear un tag con datos válidos (A priori).
    - **EP009** - Debería permitir crear un tag con datos válidos (Pseudo-aleatorio).
-   - **EP010** - Debería permitir crear un tag con datos válidos (Aleatorio).
+   - **EP010** - Debería permitir crear un tag con datos válidos (Aleatorio).za
    - **EP011** - Debería mostrar un error al intentar crear un tag sin datos (A priori).
    - **EP012** - Debería mostrar un error al intentar crear un tag sin datos (Pseudo-aleatorio).
    - **EP013** - Debería mostrar un error al intentar crear un tag sin datos (Aleatorio).
