@@ -5,11 +5,14 @@ import { SettingsDeleteContent } from './pages/settings';
 
 const createPage = new CreatePage();
 const settingsDeleteContent = new SettingsDeleteContent();
+const apiUrl = Cypress.env('API_URL')+"/page-pseudo-aleatorio.json?key=6fad6d30";
 
 describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
 
     let aPrioriData = [];
     let aPrioriRowIndex = 0;
+    let pseudoData = [];
+    let pseudoRowIndex = 0;
 
     before(() => {
         cy.fixture('page-a-priori.json').then((page) => {
@@ -28,9 +31,15 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         cy.wait(1000);
 
         aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
+
+        cy.request(apiUrl).then((response) => {
+            pseudoData = response.body;
+
+            pseudoRowIndex = Math.floor(Math.random() * pseudoData.length);
+        });
     });
 
-    after(() => {
+    afterEach(() => {
         //Eliminar todo el contenido
         cy.wait(1000);
         settingsDeleteContent.givenUserIsInSettings(); 
@@ -159,5 +168,19 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPage.thenPageShouldNotBeVisibleInPageList(aPrioriData[aPrioriRowIndex].title, false);
     });
+    
+    it('EP049 - Debería permitir crear una página con fecha (Pseudo-aletorio)', () => {
 
+        // Given El usuario navega a la sección de páginas
+        createPage.givenUserIsOnPages();
+
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
+
+        // When El usuario ingresa los detalles de la página
+        createPage.whenUserEntersPageDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description, pseudoData[pseudoRowIndex].date);
+
+        // Then El usuario valida que la página esté visible en la lista de páginas
+        createPage.thenPageShouldBeVisibleInPagesList(pseudoData[pseudoRowIndex].title);
+    });
 });

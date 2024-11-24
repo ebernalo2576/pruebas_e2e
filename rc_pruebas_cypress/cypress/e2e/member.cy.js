@@ -11,7 +11,7 @@ const memberName = faker.person.fullName();
 const memberEmail = faker.internet.email();
 const newMemberName = faker.person.fullName(); 
 const newMemberEmail = faker.internet.email(); 
-const apiUrl = Cypress.env('MEMBERS_API_URL');
+const apiUrl = Cypress.env('API_URL')+'/a_priori.json?key=99771540';
 
 describe('Escenarios de pruebas para la funcionalidad miembros - Ghost', () => {
 
