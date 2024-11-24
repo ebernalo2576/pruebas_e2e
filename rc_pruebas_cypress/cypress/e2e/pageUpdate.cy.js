@@ -117,7 +117,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(aPrioriData[aPrioriRowIndex].title); 
     });
 
-    it('EP014 - No debería permitir al usuario editar una página existente con el título (Aleatorio)', () => { 
+    it('EP014 - No debería permitir al usuario editar una página existente sin el título(Aleatorio)', () => { 
   
         const newPageContent = faker.lorem.paragraph(); 
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
@@ -130,7 +130,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(''); 
     });
 
-    it('EP014 - No debería permitir al usuario editar una página existente con el título (Aleatorio)', () => { 
+    it('EP014 - No debería permitir al usuario editar una página existente sin el contenido (Aleatorio)', () => { 
         
         const newPageTitle = faker.lorem.sentence();  
         
@@ -168,7 +168,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         editPage.thenPageShouldBeUpdatedInPagesList(pseudoData[pseudoRowIndex].title); 
     });
 
-    it('EP050 - No debería permitir al usuario editar una página existente sin autor (A-priori)', () => { 
+    it('EP050 - No debería permitir al usuario editar una página existente sin autor (Pseudo-aletorio)', () => { 
         
         // Given El usuario navega a la lista de páginas y selecciona una página para editar
         editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
@@ -178,6 +178,19 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     
         // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
         editPage.thenPageShouldNotBeVisibleInPageList(pseudoData[pseudoRowIndex].title); 
+    });
+
+    it('EP014 - No debería permitir al usuario editar una sin título y sin contenido (Aleatorio)', () => { 
+        const newPageTitle = faker.lorem.sentence();  
+        const newPageContent = faker.lorem.paragraph(); 
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+    
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails('', '');       
+    
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldBeUpdatedInPagesList(''); 
     });
 
 });

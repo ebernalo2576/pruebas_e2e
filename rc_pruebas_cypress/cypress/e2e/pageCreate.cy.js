@@ -213,4 +213,22 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPage.thenPageShouldBeVisibleInPagesList(pseudoData[pseudoRowIndex].title);
     });
+
+    it('EP045 - No debería permitir crear una página sin título y sin contenido (Aletorio)', () => {
+
+        const pageTitle = faker.lorem.sentence();         
+        const pageContent = faker.lorem.paragraph();
+
+        // Given El usuario navega a la sección de páginas
+        createPage.givenUserIsOnPages();
+
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
+
+        // When El usuario ingresa los detalles de la página
+        createPage.whenUserEntersPageDetails(pageTitle, pageContent, '', true, true);
+
+        // Then El usuario valida que la página esté visible en la lista de páginas
+        createPage.thenPageShouldBeVisibleInPagesList('');
+    });
 });

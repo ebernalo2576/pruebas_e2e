@@ -40,7 +40,7 @@ class CreatePage extends Page {
     }
 
     // When El usuario ingresa el título y el contenido de la página
-    whenUserEntersPageDetails(title, content, date = '', autor = true) {
+    whenUserEntersPageDetails(title, content, date = '', autor = true, borrar = false) {
         
         if (title != '') {
             cy.get(this.pageTitleField).clear().type(title);
@@ -55,6 +55,12 @@ class CreatePage extends Page {
             cy.screenshot('page-content-entered'); 
         }
         
+        if (borrar) {
+            cy.get(this.pageTitleField).clear();
+            cy.get(this.pageContentField).click().clear();
+            cy.screenshot('erase-content');
+        }
+
         if (date != '') {
             cy.get(this.settingsMenuButton).should('be.visible').click(); 
             cy.screenshot('settings-menu-opened');
