@@ -28,10 +28,22 @@ class SettingsTitleDescription extends Settings{
 
     // When El usuario ingresa un nuevo título y descripción
     whenUserChangesTitleDescriptionFields(title, description) { 
-        cy.get(this.titleField).clear().type(title);
-        cy.screenshot('title-field-updated'); 
-        cy.get(this.descriptionField).clear().type(description);
-        cy.screenshot('description-field-updated'); 
+
+        if (title != '') {
+            cy.get(this.titleField).clear().type(title);
+            cy.screenshot('title-field-updated');
+        } else {
+            cy.get(this.titleField).clear();
+            cy.screenshot('title-field-cleared');
+        }
+        
+        if (description != '') {
+            cy.get(this.descriptionField).clear().type(description);
+            cy.screenshot('description-field-updated'); 
+        } else {
+            cy.get(this.descriptionField).clear();
+            cy.screenshot('description-field-cleared');
+        }
         
     }
 
