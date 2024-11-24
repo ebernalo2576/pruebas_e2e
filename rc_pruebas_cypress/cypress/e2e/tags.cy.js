@@ -100,9 +100,9 @@ const generarTagsAleatorias = (cantidad, slugType) => {
     }
     return tags;
 };
+const tag = new Tag();
 
-describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost', () => {
-    const tag = new Tag();
+describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', () => {
     const {
         tagNormalData,
         tagWithoutData,
@@ -120,7 +120,7 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost', () => {
             loginPage.thenUserShouldSeeDashboard();
         });
     });
-
+    afterEach(() => { });
     beforeEach(() => {
         cy.session('user-session', () => {
             loginPage.givenUserIsOnLoginPage();
@@ -131,13 +131,13 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost', () => {
         cy.wait(1000);
     });
 
-    // Example of Refactored Test Case
     tagNormalData?.forEach((data) => {
         it(`EP008: Debería permitir crear un tag con datos válidos (A priori): ${data.name}`, () => {
             tag.givenUserIsOnTagsPage();
             tag.andUserStartsCreatingNewTag();
             tag.whenUserEntersTagDetails(data.name, null, data.description);
             tag.thenTagShouldBeVisibleInTagsList(data.name);
+
         });
     });
 
@@ -209,7 +209,6 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost', () => {
 });
 
 describe('EP009-EP030: Pruebas para la funcionalidad tags - Pseudo-aleatorio - Ghost', () => {
-    const tag = new Tag();
     let pseudoData = [];
 
     before(() => {
@@ -268,7 +267,6 @@ describe('EP009-EP030: Pruebas para la funcionalidad tags - Pseudo-aleatorio - G
     });
 });
 describe('EP010-EP031: Pruebas para la funcionalidad tags - Aleatorio - Ghost', () => {
-    const tag = new Tag();
 
     before(() => {
         cy.session('user-session', () => {
