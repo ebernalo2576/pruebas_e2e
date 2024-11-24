@@ -184,7 +184,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldBeVisibleInPagesList(pseudoData[pseudoRowIndex].title);
     });
 
-    it('EP049 - No debería permitir crear una página sin autor (A-priori)', () => {
+    it('EP049 - No debería permitir crear una página sin autor (Pseudo-aletorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
@@ -197,5 +197,20 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPage.thenPageShouldNotBeVisibleInPageList(pseudoData[pseudoRowIndex].title, false);
+    });
+
+    it('EP045 - Debería permitir crear una página con un título de menos de 255 carácteres (A-priori)', () => {
+
+        // Given El usuario navega a la sección de páginas
+        createPage.givenUserIsOnPages();
+
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
+
+        // When El usuario ingresa los detalles de la página
+        createPage.whenUserEntersPageDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description);
+
+        // Then El usuario valida que la página esté visible en la lista de páginas
+        createPage.thenPageShouldBeVisibleInPagesList(pseudoData[pseudoRowIndex].title);
     });
 });
