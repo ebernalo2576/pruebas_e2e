@@ -52,10 +52,10 @@ export class Tag {
 
     // THEN: Verificar que el tag está visible en la lista
     thenTagShouldBeVisibleInTagsList(name) {
-        cy.get(this.tagsMenuButton).click(); // Navigate to the tags list
-        cy.get(this.tagListTitle, { timeout: 10000 }) // Wait for the elements to be present
-            .filter(`:contains(${name})`) // Filter elements that contain the specific name
-            .should('have.length.at.least', 1); // Assert that at least one match exists
+        cy.get(this.tagsMenuButton).click();
+        cy.get(this.tagListTitle, { timeout: 10000 })
+            .filter(`:contains(${name})`) 
+            .should('have.length.at.least', 1);
     }
 
     // THEN: Mostrar error
