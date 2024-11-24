@@ -7,6 +7,7 @@ const settingsDeleteContent = new SettingsDeleteContent();
 const createPage = new CreatePage();
 const editPage = new EditPage();
 const unpublishPage = new UnpublishPage();
+const apiUrl = Cypress.env('API_URL')+"/page-pseudo-aleatorio.json?key=6fad6d30";
 
 let pageTitle = '';         
 
@@ -14,6 +15,8 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
 
     let aPrioriData = [];
     let aPrioriRowIndex = 0;
+    let pseudoData = [];
+    let pseudoRowIndex = 0;
 
     before(() => {
         cy.fixture('page-a-priori.json').then((page) => {
@@ -42,6 +45,12 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.givenUserIsOnPages();
 
         aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
+
+        cy.request(apiUrl).then((response) => {
+            pseudoData = response.body;
+
+            pseudoRowIndex = Math.floor(Math.random() * pseudoData.length);
+        });
     });
 
     afterEach(() => {
@@ -145,6 +154,18 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     
         // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
         editPage.thenPageShouldNotBeVisibleInPageList(aPrioriData[aPrioriRowIndex].title); 
+    });
+
+    it('EP050 - Debería permitir al usuario editar una página existente y poner una fecha (Pseudo-aletorio)', () => { 
+        
+        // Given El usuario navega a la lista de páginas y selecciona una página para editar
+        editPage.givenUserIsOnPagesAndSelectsPageToEdit(pageTitle); 
+    
+        // When El usuario edita el título y el contenido de la página
+        editPage.whenUserEditsPageDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description, pseudoData[pseudoRowIndex].date);       
+    
+        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        editPage.thenPageShouldBeUpdatedInPagesList(pseudoData[pseudoRowIndex].title); 
     });
 
 });
