@@ -20,12 +20,6 @@ Este proyecto contiene un conjunto de pruebas automatizadas para verificar las f
 ---
 
 ### 3. Tag
-   - **EP008** - Debería mostrar un error al intentar crear un tag sin datos.
-   - **EP009** - Debería permitir crear un tag con slug válido.
-
-   - **EP010** - Debería permitir crear un tag con slug válido.
-
-
    - **EP008** - Crear un nuevo tag con menos de 191 caracteres en el campo slug (Aleatorio).
    - **EP009** - Crear un nuevo tag con menos de 191 caracteres en el campo slug (A priori).
    - **EP010** - Crear un nuevo tag con menos de 191 caracteres en el campo slug (Pseudo-aleatorio).

@@ -55,7 +55,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - random - Ghost', fu
         });
     });
 
-    it(' EP021 - Crear un nuevo tag desde el panel de Tags sin datos en los campos.', function () {
+    it('Crear un nuevo tag desde el panel de Tags sin datos en los campos.', function () {
         tag.givenUserIsOnTagsPage();
         tag.andUserStartsCreatingNewTag();
         tag.whenUserClearsFields();
@@ -63,7 +63,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - random - Ghost', fu
         tag.thenUserShouldSeeAnError();
     });
 
-    it('EP024 - Editar información de un tag existente', function () {
+    it('Editar información de un tag existente', function () {
         for (let index = 0; index < 3; index++) {
             const tagData = {
                 name: faker.string.alpha(10),
@@ -74,7 +74,7 @@ describe('Escenarios de pruebas para la funcionalidad tags - random - Ghost', fu
         }
     });
 
-    it('EP027 - Editar información de un tag existente dejando campos vacíos', function () {
+    it('Editar información de un tag existente dejando campos vacíos', function () {
         for (let index = 0; index < 3; index++) {
             const tagData = {
                 name: faker.string.alpha(10),
