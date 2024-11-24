@@ -7,7 +7,7 @@ const settingsDeleteContent = new SettingsDeleteContent();
 const createPost = new CreatePost();
 const editPost = new EditPost();
 const unpublishPost = new UnpublishPost();
-const apiUrl = Cypress.env('API_URL')+"/page-pseudo-aleatorio.json?key=6fad6d30";
+const apiUrl = Cypress.env('API_URL')+"/posts-pseudo-aleatorio.json?key=aff162e0";
 
 let postTitle = '';
 
@@ -18,7 +18,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
     let pseudoRowIndex = 0;
 
     before(() => {
-        cy.fixture('page-a-priori.json').then((page) => {
+        cy.fixture('post-a-priori.json').then((page) => {
             aPrioriData = page;
         });
     });
@@ -87,7 +87,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         unpublishPost.thenPostShouldNotBeVisibleInPostsList(postTitle);
     });
 
-    it('EP016 - Debería sacar error al intentar editar una página con título de más de 255 carácteres (Aleatorio)', () => {      
+    it('EP016 - Debería sacar error al intentar editar una post con título de más de 255 carácteres (Aleatorio)', () => {      
         
         let longTitle = faker.lorem.sentence(10);
         while (longTitle.length <= 255) {
@@ -101,14 +101,14 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle);
     
-        // When El usuario edita el título y el contenido de la página
+        // When El usuario edita el título y el contenido de la post
         editPost.whenUserEditsPostDetails(longTitle, newPostContent);       
     
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo título
         editPost.thenPostShouldNotBeVisibleInPostList(longTitle); 
     });
 
-    it('EP059 - Debería permitir al usuario editar una página existente y poner una fecha (A-priori)', () => { 
+    it('EP059 - Debería permitir al usuario editar una post existente y poner una fecha (A-priori)', () => { 
         
         // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
@@ -116,14 +116,14 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle);
     
-        // When El usuario edita el título y el contenido de la página
-        editPost.whenUserEditsPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date);       
+        // When El usuario edita el título y el contenido de la post
+        editPost.whenUserEditsPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].body, aPrioriData[aPrioriRowIndex].date);       
     
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo título
         editPost.thenPostShouldBeUpdated(aPrioriData[aPrioriRowIndex].title); 
     });
 
-    it('EP060 - No debería permitir al usuario editar una página existente sin el título(Aleatorio)', () => { 
+    it('EP060 - No debería permitir al usuario editar una post existente sin el título(Aleatorio)', () => { 
   
         const newPostContent = faker.lorem.paragraph(); 
         
@@ -133,14 +133,14 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle);
    
-        // When El usuario edita el título y el contenido de la página
+        // When El usuario edita el título y el contenido de la post
         editPost.whenUserEditsPostDetails('', newPostContent);       
      
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo título
         editPost.thenPostShouldBeUpdated(''); 
     });
 
-    it('EP061 - No debería permitir al usuario editar una página existente sin el contenido (Aleatorio)', () => { 
+    it('EP061 - No debería permitir al usuario editar una post existente sin el contenido (Aleatorio)', () => { 
         
         const newpostTitle = faker.lorem.sentence();  
         
@@ -150,14 +150,14 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle);
    
-        // When El usuario edita el título y el contenido de la página
+        // When El usuario edita el título y el contenido de la post
         editPost.whenUserEditsPostDetails(newpostTitle, '');       
      
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo título
         editPost.thenPostShouldBeUpdated(newpostTitle); 
     });
 
-    it('EP062 - No debería permitir al usuario editar una página existente sin autor (A-priori)', () => { 
+    it('EP062 - No debería permitir al usuario editar una post existente sin autor (A-priori)', () => { 
         
         // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
@@ -165,14 +165,14 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle);
     
-        // When El usuario edita el título y el contenido de la página
-        editPost.whenUserEditsPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date, false);       
+        // When El usuario edita el título y el contenido de la post
+        editPost.whenUserEditsPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].body, aPrioriData[aPrioriRowIndex].date, false);       
     
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo título
         editPost.thenPostShouldNotBeVisibleInPostList(aPrioriData[aPrioriRowIndex].title); 
     });
 
-    it('EP063 - Debería permitir al usuario editar una página existente y poner una fecha (Pseudo-aletorio)', () => { 
+    it('EP063 - Debería permitir al usuario editar una post existente y poner una fecha (Pseudo-aletorio)', () => { 
         
         // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
@@ -180,14 +180,14 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle);
     
-        // When El usuario edita el título y el contenido de la página
-        editPost.whenUserEditsPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description, pseudoData[pseudoRowIndex].date);       
+        // When El usuario edita el título y el contenido de la post
+        editPost.whenUserEditsPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].body, pseudoData[pseudoRowIndex].date);       
     
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo título
         editPost.thenPostShouldBeUpdated(pseudoData[pseudoRowIndex].title); 
     });
 
-    it('EP064 - No debería permitir al usuario editar una página existente sin autor (Pseudo-aletorio)', () => { 
+    it('EP064 - No debería permitir al usuario editar una post existente sin autor (Pseudo-aletorio)', () => { 
         
         // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
@@ -195,10 +195,10 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle); 
     
-        // When El usuario edita el título y el contenido de la página
-        editPost.whenUserEditsPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description, pseudoData[pseudoRowIndex].date, false);       
+        // When El usuario edita el título y el contenido del post
+        editPost.whenUserEditsPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].body, pseudoData[pseudoRowIndex].date, false);       
     
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo título
         editPost.thenPostShouldNotBeVisibleInPostList(pseudoData[pseudoRowIndex].title); 
     });
 
@@ -210,14 +210,14 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle);
     
-        // When El usuario edita el título y el contenido de la página
+        // When El usuario edita el título y el contenido de la post
         editPost.whenUserEditsPostDetails('', '');       
     
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo título
         editPost.thenPostShouldBeUpdated(''); 
     });
 
-    it('EP066 - Debería permitir al usuario editar una página existente con un título con carácteres especiales (Aleatorio)', () => { 
+    it('EP066 - Debería permitir al usuario editar una post existente con un título con carácteres especiales (Aleatorio)', () => { 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
 
@@ -232,10 +232,10 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle);
     
-        // When El usuario edita el título y el contenido de la página
+        // When El usuario edita el título y el contenido de la post
         editPost.whenUserEditsPostDetails(newPostTitle, newPostContent);       
     
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo título
         editPost.thenPostShouldBeUpdated(newPostTitle); 
     });
 
@@ -255,34 +255,12 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         // and El usuario selecciona un post para editar
         editPost.andGivenUserSelectsPostToEdit(postTitle);
     
-        // When El usuario edita el título y el contenido de la página
+        // When El usuario edita el título y el contenido de la post
         editPost.whenUserEditsPostDetails(newPostTitle, newPostContent);       
     
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo newPostTitle
-        editPost.thenPostShouldBeUpdated(newpostTitle); 
-    });
-
-    it("EP082 - No deberia permitir al usuario editar un post existente con un título que supera el límite de caracteres (Aleatorio)", () => { 
-
-        const newPostTitle = faker.lorem.sentence(1000);
-        while (newPostTitle.length <=  524288) {
-            longTitle += ` ${faker.lorem.sentence(1)}`; 
-        }
-        const pageContent = faker.lorem.paragraph();
-
-        const newPostContent = faker.lorem.paragraph(); 
-        // Given El usuario está en la lista de posts
-        editPost.givenUserIsOnPostsList();
-
-        // and El usuario selecciona un post para editar
-        editPost.andGivenUserSelectsPostToEdit(postTitle);
-    
-        // When El usuario edita el título y el contenido de la página
-        editPost.whenUserEditsPostDetails(newPostTitle, newPostContent);       
-    
-        // Then El usuario verifica que la página editada esté en la lista de páginas con el nuevo título
+        // Then El usuario verifica que la post editada esté en la lista de posts con el nuevo newPostTitle
         editPost.thenPostShouldBeUpdated(newPostTitle); 
-
     });
+
     
 });

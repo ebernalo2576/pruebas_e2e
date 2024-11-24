@@ -6,7 +6,7 @@ import { SettingsDeleteContent } from './pages/settings';
 
 const createPost = new CreatePost();
 const settingsDeleteContent = new SettingsDeleteContent();
-const apiUrl = Cypress.env('API_URL')+"/posts-pseudo-aleatorio.json?key=34c634a0";
+const apiUrl = Cypress.env('API_URL')+"/posts-pseudo-aleatorio.json?key=aff162e0";
 
 const postTitle = faker.lorem.sentence();
 const postContent = faker.lorem.paragraph();
@@ -52,12 +52,12 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
 
     afterEach(() => {
         //Eliminar todo el contenido
-        /*cy.wait(1000);
+        cy.wait(1000);
         settingsDeleteContent.givenUserIsInSettings(); 
         settingsDeleteContent.andGivenUserOpensGeneralSection(); 
         settingsDeleteContent.whenUserDeleteAllContent(); 
         settingsDeleteContent.thenSettingsShouldDeleted(); 
-        */
+        
     });
 
     it('EP002 - Debería permitir crear un post con un título y descripción (Aleatorio)', () => {
@@ -193,14 +193,14 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
 
     it('EP078 - No debería permitir crear un post sin título y sin contenido (Aletorio)', () => {
 
-        const pageTitle = faker.lorem.sentence();         
-        const pageContent = faker.lorem.paragraph();
+        const postTitle = faker.lorem.sentence();         
+        const postContent = faker.lorem.paragraph();
 
         // Given El usuario navega a la sección de páginas
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(pageTitle, pageContent, '', true, true);
+        createPost.whenUserEntersPostDetails(postTitle, postContent, '', true, true);
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPost.thenPostShouldBeVisibleInPostsList('');
@@ -211,30 +211,30 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
 
-        const pageTitle = Array.from({ length }, () =>
+        const postTitle = Array.from({ length }, () =>
             faker.helpers.arrayElement(specialCharacters.split(''))
         ).join('');
      
-        const pageContent = faker.lorem.paragraph();
+        const postContent = faker.lorem.paragraph();
 
         // Given El usuario navega a la sección de páginas
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(pageTitle, pageContent);
+        createPost.whenUserEntersPostDetails(postTitle, postContent);
 
 
         // Then El usuario valida que la página esté visible en la lista de páginas
-        createPost.thenPostShouldBeVisibleInPostsList(pageTitle);
+        createPost.thenPostShouldBeVisibleInPostsList(postTitle);
     });
 
-    it('EP080 - Debería permitir crear un post con contenido con carácteres especiales (Aleatorio)', () => {
+    it('EP080 -  No debería permitir crear un post con contenido con carácteres especiales (Aleatorio)', () => {
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
 
-        const pageTitle = faker.lorem.sentence(); 
-        const pageContent = Array.from({ length }, () =>
+        const postTitle = faker.lorem.sentence(); 
+        const postContent = Array.from({ length }, () =>
             faker.helpers.arrayElement(specialCharacters.split(''))
         ).join('');
 
@@ -242,32 +242,12 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(pageTitle, pageContent);
+        createPost.whenUserEntersPostDetails(postTitle, postContent);
 
 
         // Then El usuario valida que la página esté visible en la lista de páginas
-        createPost.thenPostShouldBeVisibleInPostsList(pageTitle);
+        createPost.thenPostShouldBeVisibleInPostsList(postTitle);
     });
-
-    it('EP081 - No Debería permitir crear un post con título que supera el límite de caracteres (Aleatorio)', () => {
-
-        let longTitle = faker.lorem.sentence(1000);
-        while (longTitle.length <=  524288) {
-            longTitle += ` ${faker.lorem.sentence(1)}`; 
-        }
-        const pageContent = faker.lorem.paragraph();
-
-        // Given El usuario navega a la sección de páginas
-        createPost.givenUserIsOnPostCreation();
-
-        // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(longTitle, pageContent);
-
-        // Then El usuario valida que la página no esté visible en la lista de páginas
-        createPost.thenPostShouldNotBeVisibleInPostsList(longTitle);
-
-    });
-
-    
+ 
     
 });

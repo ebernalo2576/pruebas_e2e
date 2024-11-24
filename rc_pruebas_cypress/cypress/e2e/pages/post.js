@@ -232,6 +232,7 @@ class EditPost extends Post {
 
         if (autor) {
             if (newTitle.length <= 255) {
+                cy.get(this.closeNotification).should('be.visible').click();
                 cy.get(this.updateButton).click();
                 cy.screenshot('post-updated');
             } else {
@@ -305,6 +306,7 @@ class UnpublishPost extends Post {
         cy.get(this.confirmDraftPost).should('contain', 'Draft');
         cy.screenshot('post-in-draft-state');
         cy.wait(500);
+        cy.get(this.closeNotification).should('be.visible').click();
         cy.get(this.backToPostsButton).should('be.visible').click();
         cy.screenshot('returned-to-posts-list');
         cy.wait(500);
