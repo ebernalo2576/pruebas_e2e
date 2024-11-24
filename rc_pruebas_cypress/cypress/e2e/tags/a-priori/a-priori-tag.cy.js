@@ -2,22 +2,20 @@ const { Tag } = require('../../pages/tag');
 import loginPage from "../../pages/login";
 describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', function () {
     before(() => {
-        // Configuración inicial de sesión
         cy.session('user-session', () => {
-            loginPage.givenUserIsOnLoginPage(); // Navegar a la página de inicio de sesión
-            loginPage.whenUserLogsIn();        // Iniciar sesión
-            loginPage.thenUserShouldSeeDashboard(); // Confirmar que el dashboard se cargó
+            loginPage.givenUserIsOnLoginPage();
+            loginPage.whenUserLogsIn();
+            loginPage.thenUserShouldSeeDashboard();
         });
     });
 
     beforeEach(() => {
-        // Restaurar la sesión antes de cada prueba y navegar al dashboard
         cy.session('user-session', () => {
-            loginPage.givenUserIsOnLoginPage(); // Navegar a la página de inicio de sesión
-            loginPage.whenUserLogsIn();        // Iniciar sesión
-            loginPage.thenUserShouldSeeDashboard(); // Confirmar que el dashboard se cargó
+            loginPage.givenUserIsOnLoginPage();
+            loginPage.whenUserLogsIn();
+            loginPage.thenUserShouldSeeDashboard();
         });
-        cy.visit(Cypress.env('GHOST_URL') + '/ghost/#/dashboard'); // Navegar al dashboard
+        cy.visit(Cypress.env('GHOST_URL') + '/ghost/#/dashboard');
 
         cy.wait(1000);
     });
@@ -263,44 +261,18 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
         }
     ];
 
-    function editTagsBDD(tags, allowEmptyFields = false) {
-        tags.forEach((tagData) => {
-            // GIVEN: Navegar a la lista de tags
-            tag.givenUserIsOnTagsPage();
-
-            // AND: Navegar a la edición del último tag
-            tag.givenUserIsEditingAnExistingTag();
-
-            // WHEN: Limpiar campos y editar detalles del tag
-            tag.whenUserClearsFields();
-            if (!allowEmptyFields) {
-                tag.whenUserEntersTagDetails(tagData.name, tagData.slug, tagData.description);
-            }
-
-            // THEN: Validar resultados
-            if (!allowEmptyFields) {
-                tag.thenTagShouldBeVisibleInTagsList(tagData.name);
-            } else {
-                tag.thenUserShouldSeeAnError();
-            }
-        });
-    }
 
     /**
    * Pruebas para crear un nuevo tag con datos válidos (`tagNormalData`).
    */
     tagNormalData.forEach((data) => {
         it(`Debería permitir crear un tag con datos válidos: ${data.name}`, () => {
-            // GIVEN: Navegar a la lista de tags
             tag.givenUserIsOnTagsPage();
 
-            // AND: Comenzar a crear un nuevo tag
             tag.andUserStartsCreatingNewTag();
 
-            // WHEN: Ingresar detalles del tag
             tag.whenUserEntersTagDetails(data.name, null, data.description);
 
-            // THEN: El tag debería estar visible en la lista
             tag.thenTagShouldBeVisibleInTagsList(data.name);
         });
     });
@@ -312,17 +284,13 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
     //     */
     tagWithoutData.forEach(() => {
         it('Debería mostrar un error al intentar crear un tag sin datos', () => {
-            // GIVEN: Navegar a la lista de tags
             tag.givenUserIsOnTagsPage();
 
-            // AND: Comenzar a crear un nuevo tag
             tag.andUserStartsCreatingNewTag();
 
-            // WHEN: Dejar los campos vacíos y guardar
             tag.whenUserClearsFields();
             cy.get(tag.saveTagButton).click();
 
-            // THEN: El usuario debería ver un error
             tag.thenUserShouldSeeAnError();
         });
     });
@@ -333,16 +301,12 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
          */
     tagData.forEach((data) => {
         it(`Debería permitir crear un tag con slug válido: ${data.name}`, () => {
-            // GIVEN: Navegar a la lista de tags
             tag.givenUserIsOnTagsPage();
 
-            // AND: Comenzar a crear un nuevo tag
             tag.andUserStartsCreatingNewTag();
 
-            // WHEN: Ingresar detalles del tag
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
 
-            // THEN: El tag debería estar visible en la lista
             tag.thenTagShouldBeVisibleInTagsList(data.name);
         });
     });
@@ -352,16 +316,12 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
      */
     tagDataLongSlug.forEach((data) => {
         it(`Debería mostrar un error al intentar crear un tag con slug demasiado largo: ${data.name}`, () => {
-            // GIVEN: Navegar a la lista de tags
             tag.givenUserIsOnTagsPage();
 
-            // AND: Comenzar a crear un nuevo tag
             tag.andUserStartsCreatingNewTag();
 
-            // WHEN: Ingresar detalles del tag
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
 
-            // THEN: El usuario debería ver un error
             tag.thenUserShouldSeeAnError();
         });
     });
@@ -371,16 +331,12 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
      */
     tagDataDescription.forEach((data) => {
         it(`Debería permitir crear un tag con descripción válida: ${data.name}`, () => {
-            // GIVEN: Navegar a la lista de tags
             tag.givenUserIsOnTagsPage();
 
-            // AND: Comenzar a crear un nuevo tag
             tag.andUserStartsCreatingNewTag();
 
-            // WHEN: Ingresar detalles del tag
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
 
-            // THEN: El tag debería estar visible en la lista
             tag.thenTagShouldBeVisibleInTagsList(data.name);
         });
     });
@@ -390,16 +346,12 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
      */
     tagDataLongDescription.forEach((data) => {
         it(`Debería mostrar un error al intentar crear un tag con descripción demasiado larga: ${data.name}`, () => {
-            // GIVEN: Navegar a la lista de tags
             tag.givenUserIsOnTagsPage();
 
-            // AND: Comenzar a crear un nuevo tag
             tag.andUserStartsCreatingNewTag();
 
-            // WHEN: Ingresar detalles del tag
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
 
-            // THEN: El usuario debería ver un error
             tag.thenUserShouldSeeAnError();
         });
     });
@@ -409,16 +361,12 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
      */
     tagNameData.forEach((data) => {
         it(`Debería permitir crear un tag con name válido: ${data.name}`, () => {
-            // GIVEN: Navegar a la lista de tags
             tag.givenUserIsOnTagsPage();
 
-            // AND: Comenzar a crear un nuevo tag
             tag.andUserStartsCreatingNewTag();
 
-            // WHEN: Ingresar detalles del tag
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
 
-            // THEN: El tag debería estar visible en la lista
             tag.thenTagShouldBeVisibleInTagsList(data.name);
         });
     });
@@ -428,40 +376,31 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
      */
     tagLongNameData.forEach((data) => {
         it(`Debería mostrar un error al intentar crear un tag con name demasiado largo: ${data.name}`, () => {
-            // GIVEN: Navegar a la lista de tags
             tag.givenUserIsOnTagsPage();
 
-            // AND: Comenzar a crear un nuevo tag
             tag.andUserStartsCreatingNewTag();
 
-            // WHEN: Ingresar detalles del tag
             tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
 
-            // THEN: El usuario debería ver un error
             tag.thenUserShouldSeeAnError();
         });
     });
- /**
-     * Prueba: Editar información de un tag existente.
-     */
- it('Debería permitir editar un tag existente', function () {
-    cy.fixture('tags.json').then((tags) => {
-        for (let index = 0; index < 3; index++) {
-            // GIVEN: Navegar a la lista de tags
-            tag.givenUserIsOnTagsPage();
+    /**
+        * Prueba: Editar información de un tag existente.
+        */
+    it('Debería permitir editar un tag existente', function () {
+        cy.fixture('tags.json').then((tags) => {
+            for (let index = 0; index < 3; index++) {
+                tag.givenUserIsOnTagsPage();
 
-            // AND: Navegar a la edición del último tag
-            tag.givenUserIsEditingAnExistingTag();
+                tag.givenUserIsEditingAnExistingTag();
 
-            // WHEN: Limpiar campos y actualizar los detalles del tag
-            tag.whenUserClearsFields();
-            tag.whenUserEntersTagDetails(tags[index].name, tags[index].slug, tags[index].description);
-
-            // THEN: El tag debería estar visible en la lista con los nuevos datos
-            tag.thenTagShouldBeVisibleInTagsList(tags[index].name);
-        }
+                tag.whenUserClearsFields();
+                tag.whenUserEntersTagDetails(tags[index].name, tags[index].slug, tags[index].description);
+                tag.thenTagShouldBeVisibleInTagsList(tags[index].name);
+            }
+        });
     });
-});
 
 
 })
