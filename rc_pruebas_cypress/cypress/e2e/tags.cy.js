@@ -131,68 +131,64 @@ describe('EP008-EP031: Pruebas para la funcionalidad tags en Ghost - aprori', ()
         cy.wait(1000);
     });
 
-    tagNormalData?.forEach((data) => {
-        it(`EP097 Debería permitir crear un tag con datos válidos (A priori): ${data.name}`, () => {
-            tag.givenUserIsOnTagsPage();
-            tag.andUserStartsCreatingNewTag();
-            tag.whenUserEntersTagDetails(data.name, null, data.description);
-            tag.thenTagShouldBeVisibleInTagsList(data.name);
+    it(`EP097 Debería permitir crear un tag con datos válidos (A priori): ${data.name}`, () => {
+        tag.givenUserIsOnTagsPage();
+        tag.andUserStartsCreatingNewTag();
+        tag.whenUserEntersTagDetails(tagNormalData[0].name, null, tagNormalData[0].description);
+        tag.thenTagShouldBeVisibleInTagsList(tagNormalData[0].name);
 
-        });
     });
 
-    tagWithoutData?.forEach(() => {
-        it('EP098 Debería mostrar un error al intentar crear un tag sin datos (A priori)', () => {
-            tag.givenUserIsOnTagsPage();
-            tag.andUserStartsCreatingNewTag();
-            tag.whenUserClearsFields();
-            cy.get(tag.saveTagButton).click();
-            tag.thenUserShouldSeeAnError();
-        });
+
+
+    it('EP098 Debería mostrar un error al intentar crear un tag sin datos (A priori)', () => {
+        tag.givenUserIsOnTagsPage();
+        tag.andUserStartsCreatingNewTag();
+        tag.whenUserClearsFields();
+        cy.get(tag.saveTagButton).click();
+        tag.thenUserShouldSeeAnError();
     });
 
-    tagData?.forEach((data) => {
-        it(`EP099 Debería permitir crear un tag con slug válido (A priori): ${data.name}`, () => {
-            tag.givenUserIsOnTagsPage();
-            tag.andUserStartsCreatingNewTag();
-            tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
-            tag.thenTagShouldBeVisibleInTagsList(data.name);
-        });
+
+    it(`EP099 Debería permitir crear un tag con slug válido (A priori): ${data.name}`, () => {
+        tag.givenUserIsOnTagsPage();
+        tag.andUserStartsCreatingNewTag();
+        tag.whenUserEntersTagDetails(tagData[0].name, tagData[0].slug, tagData[0].description);
+        tag.thenTagShouldBeVisibleInTagsList(tagData[0].name);
     });
 
-    tagDataLongSlug?.forEach((data) => {
-        it(`EP100 Crear un nuevo tag con menos de 191 caracteres en el campo slug (A priori): ${data.name}`, () => {
-            tag.givenUserIsOnTagsPage();
-            tag.andUserStartsCreatingNewTag();
-            tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
-            tag.thenUserShouldSeeAnError();
-        });
-    });
-    tagDataDescription?.forEach((data) => {
-        it(`EP101 Debería permitir crear un tag con descripción válida (A priori): ${data.name}`, () => {
-            tag.givenUserIsOnTagsPage();
-            tag.andUserStartsCreatingNewTag();
-            tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
-            tag.thenTagShouldBeVisibleInTagsList(data.name);
-        });
+
+
+    it(`EP100 Crear un nuevo tag con menos de 191 caracteres en el campo slug (A priori): ${data.name}`, () => {
+        tag.givenUserIsOnTagsPage();
+        tag.andUserStartsCreatingNewTag();
+        tag.whenUserEntersTagDetails(tagDataLongSlug[0].name, tagDataLongSlug[0].slug, tagDataLongSlug[0].description);
+        tag.thenUserShouldSeeAnError();
     });
 
-    tagDataLongDescription?.forEach((data) => {
-        it(`EP102 Debería mostrar un error al intentar crear un tag con descripción demasiado larga (A priori): ${data.name}`, () => {
-            tag.givenUserIsOnTagsPage();
-            tag.andUserStartsCreatingNewTag();
-            tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
-            tag.thenUserShouldSeeAnError();
-        });
+    it(`EP101 Debería permitir crear un tag con descripción válida (A priori): ${data.name}`, () => {
+        tag.givenUserIsOnTagsPage();
+        tag.andUserStartsCreatingNewTag();
+        tag.whenUserEntersTagDetails(tagDataDescription[0].name, tagDataDescription[0].slug, tagDataDescription[0].description);
+        tag.thenTagShouldBeVisibleInTagsList(tagDataDescription[0].name);
     });
 
-    tagLongNameData?.forEach((data) => {
-        it(`EP103 Debería mostrar un error al intentar crear un tag con name demasiado largo (A priori): ${data.name}`, () => {
-            tag.givenUserIsOnTagsPage();
-            tag.andUserStartsCreatingNewTag();
-            tag.whenUserEntersTagDetails(data.name, data.slug, data.description);
-            tag.thenUserShouldSeeAnError();
-        });
+
+
+    it(`EP102 Debería mostrar un error al intentar crear un tag con descripción demasiado larga (A priori): ${data.name}`, () => {
+        tag.givenUserIsOnTagsPage();
+        tag.andUserStartsCreatingNewTag();
+        tag.whenUserEntersTagDetails(tagDataLongDescription[0].name, tagDataLongDescription[0].slug, tagDataLongDescription[0].description);
+        tag.thenUserShouldSeeAnError();
+    });
+
+
+    it(`EP103 Debería mostrar un error al intentar crear un tag con name demasiado largo (A priori): ${data.name}`, () => {
+        tag.givenUserIsOnTagsPage();
+        tag.andUserStartsCreatingNewTag();
+        tag.whenUserEntersTagDetails(tagLongNameData[0].name, tagLongNameData[0].slug, tagLongNameData[0].description);
+        tag.thenUserShouldSeeAnError();
+
     });
 
     it('EP104 Debería permitir editar un tag existente (A priori)', () => {
