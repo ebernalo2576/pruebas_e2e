@@ -52,7 +52,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     });
 
 
-    it('EP012 - Debería permitir ver una página existente en la lista de páginas (Aleatorio)', () => {
+    it('EP054 - Debería permitir ver una página existente en la lista de páginas (Aleatorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         viewPages.givenUserIsOnPagesSection();
@@ -64,7 +64,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         viewPages.thenPageShouldBeVisible(pageTitle);
     });
 
-    it('EP013 - Debería validar los detalles de una página existente (Aleatorio)', () => {
+    it('EP055 - Debería validar los detalles de una página existente (Aleatorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         validatePage.givenUserIsOnPagesSection();   

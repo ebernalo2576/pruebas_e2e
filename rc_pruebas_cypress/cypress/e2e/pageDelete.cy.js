@@ -40,7 +40,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
     });
 
 
-    it('EP016 - Debería permitir eliminar una página existente (Aleatorio)', () => {  
+    it('EP056 - Debería permitir eliminar una página existente (Aleatorio)', () => {  
     
         // Given El usuario navega a la lista de páginas y selecciona la página que desea eliminar
         deletePage.givenUserIsOnPagesAndSelectsPageToDelete(pageTitle); 

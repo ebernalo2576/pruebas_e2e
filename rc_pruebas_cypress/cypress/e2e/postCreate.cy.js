@@ -72,7 +72,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(postTitle);
     });
 
-    it('EP069 - Debería permitir crear un post con un título de menos de 255 carácteres (A-priori)', () => {
+    it('EP003 - Debería permitir crear un post con un título de menos de 255 carácteres (A-priori)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPost.givenUserIsOnPostCreation();
@@ -84,7 +84,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(aPrioriData[aPrioriRowIndex].title);
     });
 
-    it('EP070 - No debería permitir crear un post con un título de más de 255 carácteres (Aleatorio)', () => {
+    it('EP004 - No debería permitir crear un post con un título de más de 255 carácteres (Aleatorio)', () => {
 
         let longTitle = faker.lorem.sentence(10);
         while (longTitle.length <= 255) {
@@ -102,7 +102,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldNotBeVisibleInPostsList(longTitle);
     });
 
-    it('EP071 - Debería validar que un post no se pueda crear con título vacío (Aleatorio)', () => {
+    it('EP005 - Debería validar que un post no se pueda crear con título vacío (Aleatorio)', () => {
 
         const pageContent = faker.lorem.paragraph();
 
@@ -117,7 +117,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList('');
     });
 
-    it('EP072 - Debería validar que un post no se pueda crear con contenido vacío (Aleatorio)', () => {
+    it('EP006 - Debería validar que un post no se pueda crear con contenido vacío (Aleatorio)', () => {
 
         const pageTitle = faker.lorem.sentence(); 
 
@@ -131,7 +131,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(pageTitle);
     });
 
-    it('EP073 - Debería permitir crear un post con fecha (A-priori)', () => {
+    it('EP007 - Debería permitir crear un post con fecha (A-priori)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPost.givenUserIsOnPostCreation();
@@ -143,7 +143,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(aPrioriData[aPrioriRowIndex].title);
     });
 
-    it('EP074 - No debería permitir crear un post sin autor (A-priori)', () => {
+    it('EP008 - No debería permitir crear un post sin autor (A-priori)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPost.givenUserIsOnPostCreation();
@@ -155,7 +155,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldNotBeVisibleInPostsList(aPrioriData[aPrioriRowIndex].title, false);
     });
 
-    it('EP075 - Debería permitir crear un post con fecha (Pseudo-aletorio)', () => {
+    it('EP009 - Debería permitir crear un post con fecha (Pseudo-aletorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPost.givenUserIsOnPostCreation();
@@ -167,7 +167,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(pseudoData[pseudoRowIndex].title);
     });
 
-    it('EP076 - No debería permitir crear un post sin autor (Pseudo-aletorio)', () => {
+    it('EP010 - No debería permitir crear un post sin autor (Pseudo-aletorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPost.givenUserIsOnPostCreation();
@@ -179,7 +179,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldNotBeVisibleInPostsList(pseudoData[pseudoRowIndex].title, false);
     });
 
-    it('EP077 - Debería permitir crear un post con un título de menos de 255 carácteres (Pseudo-aletorio)', () => {
+    it('EP011 - Debería permitir crear un post con un título de menos de 255 carácteres (Pseudo-aletorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPost.givenUserIsOnPostCreation();
@@ -191,7 +191,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(pseudoData[pseudoRowIndex].title);
     });
 
-    it('EP078 - No debería permitir crear un post sin título y sin contenido (Aletorio)', () => {
+    it('EP012 - No debería permitir crear un post sin título y sin contenido (Aletorio)', () => {
 
         const postTitle = faker.lorem.sentence();         
         const postContent = faker.lorem.paragraph();
@@ -206,7 +206,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList('');
     });
 
-    it('EP079 - No debería permitir crear un post con un título con carácteres especiales (Aleatorio)', () => {
+    it('EP013 - No debería permitir crear un post con un título con carácteres especiales (Aleatorio)', () => {
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
@@ -228,7 +228,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(postTitle);
     });
 
-    it('EP080 -  No debería permitir crear un post con contenido con carácteres especiales (Aleatorio)', () => {
+    it('EP014 -  No debería permitir crear un post con contenido con carácteres especiales (Aleatorio)', () => {
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 

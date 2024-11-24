@@ -75,7 +75,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldBeUpdated(newPostTitle);
     });
 
-    it('EP006 - Debería permitir despublicar un post existente (Aleatorio)', () => {
+    it('EP015 - Debería permitir despublicar un post existente (Aleatorio)', () => {
 
         // Given El usuario está en la lista de posts
         unpublishPost.givenUserIsOnPostsList();
@@ -108,7 +108,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldNotBeVisibleInPostList(longTitle); 
     });
 
-    it('EP059 - Debería permitir al usuario editar una post existente y poner una fecha (A-priori)', () => { 
+    it('EP017 - Debería permitir al usuario editar una post existente y poner una fecha (A-priori)', () => { 
         
         // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
@@ -123,7 +123,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldBeUpdated(aPrioriData[aPrioriRowIndex].title); 
     });
 
-    it('EP060 - No debería permitir al usuario editar una post existente sin el título(Aleatorio)', () => { 
+    it('EP018 - No debería permitir al usuario editar una post existente sin el título(Aleatorio)', () => { 
   
         const newPostContent = faker.lorem.paragraph(); 
         
@@ -140,7 +140,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldBeUpdated(''); 
     });
 
-    it('EP061 - No debería permitir al usuario editar una post existente sin el contenido (Aleatorio)', () => { 
+    it('EP019 - No debería permitir al usuario editar una post existente sin el contenido (Aleatorio)', () => { 
         
         const newpostTitle = faker.lorem.sentence();  
         
@@ -157,7 +157,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldBeUpdated(newpostTitle); 
     });
 
-    it('EP062 - No debería permitir al usuario editar una post existente sin autor (A-priori)', () => { 
+    it('EP020 - No debería permitir al usuario editar una post existente sin autor (A-priori)', () => { 
         
         // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
@@ -172,7 +172,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldNotBeVisibleInPostList(aPrioriData[aPrioriRowIndex].title); 
     });
 
-    it('EP063 - Debería permitir al usuario editar una post existente y poner una fecha (Pseudo-aletorio)', () => { 
+    it('EP021 - Debería permitir al usuario editar una post existente y poner una fecha (Pseudo-aletorio)', () => { 
         
         // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
@@ -187,7 +187,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldBeUpdated(pseudoData[pseudoRowIndex].title); 
     });
 
-    it('EP064 - No debería permitir al usuario editar una post existente sin autor (Pseudo-aletorio)', () => { 
+    it('EP022 - No debería permitir al usuario editar una post existente sin autor (Pseudo-aletorio)', () => { 
         
         // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
@@ -202,7 +202,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldNotBeVisibleInPostList(pseudoData[pseudoRowIndex].title); 
     });
 
-    it('EP065 - No debería permitir al usuario editar una sin título y sin contenido (Aleatorio)', () => { 
+    it('EP023 - No debería permitir al usuario editar una sin título y sin contenido (Aleatorio)', () => { 
       
         // Given El usuario está en la lista de posts
         editPost.givenUserIsOnPostsList();
@@ -217,7 +217,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldBeUpdated(''); 
     });
 
-    it('EP066 - Debería permitir al usuario editar una post existente con un título con carácteres especiales (Aleatorio)', () => { 
+    it('EP024 - Debería permitir al usuario editar una post existente con un título con carácteres especiales (Aleatorio)', () => { 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
 
@@ -239,7 +239,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         editPost.thenPostShouldBeUpdated(newPostTitle); 
     });
 
-    it('EP067 - No debería permitir al usuario editar un Post existente con contenido con carácteres especiales(Aleatorio)', () => { 
+    it('EP025 - No debería permitir al usuario editar un Post existente con contenido con carácteres especiales(Aleatorio)', () => { 
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
