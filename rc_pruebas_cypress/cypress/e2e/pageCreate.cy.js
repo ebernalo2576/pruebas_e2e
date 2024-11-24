@@ -199,7 +199,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.thenPageShouldNotBeVisibleInPageList(pseudoData[pseudoRowIndex].title, false);
     });
 
-    it('EP045 - Debería permitir crear una página con un título de menos de 255 carácteres (A-priori)', () => {
+    it('EP045 - Debería permitir crear una página con un título de menos de 255 carácteres (Pseudo-aletorio)', () => {
 
         // Given El usuario navega a la sección de páginas
         createPage.givenUserIsOnPages();
