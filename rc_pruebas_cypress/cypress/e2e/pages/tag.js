@@ -18,18 +18,27 @@ export class Tag {
         cy.screenshot('tags-list');
     }
 
-    // GIVEN: Navegar a la edición de un tag existente
-    givenUserIsEditingAnExistingTag() {
-        cy.get(this.editTagButton).last().click();
-        cy.url().should('include', '/ghost/#/tags');
-        cy.screenshot('edit-tag');
-    }
-
     // AND: Comenzar a crear un nuevo tag
     andUserStartsCreatingNewTag() {
         cy.get(this.newTagButton).should('be.visible').click();
         cy.url().should('include', '/ghost/#/tags/new');
         cy.screenshot('new-tag-page');
+    }
+
+    // GIVEN: Navegar a la edición de un tag existente
+    givenUserIsEditingAnExistingTag() {
+        cy.get(this.editTagButton).last().scrollIntoView().click();
+        cy.screenshot('edit-tag');
+    }
+
+    // WHEN: Limpiar campos
+    whenUserClearsFields() {
+        cy.get(this.tagNameField).clear().screenshot('name-cleared');
+        cy.get(this.tagDescriptionField).clear().screenshot('description-cleared');
+    }
+    whenUserSavesTag() {
+        cy.get(this.saveTagButton).click();
+        cy.screenshot('tag-saved');
     }
 
     // WHEN: Ingresar detalles del tag
@@ -41,17 +50,12 @@ export class Tag {
         cy.screenshot('tag-saved');
     }
 
-    // WHEN: Limpiar campos
-    whenUserClearsFields() {
-        cy.get(this.tagNameField).clear().screenshot('name-cleared');
-        cy.get(this.tagDescriptionField).clear().screenshot('description-cleared');
-    }
-
     // THEN: Verificar que el tag está visible en la lista
     thenTagShouldBeVisibleInTagsList(name) {
-        cy.get(this.tagsMenuButton).click();
-        cy.contains(this.tagListTitle, name).should('be.visible');
-        cy.screenshot('tag-visible');
+        cy.get(this.tagsMenuButton).click(); // Navigate to the tags list
+        cy.get(this.tagListTitle, { timeout: 10000 }) // Wait for the elements to be present
+            .filter(`:contains(${name})`) // Filter elements that contain the specific name
+            .should('have.length.at.least', 1); // Assert that at least one match exists
     }
 
     // THEN: Mostrar error

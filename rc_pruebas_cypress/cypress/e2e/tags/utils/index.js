@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker';
+
 function randomIndex(maximo) {
     return Math.floor(Math.random() * (maximo + 1));
 }
@@ -13,7 +15,7 @@ function generarTagAleatoria() {
 }
 
 function generarTagAleatoriaWithShortSlug() {
-    const seed = faker.datatype.uuid();
+    const seed = faker.string.uuid();
     faker.seed(seed);
     
     return {
@@ -25,7 +27,7 @@ function generarTagAleatoriaWithShortSlug() {
 }
 
 function generarTagAleatoriaWithLongSlug() {
-    const seed = faker.datatype.uuid();
+    const seed = faker.string.uuid();
     faker.seed(seed);
     
     return {
@@ -37,7 +39,7 @@ function generarTagAleatoriaWithLongSlug() {
 }
 
 function generarTagAleatoriaWithShortDescription() {
-    const seed = faker.datatype.uuid();
+    const seed = faker.string.uuid();
     faker.seed(seed);
     
     return {
@@ -49,7 +51,7 @@ function generarTagAleatoriaWithShortDescription() {
 }
 
 function generarTagAleatoriaWithLongDescription() {
-    const seed = faker.datatype.uuid();
+    const seed = faker.string.uuid();
     faker.seed(seed);
     
     return {
@@ -61,7 +63,7 @@ function generarTagAleatoriaWithLongDescription() {
 }
 
 function generarTagAleatoriaWithShortName() {
-    const seed = faker.datatype.uuid();
+    const seed = faker.string.uuid();
     faker.seed(seed);
     
     return {
@@ -73,7 +75,7 @@ function generarTagAleatoriaWithShortName() {
 }
 
 function generarTagAleatoriaWithLongName() {
-    const seed = faker.datatype.uuid();
+    const seed = faker.string.uuid();
     faker.seed(seed);
     
     return {
@@ -129,5 +131,5 @@ export {
     generarTagAleatoriaWithLongName,
     generarTagsAleatorias,
     generateTextWithoutSpaces
-    
+
 }

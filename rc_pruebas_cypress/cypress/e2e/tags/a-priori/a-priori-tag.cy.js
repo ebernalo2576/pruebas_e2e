@@ -1,24 +1,12 @@
 const { Tag } = require('../../pages/tag');
 import loginPage from "../../pages/login";
-const apiUrl = Cypress.env('MEMBERS_API_URL');
-
 describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', function () {
-    let aPrioriData = [];
-    let aPrioriRowIndex = 0;
-    let pseudoData = [];
-    let pseudoRowIndex = 0;
-
     before(() => {
         // Configuración inicial de sesión
         cy.session('user-session', () => {
             loginPage.givenUserIsOnLoginPage(); // Navegar a la página de inicio de sesión
             loginPage.whenUserLogsIn();        // Iniciar sesión
             loginPage.thenUserShouldSeeDashboard(); // Confirmar que el dashboard se cargó
-        });
-
-        // Leer datos del archivo CSV (a priori) antes de las pruebas
-        cy.fixture('members-a-priori.json').then((members) => {
-            aPrioriData = members;
         });
     });
 
@@ -30,25 +18,6 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
             loginPage.thenUserShouldSeeDashboard(); // Confirmar que el dashboard se cargó
         });
         cy.visit(Cypress.env('GHOST_URL') + '/ghost/#/dashboard'); // Navegar al dashboard
-
-        cy.log(aPrioriData);
-        console.log(aPrioriData);
-        // Seleccionar un índice aleatorio de la lista de datos a priori
-        aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
-
-        // Hacer peticion a la API de mockaroo
-        cy.request(apiUrl).then((response) => {
-            // Guardar los datos de la API en pseudoData
-            pseudoData = response.body;
-
-            // Seleccionar un índice aleatorio de la lista de datos pseudo-aleatorios
-            pseudoRowIndex = Math.floor(Math.random() * pseudoData.length);
-
-            console.log(pseudoRowIndex)
-            console.log(pseudoData[pseudoRowIndex])
-
-
-        });
 
         cy.wait(1000);
     });
@@ -294,6 +263,29 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
         }
     ];
 
+    function editTagsBDD(tags, allowEmptyFields = false) {
+        tags.forEach((tagData) => {
+            // GIVEN: Navegar a la lista de tags
+            tag.givenUserIsOnTagsPage();
+
+            // AND: Navegar a la edición del último tag
+            tag.givenUserIsEditingAnExistingTag();
+
+            // WHEN: Limpiar campos y editar detalles del tag
+            tag.whenUserClearsFields();
+            if (!allowEmptyFields) {
+                tag.whenUserEntersTagDetails(tagData.name, tagData.slug, tagData.description);
+            }
+
+            // THEN: Validar resultados
+            if (!allowEmptyFields) {
+                tag.thenTagShouldBeVisibleInTagsList(tagData.name);
+            } else {
+                tag.thenUserShouldSeeAnError();
+            }
+        });
+    }
+
     /**
    * Pruebas para crear un nuevo tag con datos válidos (`tagNormalData`).
    */
@@ -312,9 +304,12 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
             tag.thenTagShouldBeVisibleInTagsList(data.name);
         });
     });
-    /**
-        * Pruebas para crear un nuevo tag sin datos en los campos (`tagWithoutData`).
-        */
+
+
+
+    // /**
+    //     * Pruebas para crear un nuevo tag sin datos en los campos (`tagWithoutData`).
+    //     */
     tagWithoutData.forEach(() => {
         it('Debería mostrar un error al intentar crear un tag sin datos', () => {
             // GIVEN: Navegar a la lista de tags
@@ -446,42 +441,27 @@ describe('Escenarios de pruebas para la funcionalidad tags - a-priori - Ghost', 
             tag.thenUserShouldSeeAnError();
         });
     });
-
-    /**
-     * Pruebas para crear un nuevo tag sin datos en los campos.
+ /**
+     * Prueba: Editar información de un tag existente.
      */
-    it('Debería mostrar un error al intentar crear un tag sin datos en los campos', () => {
-        // GIVEN: Navegar a la lista de tags
-        tag.givenUserIsOnTagsPage();
+ it('Debería permitir editar un tag existente', function () {
+    cy.fixture('tags.json').then((tags) => {
+        for (let index = 0; index < 3; index++) {
+            // GIVEN: Navegar a la lista de tags
+            tag.givenUserIsOnTagsPage();
 
-        // AND: Comenzar a crear un nuevo tag
-        tag.andUserStartsCreatingNewTag();
+            // AND: Navegar a la edición del último tag
+            tag.givenUserIsEditingAnExistingTag();
 
-        // WHEN: Dejar los campos vacíos y guardar
-        tag.whenUserClearsFields();
-        cy.get(tag.saveTagButton).click();
+            // WHEN: Limpiar campos y actualizar los detalles del tag
+            tag.whenUserClearsFields();
+            tag.whenUserEntersTagDetails(tags[index].name, tags[index].slug, tags[index].description);
 
-        // THEN: El usuario debería ver un error
-        tag.thenUserShouldSeeAnError();
+            // THEN: El tag debería estar visible en la lista con los nuevos datos
+            tag.thenTagShouldBeVisibleInTagsList(tags[index].name);
+        }
     });
-
-    /**
-     * Pruebas para editar un tag existente.
-     */
-    it('Debería permitir editar un tag existente', () => {
-        const newName = 'Tag Editado';
-        const newSlug = 'tag-editado';
-        const newDescription = 'Descripción editada';
-
-        // GIVEN: Navegar a la edición de un tag existente
-        tag.givenUserIsEditingAnExistingTag();
-
-        // WHEN: Editar los detalles del tag
-        tag.whenUserEntersTagDetails(newName, newSlug, newDescription);
-
-        // THEN: El tag debería estar visible en la lista con los nuevos datos
-        tag.thenTagShouldBeVisibleInTagsList(newName);
-    });
+});
 
 
 })
