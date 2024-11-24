@@ -6,7 +6,7 @@ import { SettingsDeleteContent } from './pages/settings';
 
 const createPost = new CreatePost();
 const settingsDeleteContent = new SettingsDeleteContent();
-const apiUrl = Cypress.env('API_URL')+"/page-pseudo-aleatorio.json?key=6fad6d30";
+const apiUrl = Cypress.env('API_URL')+"/posts-pseudo-aleatorio.json?key=34c634a0";
 
 const postTitle = faker.lorem.sentence();
 const postContent = faker.lorem.paragraph();
@@ -26,8 +26,8 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
     let pseudoRowIndex = 0;
 
     before(() => {
-        cy.fixture('page-a-priori.json').then((page) => {
-            aPrioriData = page;
+        cy.fixture('post-a-priori.json').then((post) => {
+            aPrioriData = post;
         });
     });
 
@@ -45,18 +45,19 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
 
         cy.request(apiUrl).then((response) => {
             pseudoData = response.body;
-
+            cy.log(pseudoData);
             pseudoRowIndex = Math.floor(Math.random() * pseudoData.length);
         });
     });
 
     afterEach(() => {
         //Eliminar todo el contenido
-        cy.wait(1000);
+        /*cy.wait(1000);
         settingsDeleteContent.givenUserIsInSettings(); 
         settingsDeleteContent.andGivenUserOpensGeneralSection(); 
         settingsDeleteContent.whenUserDeleteAllContent(); 
         settingsDeleteContent.thenSettingsShouldDeleted(); 
+        */
     });
 
     it('EP002 - Debería permitir crear un post con un título y descripción (Aleatorio)', () => {
@@ -65,7 +66,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario introduce el título y el contenido del post
-        createPost.whenUserEntersPostDetails(postTitle, postContent);
+        createPost.whenUserEntersPostDetails(postTitle, postContent, '', true, false);
 
         // Then El post debería estar visible en la lista de posts
         createPost.thenPostShouldBeVisibleInPostsList(postTitle);
@@ -77,7 +78,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description);
+        createPost.whenUserEntersPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].body);
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPost.thenPostShouldBeVisibleInPostsList(aPrioriData[aPrioriRowIndex].title);
@@ -136,7 +137,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date);
+        createPost.whenUserEntersPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].body, aPrioriData[aPrioriRowIndex].date);
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPost.thenPostShouldBeVisibleInPostsList(aPrioriData[aPrioriRowIndex].title);
@@ -148,7 +149,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].description, aPrioriData[aPrioriRowIndex].date, false);
+        createPost.whenUserEntersPostDetails(aPrioriData[aPrioriRowIndex].title, aPrioriData[aPrioriRowIndex].body, aPrioriData[aPrioriRowIndex].date, false);
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPost.thenPostShouldNotBeVisibleInPostsList(aPrioriData[aPrioriRowIndex].title, false);
@@ -160,7 +161,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description, pseudoData[pseudoRowIndex].date);
+        createPost.whenUserEntersPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].body, pseudoData[pseudoRowIndex].date);
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPost.thenPostShouldBeVisibleInPostsList(pseudoData[pseudoRowIndex].title);
@@ -172,7 +173,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description, pseudoData[pseudoRowIndex].date, false);
+        createPost.whenUserEntersPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].body, pseudoData[pseudoRowIndex].date, false);
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPost.thenPostShouldNotBeVisibleInPostsList(pseudoData[pseudoRowIndex].title, false);
@@ -184,7 +185,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.givenUserIsOnPostCreation();
 
         // When El usuario ingresa los detalles de la página
-        createPost.whenUserEntersPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description);
+        createPost.whenUserEntersPostDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].body);
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPost.thenPostShouldBeVisibleInPostsList(pseudoData[pseudoRowIndex].title);
@@ -227,7 +228,7 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
         createPost.thenPostShouldBeVisibleInPostsList(pageTitle);
     });
 
-    it('EP080 - No debería permitir crear un post con contenido con carácteres especiales (Aleatorio)', () => {
+    it('EP080 - Debería permitir crear un post con contenido con carácteres especiales (Aleatorio)', () => {
 
         const specialCharacters = '!@#$%^&*)_+}|:<>?];~';
         const length = 50; 
@@ -246,6 +247,25 @@ describe('Escenarios de pruebas para la funcionalidad post - Ghost', () => {
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPost.thenPostShouldBeVisibleInPostsList(pageTitle);
+    });
+
+    it('EP081 - No Debería permitir crear un post con título que supera el límite de caracteres', () => {
+
+        let longTitle = faker.lorem.sentence(1000);
+        while (longTitle.length <=  524288) {
+            longTitle += ` ${faker.lorem.sentence(1)}`; 
+        }
+        const pageContent = faker.lorem.paragraph();
+
+        // Given El usuario navega a la sección de páginas
+        createPost.givenUserIsOnPostCreation();
+
+        // When El usuario ingresa los detalles de la página
+        createPost.whenUserEntersPostDetails(longTitle, pageContent);
+
+        // Then El usuario valida que la página no esté visible en la lista de páginas
+        createPost.thenPostShouldNotBeVisibleInPostsList(longTitle);
+
     });
     
 });

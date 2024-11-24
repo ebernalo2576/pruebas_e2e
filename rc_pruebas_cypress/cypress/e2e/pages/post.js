@@ -31,15 +31,15 @@ class CreatePost extends Post {
     }
 
     // When El usuario digita el títuo y contenido del post
-    whenUserEntersPostDetails(title, content, date = '', autor = true, borrar = false) {
+    whenUserEntersPostDetails(title, body, date = '', autor = true, borrar = false) {
 
         if (title != '') {
             cy.get(this.postTitleField).type(title);
             cy.screenshot('post-title-entered');
         }
 
-        if (content != '') {
-            cy.get(this.postContentField).type(content);
+        if (body != '') {
+            cy.get(this.postContentField).type(body);
             cy.screenshot('post-content-entered');
         } else {
             cy.get(this.postContentField).click().type('{enter}');
