@@ -53,10 +53,9 @@ export class Tag {
     // THEN: Verificar que el tag está visible en la lista
     thenTagShouldBeVisibleInTagsList(name) {
         cy.get(this.tagsMenuButton).click();
-        cy.get(this.tagListTitle, { timeout: 10000 })
-            .filter(`:contains(${name})`) 
-            .should('have.length.at.least', 1);
-    }
+        cy.get('h3.gh-tag-list-name', { timeout: 10000 })
+        .filter(`:contains(${name})`)
+        .should('have.length.at.least', 1);    }
 
     // THEN: Mostrar error
     thenUserShouldSeeAnError() {
