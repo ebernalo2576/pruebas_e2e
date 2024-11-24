@@ -195,23 +195,83 @@ class EditPost extends Post {
     }
 
     // When El usuario edita los detalles del post, incluyendo el título y el contenido.
-    whenUserEditsPostDetails(newTitle, newContent) {
-        cy.get(this.postTitleField).clear().type(newTitle);
-        cy.screenshot('post-title-edited');
-        cy.get(this.postContentField).clear().type(newContent);
-        cy.screenshot('post-content-edited'); 
+    whenUserEditsPostDetails(newTitle, newContent, date = '', autor = true) {
+        if (newTitle != '') {
+            cy.get(this.postTitleField).clear().type(newTitle);
+            cy.screenshot('post-title-edited');
+        } else {
+            cy.get(this.postTitleField).clear();
+            cy.screenshot('edited-post-title');
+        }
+
+        if (newContent != '') {
+            cy.get(this.postContentField).clear().type(newContent);
+            cy.screenshot('post-content-edited'); 
+        } else {
+            cy.get(this.postContentField).clear();
+            cy.screenshot('edited-post-content');
+        }
+
+        if (date != '') {
+            cy.get(this.settingsMenuButton).should('be.visible').click();
+            cy.screenshot('settings-menu-opened');
+            cy.get('.gh-date-time-picker-date').clear().type(date);
+            cy.screenshot('post-content-edited');
+
+            if (autor == false) {
+                cy.get('.ember-power-select-multiple-remove-btn').should('be.visible').click();
+                cy.screenshot('post-content-edited');
+            }
+
+            cy.get(this.settingsMenuButton).should('be.visible').click();
+            cy.screenshot('settings-menu-closed');
+        }
+
         cy.get(this.publishMenuButton).click();
         cy.screenshot('publish-menu-opened');
-        cy.get(this.updateButton).click();
-        cy.screenshot('post-updated');
+
+        if (autor) {
+            if (newTitle.length <= 255) {
+                cy.get(this.updateButton).click();
+                cy.screenshot('post-updated');
+            } else {
+                cy.contains(this.errorAlert, 'Update failed: Title cannot be longer than 255 characters.').should('be.visible');
+                cy.get(this.updateButton).click();
+                cy.screenshot('post-not-updated');
+            }
+        } else {
+            cy.get(this.publishMenuButton).should('be.visible').click();
+            cy.screenshot('publish-menu-opened');
+            cy.contains(this.errorAlert, 'Update failed: At least one author is required.').should('be.visible');
+            cy.log('At least one author is required.');
+            cy.screenshot('autor-is-required');
+            cy.get(this.updateButton).should('be.visible').click();
+            cy.screenshot('post-not-updated');
+        }   
+            
+    }
+
+    thenPostShouldNotBeVisibleInPostList(title) {
+        cy.log('Title is longer than 255 characters. Post will not be published.');
+        cy.get(this.confirmLeaveButton).should('be.visible').click();
+        cy.screenshot('leave-confirmed');
+        cy.url().should('include', '/ghost/#/posts'); 
+        cy.contains(this.postTitleSelector, title).should('not.exist');
+        cy.screenshot('post-not-visible-in-list');
     }
 
     // Then El usuario verifica que el post editado esté visible en la lista con el nuevo título.
     thenPostShouldBeUpdated(newTitle) {
         cy.get(this.postsListButton).click();
         cy.screenshot('returned-to-posts-list');
-        cy.contains(this.postTitleSelector, newTitle).should('exist');
-        cy.screenshot('edited-post-visible');
+        if (newTitle != '') {
+            cy.contains(this.postTitleSelector, newTitle).should('exist');
+            cy.screenshot('edited-post-visible');
+        } else {
+            cy.contains('Untitled').should('exist');
+            cy.log('Title is empty. Post will be named "Untitled".')
+            cy.wait(500);
+        }
     }
 }
 

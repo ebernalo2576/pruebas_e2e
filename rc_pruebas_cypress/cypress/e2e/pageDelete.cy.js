@@ -35,7 +35,6 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         createPage.andGivenUserStartsCreatingNewPage();
         createPage.whenUserEntersPageDetails(pageTitle, pageContent);
         createPage.thenPageShouldBeVisibleInPagesList(pageTitle);
-        createPage.givenUserIsOnPages();
 
         aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
     });
