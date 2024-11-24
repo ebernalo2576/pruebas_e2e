@@ -39,15 +39,6 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         aPrioriRowIndex = Math.floor(Math.random() * aPrioriData.length);
     });
 
-    after(() => {
-        //Eliminar todo el contenido
-        cy.wait(1000);
-        settingsDeleteContent.givenUserIsInSettings(); 
-        settingsDeleteContent.andGivenUserOpensGeneralSection(); 
-        settingsDeleteContent.whenUserDeleteAllContent(); 
-        settingsDeleteContent.thenSettingsShouldDeleted(); 
-    });
-
 
     it('EP016 - Debería permitir eliminar una página existente (Aleatorio)', () => {  
     
