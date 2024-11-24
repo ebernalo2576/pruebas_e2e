@@ -168,7 +168,7 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPage.thenPageShouldNotBeVisibleInPageList(aPrioriData[aPrioriRowIndex].title, false);
     });
-    
+
     it('EP049 - Debería permitir crear una página con fecha (Pseudo-aletorio)', () => {
 
         // Given El usuario navega a la sección de páginas
@@ -182,5 +182,20 @@ describe('Escenarios de pruebas para la funcionalidad páginas - Ghost', () => {
 
         // Then El usuario valida que la página esté visible en la lista de páginas
         createPage.thenPageShouldBeVisibleInPagesList(pseudoData[pseudoRowIndex].title);
+    });
+
+    it('EP049 - No debería permitir crear una página sin autor (A-priori)', () => {
+
+        // Given El usuario navega a la sección de páginas
+        createPage.givenUserIsOnPages();
+
+        // and El usuario comienza a crear una nueva página
+        createPage.andGivenUserStartsCreatingNewPage();
+
+        // When El usuario ingresa los detalles de la página
+        createPage.whenUserEntersPageDetails(pseudoData[pseudoRowIndex].title, pseudoData[pseudoRowIndex].description, pseudoData[pseudoRowIndex].date, false);
+
+        // Then El usuario valida que la página esté visible en la lista de páginas
+        createPage.thenPageShouldNotBeVisibleInPageList(pseudoData[pseudoRowIndex].title, false);
     });
 });
